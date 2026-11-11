@@ -13,9 +13,16 @@ def offline(url):
 
 
 class Books(unittest.TestCase):
-    def test_all_66_books_and_their_chapters(self):
-        self.assertEqual(len(BOOKS), 66)
-        self.assertEqual(sum(BOOKS.values()), 1189)
+    def test_the_orthodox_canon_as_superbook_has_it(self):
+        self.assertEqual(len(BOOKS), 79)                # 52 Old Testament books, then the 27 of the New
+        names = list(BOOKS)
+        self.assertLess(names.index("Tobit"), names.index("Psalms"))
+        self.assertEqual(find_book("1 samuel"), "1 Kingdoms (1 Samuel)")
+        self.assertEqual(find_book("3 Kingdoms"), "3 Kingdoms (1 Kings)")
+        self.assertEqual(find_book("Wisdom"), "Wisdom of Solomon")
+        self.assertEqual(find_book("susanna"), "Susanna")
+        self.assertEqual(check("Sirach", 51), ("Sirach", 51))
+        self.assertEqual(sum(BOOKS.values()), 1362)
         self.assertEqual(find_book("  1   john "), "1 John")
         self.assertEqual(find_book("Psalm"), "Psalms")
         self.assertEqual(check("genesis", "50"), ("Genesis", 50))
@@ -35,7 +42,7 @@ class Text(unittest.TestCase):
             ch = load_chapter("jonah", 1, cache=Path(d), get=fake)
             again = load_chapter("Jonah", 1, cache=Path(d), get=offline)
         self.assertEqual(len(calls), 1)
-        self.assertIn("translation=kjv", calls[0])
+        self.assertIn("translation=web", calls[0])
         self.assertEqual(ch.verses[0], (1, "Jonah text"))      # spaces and line breaks tidied
         self.assertEqual(again, ch)
         self.assertEqual(ch.reference, "Jonah 1")
@@ -43,7 +50,7 @@ class Text(unittest.TestCase):
     def test_bundled_chapters_work_offline_and_others_explain_the_problem(self):
         ch = load_chapter("Psalms", 23, cache=None, get=offline)
         self.assertEqual(len(ch.verses), 6)
-        self.assertTrue(ch.verses[0][1].startswith("The LORD is my shepherd"))
+        self.assertTrue(ch.verses[0][1].startswith("Yahweh is my shepherd"))
         with self.assertRaisesRegex(ConnectionError, "internet"):
             load_chapter("Ruth", 1, cache=None, get=offline)
 

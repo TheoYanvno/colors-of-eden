@@ -19,7 +19,7 @@ class Art(unittest.TestCase):
         doc = xml.dom.minidom.parseString(svg)
         root = doc.documentElement
         self.assertEqual((root.getAttribute("width"), root.getAttribute("height")), ("8.5in", "11in"))
-        self.assertIn("Psalms 23:1 (KJV)", svg)
+        self.assertIn("Psalms 23:1 (WEB)", svg)
 
     def test_only_outlines_to_color_in(self):
         svg = draw_page(plan(bg=list(BACKGROUND_ART), fg=list(FOREGROUND_ART)))

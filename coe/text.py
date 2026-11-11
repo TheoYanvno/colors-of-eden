@@ -1,7 +1,8 @@
-"""Chapter text from the King James Version, which is in the public domain in the United States.
+"""Chapter text from the World English Bible, a public-domain translation, from the same place SuperBook
+reads it: bible-api.com, which also has the Orthodox books Protestant Bibles leave out.
 
-Text comes from bible-api.com (it serves public-domain translations) and is cached on disk, so each
-chapter is fetched only once. A few chapters ship with Colors of Eden so it works offline and in tests.
+Each chapter is fetched once and cached on disk. A few chapters ship with Colors of Eden so it works
+offline and in tests.
 """
 from __future__ import annotations
 
@@ -11,9 +12,9 @@ import urllib.request
 from dataclasses import dataclass
 from pathlib import Path
 
-from .books import check
+from .books import API_ID, check
 
-API = "https://bible-api.com/{ref}?translation=kjv"
+API = "https://bible-api.com/{ref}?translation=web"
 
 
 @dataclass(frozen=True)
@@ -21,7 +22,7 @@ class Chapter:
     book: str
     number: int
     verses: list[tuple[int, str]]
-    translation: str = "King James Version (public domain)"
+    translation: str = "World English Bible (public domain)"
 
     @property
     def reference(self) -> str:
@@ -30,19 +31,19 @@ class Chapter:
 
 BUNDLED: dict[str, list[str]] = {
     "Genesis 1": [
-        "In the beginning God created the heaven and the earth.",
-        "And the earth was without form, and void; and darkness was upon the face of the deep. And the Spirit of God moved upon the face of the waters.",
-        "And God said, Let there be light: and there was light.",
-        "And God saw the light, that it was good: and God divided the light from the darkness.",
-        "And God called the light Day, and the darkness he called Night. And the evening and the morning were the first day.",
+        "In the beginning, God created the heavens and the earth.",
+        "The earth was formless and empty. Darkness was on the surface of the deep and God\u2019s Spirit was hovering over the surface of the waters.",
+        "God said, \u201cLet there be light,\u201d and there was light.",
+        "God saw the light, and saw that it was good. God divided the light from the darkness.",
+        "God called the light \u201cday\u201d, and the darkness he called \u201cnight\u201d. There was evening and there was morning, the first day.",
     ],
     "Psalms 23": [
-        "The LORD is my shepherd; I shall not want.",
-        "He maketh me to lie down in green pastures: he leadeth me beside the still waters.",
-        "He restoreth my soul: he leadeth me in the paths of righteousness for his name's sake.",
-        "Yea, though I walk through the valley of the shadow of death, I will fear no evil: for thou art with me; thy rod and thy staff they comfort me.",
-        "Thou preparest a table before me in the presence of mine enemies: thou anointest my head with oil; my cup runneth over.",
-        "Surely goodness and mercy shall follow me all the days of my life: and I will dwell in the house of the LORD for ever.",
+        "Yahweh is my shepherd: I shall lack nothing.",
+        "He makes me lie down in green pastures. He leads me beside still waters.",
+        "He restores my soul. He guides me in the paths of righteousness for his name\u2019s sake.",
+        "Even though I walk through the valley of the shadow of death, I will fear no evil, for you are with me. Your rod and your staff, they comfort me.",
+        "You prepare a table before me in the presence of my enemies. You anoint my head with oil. My cup runs over.",
+        "Surely goodness and loving kindness shall follow me all the days of my life, and I will dwell in Yahweh\u2019s house forever.",
     ],
 }
 PARTIAL = {"Genesis 1"}       # bundled copies that hold only the opening verses
@@ -58,13 +59,14 @@ def load_chapter(book: str, chapter, cache: Path | None = Path(".coe-cache"), ge
                  allow_partial: bool = True) -> Chapter:
     name, n = check(book, chapter)
     ref = f"{name} {n}"
+    api_ref = f"{API_ID[name]} {n}"
     if cache is not None:
-        cached = cache / f"{ref.replace(' ', '_')}.json"
+        cached = cache / f"{api_ref.replace(' ', '_')}.json"
         if cached.is_file():
             data = json.loads(cached.read_text(encoding="utf-8"))
             return Chapter(name, n, [(v, t) for v, t in data["verses"]])
     try:
-        body = json.loads(get(API.format(ref=urllib.parse.quote(ref.lower()))))
+        body = json.loads(get(API.format(ref=urllib.parse.quote(api_ref.lower()))))
         verses = [(int(v["verse"]), " ".join(v["text"].split())) for v in body["verses"] if int(v["chapter"]) == n]
         if not verses:
             raise ValueError("no verses in the answer")

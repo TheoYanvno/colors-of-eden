@@ -381,7 +381,7 @@ def draw_page(plan: Plan, seed: str | None = None) -> str:
         parts.append(f'<text x="{W / 2}" y="{top + 40 + k * row}" text-anchor="middle" font-family="Georgia, serif" '
                      f'font-size="27" fill="{INK}">{escape(text_line)}</text>')
     parts.append(f'<text x="{W / 2}" y="{top + band + 64}" text-anchor="middle" font-family="Georgia, serif" font-size="24" '
-                 f'font-style="italic" fill="{INK}">{escape(plan.reference)}:{number} (KJV)</text>')
+                 f'font-style="italic" fill="{INK}">{escape(plan.reference)}:{number} (WEB)</text>')
     return (f'<svg xmlns="http://www.w3.org/2000/svg" width="8.5in" height="11in" viewBox="0 0 {W} {H}" '
             f'role="img" aria-label="Coloring page for {escape(plan.reference)}">'
             f'<title>Colors of Eden: {escape(plan.reference)}</title><rect width="{W}" height="{H}" fill="#fff"/>'
