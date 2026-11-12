@@ -54,6 +54,7 @@ test('a page is a letter-size SVG with the verse and reference, the same every t
   assert.ok(svg.includes('He makes me lie down in green pastures.'));
   assert.equal(drawPage(plan), svg);
   assert.ok(!/NaN|undefined/.test(svg));
+  assert.ok(svg.includes('<clipPath id="pic-psalms-23">') && svg.includes('url(#pic-psalms-23)'));
   assert.ok(!/stroke-width="[^"]*" [^>]*stroke-width=/.test(svg));
   assert.ok(drawPage({ ...plan, verse: [1, 'A <b> & "c"'] }).includes('A &lt;b&gt; &amp; &quot;c&quot;'));
 });

@@ -23,3 +23,18 @@ button:disabled { opacity: .5; cursor: default; }
 footer { max-width: 980px; margin: 8px auto 32px; padding: 0 16px; color: var(--muted); font-size: .9rem; text-align: center; }
 a { color: var(--accent); }
 @media (max-width: 760px) { main { grid-template-columns: 1fr; } }
+fieldset.booklet { border: 1px solid var(--line); border-radius: 12px; padding: 8px 12px 12px; display: grid; gap: 8px; margin: 0; }
+fieldset.booklet legend { font-weight: 600; padding: 0 4px; }
+.booklet-pages { display: none; }
+
+/* Printing: just the page, full size on US Letter, so "Save as PDF" makes a ready-to-print file. */
+@media print {
+  @page { size: letter; margin: 0; }
+  body { background: #fff; }
+  .no-print { display: none !important; }
+  main { display: block; padding: 0; }
+  .sheet { border: 0; box-shadow: none; border-radius: 0; width: 8.5in; height: 11in; break-after: page; }
+  .sheet svg { width: 8.5in; height: 11in; }
+  body.printing-booklet .page { display: none; }
+  body.printing-booklet .booklet-pages { display: block; }
+}

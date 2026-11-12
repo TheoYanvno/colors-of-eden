@@ -248,11 +248,13 @@ function ribbon(top, height) {
     shape(`M${l + 36} ${f(top)} L${r - 36} ${f(top)} L${r - 36} ${f(top + height)} L${l + 36} ${f(top + height)} Z`);
 }
 
-/** The whole coloring page for a plan (from planPage) as an SVG string. */
+/** The whole coloring page for a plan (from planPage) as an SVG string. Its clip path gets an id of its own,
+ * so several pages can sit in one document (a printed booklet) without borrowing each other's. */
 export function drawPage(plan, seed = plan.reference) {
   const rng = randomFor(seed);
   const [x, y, w, h] = PIC;
-  const parts = [`<clipPath id="pic"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="22"/></clipPath><g clip-path="url(#pic)">`];
+  const clip = `pic-${String(plan.reference).toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+  const parts = [`<clipPath id="${clip}"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="22"/></clipPath><g clip-path="url(#${clip})">`];
   for (const m of SKY) if (plan.background.includes(m)) parts.push(BACKGROUND_ART[m](rng));
   if (plan.background.filter((m) => SKY.includes(m)).length < 2) parts.push(clouds(rng));   // something in the sky to color
   if (plan.background.includes('mountains')) parts.push(mountains(rng));

@@ -35,6 +35,32 @@ export default function App() {
   const plan = useMemo(() => (ch ? planPage(ch.reference, ch.verses) : null), [ch]);
   const svg = useMemo(() => (plan ? drawPage(plan) : ''), [plan]);
   const fileName = plan ? `${plan.reference.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}.svg` : 'page.svg';
+  const [booklet, setBooklet] = useState({ to: 0, pages: [], status: '' });
+  const bookletTo = Math.min(book.chapters, Math.max(pick.chapter, booklet.to || pick.chapter + 4));
+
+  // A booklet: this chapter and the ones after it, one page each, printed together (or saved as one PDF).
+  async function printBooklet() {
+    setBooklet((b) => ({ ...b, status: 'Getting the chapters ready…', pages: [] }));
+    const pages = [];
+    try {
+      for (let n = pick.chapter; n <= bookletTo; n++) {
+        const c = await loadChapter(pick.book, n);
+        pages.push({ key: c.reference, svg: drawPage(planPage(c.reference, c.verses)) });
+      }
+    } catch (err) {
+      return setBooklet((b) => ({ ...b, status: err.message }));
+    }
+    setBooklet((b) => ({ ...b, pages, status: '' }));
+  }
+  useEffect(() => {
+    if (!booklet.pages.length) return;
+    document.body.classList.add('printing-booklet');
+    const done = () => { document.body.classList.remove('printing-booklet'); setBooklet((b) => ({ ...b, pages: [] })); };
+    addEventListener('afterprint', done, { once: true });
+    print();
+    return () => removeEventListener('afterprint', done);
+  }, [booklet.pages]);
+
   const download = () => {
     const url = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' }));
     const a = Object.assign(document.createElement('a'), { href: url, download: fileName });
@@ -62,9 +88,20 @@ export default function App() {
             </select>
           </label>
           <div className="buttons">
-            <button className="primary" disabled={!svg} onClick={download}>Download SVG</button>
+            <button className="primary" disabled={!svg} onClick={() => print()}>Print or save as PDF</button>
+            <button disabled={!svg} onClick={download}>Download SVG</button>
             <a className="button" href={superBookLink(book, pick.chapter)} target="_blank" rel="noreferrer">Read {book.label} {pick.chapter} in SuperBook ↗</a>
           </div>
+          <fieldset className="booklet">
+            <legend>Booklet</legend>
+            <label>{book.label} {pick.chapter} to
+              <select value={bookletTo} onChange={(e) => setBooklet((b) => ({ ...b, to: Number(e.target.value) }))}>
+                {Array.from({ length: Math.min(book.chapters - pick.chapter + 1, 10) }, (_, i) => pick.chapter + i).map((n) => <option key={n} value={n}>{n}</option>)}
+              </select>
+            </label>
+            <button onClick={printBooklet}>Print booklet ({bookletTo - pick.chapter + 1} page{bookletTo === pick.chapter ? '' : 's'})</button>
+            {booklet.status && <p className="muted" role="status">{booklet.status}</p>}
+          </fieldset>
           <div role="status" aria-live="polite" className="status">
             {state.status === 'loading' && <p className="muted">Reading {book.label} {pick.chapter}…</p>}
             {state.status === 'error' && <p className="error">{state.message}</p>}
@@ -80,6 +117,9 @@ export default function App() {
         </section>
         <section className="page" aria-label="Coloring page">
           {svg ? <div className="sheet" dangerouslySetInnerHTML={{ __html: svg }} /> : <div className="sheet empty" />}
+        </section>
+        <section className="booklet-pages" aria-hidden="true">
+          {booklet.pages.map((p) => <div key={p.key} className="sheet" dangerouslySetInnerHTML={{ __html: p.svg }} />)}
         </section>
       </main>
       <footer className="no-print">

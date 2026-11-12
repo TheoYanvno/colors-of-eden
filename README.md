@@ -4,13 +4,13 @@ Printable coloring pages from any chapter of the Orthodox Bible. Pick a book and
 
 **Try it:** https://theoyanvno.github.io/colors-of-eden/
 
-**Status:** in progress. The web page and the Python command line both draw pages; printing to PDF is next.
+**Status:** in progress. The web page and the Python command line both draw pages, and the web page prints them or saves them as PDFs.
 
 ![Two storybook coloring pages: Psalm 23 with a cup, a sheep and flowers on rolling hills beside still waters, and Genesis 1 with the sun, the moon and a dove over mountains, hills and waves, each with its verse on a ribbon](docs/examples.png)
 
 ## The web page
 
-Pick a book and a chapter and the page is drawn right away, with what's behind, what's in front and the verse it chose. **Download SVG** saves it for printing on US Letter paper, and **Read in SuperBook** opens the same chapter in [SuperBook](https://theoyanvno.github.io/SuperBook/). Links work both ways: `?book=Jonah&chapter=1` opens that chapter here, just as it does in SuperBook.
+Pick a book and a chapter and the page is drawn right away, with what's behind, what's in front and the verse it chose. **Print or save as PDF** prints just the page, full size on US Letter paper (choose Save as PDF in the print window for a file), **Download SVG** saves the drawing itself, **Booklet** prints up to 10 chapters in a row as one set of pages, and **Read in SuperBook** opens the same chapter in [SuperBook](https://theoyanvno.github.io/SuperBook/). Links work both ways: `?book=Jonah&chapter=1` opens that chapter here, just as it does in SuperBook.
 
 ```bash
 npm install
