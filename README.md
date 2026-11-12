@@ -2,11 +2,24 @@
 
 Printable coloring pages from any chapter of the Orthodox Bible. Pick a book and a chapter, and Colors of Eden reads the chapter, chooses what to draw from its words (sheep and a quiet stream for Psalm 23, the sun, moon and waters for Genesis 1), and draws an original line-art page with a verse to print and color.
 
-**Status:** in progress. Choosing what to draw and drawing the pages work; the web page and printable PDFs are next.
+**Try it:** https://theoyanvno.github.io/colors-of-eden/
 
-![Two storybook coloring pages: Psalm 23 with a cup, a sheep and flowers on rolling hills with a winding path, and Genesis 1 with the sun, the moon and a dove over mountains, hills and waves, each with its verse on a ribbon](docs/examples.png)
+**Status:** in progress. The web page and the Python command line both draw pages; printing to PDF is next.
 
-## Try it
+![Two storybook coloring pages: Psalm 23 with a cup, a sheep and flowers on rolling hills beside still waters, and Genesis 1 with the sun, the moon and a dove over mountains, hills and waves, each with its verse on a ribbon](docs/examples.png)
+
+## The web page
+
+Pick a book and a chapter and the page is drawn right away, with what's behind, what's in front and the verse it chose. **Download SVG** saves it for printing on US Letter paper, and **Read in SuperBook** opens the same chapter in [SuperBook](https://theoyanvno.github.io/SuperBook/). Links work both ways: `?book=Jonah&chapter=1` opens that chapter here, just as it does in SuperBook.
+
+```bash
+npm install
+npm start      # build and serve at http://localhost:8000
+npm test       # the web page's tests, including a check that it plans pages exactly like the Python version
+npm run build  # build into docs/ for GitHub Pages
+```
+
+## The command line
 
 ```bash
 python -m coe page Psalms 23     # saves out/psalms-23.svg, ready to print on US Letter paper
@@ -29,7 +42,8 @@ Verse 2: He makes me lie down in green pastures. He leads me beside still waters
 ## Run the tests
 
 ```bash
-python -m unittest
+python -m unittest   # the Python version
+npm test             # the web page
 ```
 
 Built with help from AI coding tools; every feature is reviewed and tested before it ships.

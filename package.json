@@ -1,0 +1,16 @@
+{
+  "name": "colors-of-eden",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Printable coloring pages from any chapter of the Orthodox Bible, in the browser.",
+  "type": "module",
+  "scripts": {
+    "build": "node web/build.mjs",
+    "start": "node web/build.mjs --serve",
+    "test": "node --test \"web/test/*.test.js\""
+  },
+  "dependencies": { "react": "^19.2.0", "react-dom": "^19.2.0" },
+  "devDependencies": { "esbuild": "^0.25.0" },
+  "author": "Anthony Evo",
+  "license": "MIT"
+}
