@@ -9,6 +9,7 @@ grass) add detail without boxing areas in.
 from __future__ import annotations
 
 import math
+import re
 import random
 from xml.sax.saxutils import escape
 
@@ -214,21 +215,27 @@ def sheep(x, y, s=1.0) -> str:
     return legs + tail + wool + curls + head + ear + face
 
 
+# The dove: an original line drawing in flight, facing right: two wings with soft rounded feathers, a
+# far one behind the near one, and a fanned tail. Each part is drawn in its own coordinates around the
+# bird's middle and placed with place().
+DOVE_FAR_WING = "M66 2 C 60 -40 50 -86 30 -124 C 56 -134 80 -120 74 -102 C 98 -104 110 -84 98 -70 C 116 -62 116 -40 102 -34 C 108 -18 98 -6 84 -4 Z"
+DOVE_BODY = "M74 -4 C 76 -36 100 -48 120 -36 C 128 -31 132 -24 133 -18 L 152 -12 L 132 -4 C 130 40 86 84 20 90 C -24 94 -60 86 -88 74 C -100 86 -112 98 -126 104 C -120 94 -116 86 -114 78 C -126 82 -138 82 -146 78 C -136 72 -126 66 -118 60 C -128 56 -136 50 -140 42 C -120 44 -100 46 -84 44 C -50 38 -16 30 14 20 C 42 12 62 6 74 -4 Z"
+DOVE_NEAR_WING = "M62 12 C 44 -40 10 -92 -40 -130 C -66 -122 -76 -102 -60 -88 C -86 -80 -92 -60 -74 -48 C -98 -40 -100 -16 -80 -8 C -44 6 -12 18 22 24 C 38 22 52 18 62 12 Z"
+DOVE_FEATHERS = "M-44 -76 C -28 -68 -14 -58 -2 -48 M-56 -36 C -36 -30 -18 -24 0 -18 M66 -88 C 72 -78 76 -70 78 -60"
+
+
+def place(d: str, x: float, y: float, k: float) -> str:
+    """Moves and scales a path written with absolute M, C and L commands: each x y pair goes to (x + px*k, y + py*k)."""
+    return re.sub(r"-?\d+(?:\.\d+)?\s+-?\d+(?:\.\d+)?",
+                  lambda m: (lambda px, py: f"{f(x + float(px) * k)} {f(y + float(py) * k)}")(*m.group(0).split()), d)
+
+
 def dove(x, y, s=1.0) -> str:
-    y = max(170 + 60 * s, y - 330 * s)               # doves fly, inside the frame
-    body = shape(f"M{f(x - 80*s)} {f(y + 10*s)} q {f(60*s)} {f(-50*s)} {f(140*s)} {f(-20*s)} "
-                 f"q {f(20*s)} {f(-16*s)} {f(36*s)} {f(2*s)} l {f(14*s)} {f(4*s)} l {f(-16*s)} {f(6*s)} "
-                 f"q {f(-30*s)} {f(40*s)} {f(-104*s)} {f(30*s)} l {f(-50*s)} {f(18*s)} l {f(10*s)} {f(-22*s)} l {f(-30*s)} {f(-4*s)} Z")
-    wing = shape(f"M{f(x - 20*s)} {f(y - 10*s)} q {f(-10*s)} {f(-80*s)} {f(60*s)} {f(-110*s)} "
-                 f"q {f(-6*s)} {f(20*s)} {f(4*s)} {f(24*s)} q {f(-12*s)} {f(18*s)} {f(2*s)} {f(24*s)} "
-                 f"q {f(-14*s)} {f(16*s)} 0 {f(26*s)} q {f(-20*s)} {f(20*s)} {f(-66*s)} {f(36*s)} Z")
-    feathers = line(f"M{f(x + 4*s)} {f(y - 60*s)} q {f(10*s)} {f(-10*s)} {f(24*s)} {f(-12*s)} "
-                    f"M{f(x - 4*s)} {f(y - 36*s)} q {f(14*s)} {f(-8*s)} {f(30*s)} {f(-8*s)}")
-    branch = line(f"M{f(x + 92*s)} {f(y - 10*s)} q {f(20*s)} {f(10*s)} {f(36*s)} {f(4*s)}", 3)
-    leaves = "".join(shape(f"M{f(x + bx*s)} {f(y + by*s)} q {f(8*s)} {f(-12*s)} {f(18*s)} {f(-4*s)} "
-                           f"q {f(-8*s)} {f(10*s)} {f(-18*s)} {f(4*s)} Z", width=2.5)
-                     for bx, by in ((100, -6), (112, -2), (122, 0)))
-    return body + wing + feathers + branch + leaves + dot(x + 60 * s, y - 14 * s, 3.5 * s)
+    y = max(190 + 60 * s, y - 290 * s)               # doves fly low in the sky, clear of the sun and clouds
+    k = 0.8 * s
+    return (shape(place(DOVE_FAR_WING, x, y, k)) + shape(place(DOVE_BODY, x, y, k))
+            + shape(place(DOVE_NEAR_WING, x, y, k)) + line(place(DOVE_FEATHERS, x, y, k), 3)
+            + dot(x + 112 * k, y - 24 * k, 5 * k))
 
 
 def fish(x, y, s=1.0) -> str:
