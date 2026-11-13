@@ -46,3 +46,25 @@ class Art(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class WaterScenes(unittest.TestCase):
+    """The boat and fish used to sit on the frame's bottom edge and get cut off; now they stay inside it."""
+
+    def test_everything_in_front_stays_inside_the_frame(self):
+        from coe.art import BOTTOM, PIC, placement
+        bottom = PIC[1] + PIC[3]
+        for m in FOREGROUND_ART:
+            for water in (False, True):
+                for scale in (0.8, 1.3, 1.9):
+                    size, base = placement(m, scale, water)
+                    self.assertLessEqual(base + BOTTOM.get(m, 0) * size, bottom - 18, (m, water, scale))
+
+    def test_on_water_the_boat_floats_above_the_fish_and_both_keep_room(self):
+        from coe.art import placement
+        boat, fish = placement("boat", 1.33, True), placement("fish", 1.33, True)
+        self.assertLess(boat[1], fish[1], "the boat floats higher than the fish swims")
+        self.assertLessEqual(boat[0], 1.25)
+        self.assertLessEqual(fish[0], 1.15)
+        svg = draw_page(Plan("Jonah 1", ["boat", "fish"], ["waves", "clouds"], ["boat", "fish"], (17, "A huge fish.")))
+        xml.dom.minidom.parseString(svg)

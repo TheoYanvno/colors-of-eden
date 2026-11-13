@@ -310,7 +310,21 @@ SKY = ["stars", "sun", "moon", "clouds"]
 SIZES = {"tree": 190, "flowers": 150, "sheep": 220, "dove": 240, "fish": 200, "boat": 270, "crown": 150,
          "lamp": 210, "cup": 110, "heart": 230}
 OFFSET = {"sheep": -10, "lamp": -15, "dove": -25}
-MAX_SCALE = {"dove": 1.3, "heart": 1.3, "crown": 1.6, "cup": 1.7}   # so they never fill the whole sky
+MAX_SCALE = {"dove": 1.3, "heart": 1.3, "crown": 1.6, "cup": 1.7,   # so they never fill the whole sky
+             "boat": 1.25, "fish": 1.15}                            # and the boat and fish keep room around them
+# How far each drawing reaches below its base point at scale 1 (most stand on it; the hull and fish hang lower).
+BOTTOM = {"boat": 40, "fish": 48}
+# Where things sit on water pages, below the front edge of the hills: the boat floats on the waves and
+# the fish swims lower down, in the water.
+FLOAT = {"boat": 100, "fish": 150}
+
+
+def placement(m: str, scale: float, water: bool) -> tuple[float, float]:
+    """The scale and base height for one thing in front, kept fully inside the frame."""
+    size = min(scale, MAX_SCALE.get(m, scale))
+    base = GROUND + (FLOAT.get(m, 150) if water else 150)
+    lowest = PIC[1] + PIC[3] - 18                     # just above the frame's bottom edge
+    return size, min(base, lowest - BOTTOM.get(m, 0) * size)
 
 
 def wrap(text: str, width: int = 50) -> list[str]:
@@ -367,8 +381,8 @@ def draw_page(plan: Plan, seed: str | None = None) -> str:
     cx = x + gap
     for m, width in zip(front, widths):
         mid = cx + width * scale / 2
-        size = min(scale, MAX_SCALE.get(m, scale))
-        parts.append(FOREGROUND_ART[m](mid + OFFSET.get(m, 0) * scale + rng.uniform(-8, 8), GROUND + 150, size))
+        size, base = placement(m, scale, "waves" in plan.background)
+        parts.append(FOREGROUND_ART[m](mid + OFFSET.get(m, 0) * scale + rng.uniform(-8, 8), base, size))
         cx += width * scale + gap
     parts.append("</g>")
     parts.append(frame())

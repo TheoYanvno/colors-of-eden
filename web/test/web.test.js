@@ -4,7 +4,7 @@ import { existsSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { BIBLE, findBook, superBookLink } from '../src/books.js';
 import { planPage, motifCounts } from '../src/scenes.js';
-import { drawPage, wrap, randomFor } from '../src/art.js';
+import { drawPage, wrap, randomFor, placement } from '../src/art.js';
 import { loadChapter, BUNDLED } from '../src/text.js';
 
 const verses = (ref) => BUNDLED[ref].map((t, i) => [i + 1, t]);
@@ -83,4 +83,16 @@ test('chapters load from the text service, fall back to the bundled copy, and ex
   await assert.rejects(loadChapter('Ruth', 9, offline), /chapters 1 to 4/);
   await assert.rejects(loadChapter('1 Kingdoms', 3, fake), /no verses/);
   assert.ok(calls.at(-1).includes('1%20samuel%203'));
+});
+
+test('the boat and fish stay inside the frame, like the Python version', () => {
+  const py = JSON.parse(execFileSync('python3', ['-c', `import json; from coe.art import placement, FOREGROUND_ART
+print(json.dumps({f"{m}|{w}|{s}": placement(m, s, w) for m in FOREGROUND_ART for w in (False, True) for s in (0.8, 1.33, 1.9)}))`],
+    { cwd: new URL('../..', import.meta.url), encoding: 'utf8' }));
+  for (const [key, [size, base]] of Object.entries(py)) {
+    const [m, w, s] = key.split('|');
+    const [jsSize, jsBase] = placement(m, Number(s), w === 'True');
+    assert.ok(Math.abs(jsSize - size) < 1e-9 && Math.abs(jsBase - base) < 1e-9, key);
+    assert.ok(jsBase + ({ boat: 40, fish: 48 }[m] ?? 0) * jsSize <= 782, key);
+  }
 });

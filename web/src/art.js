@@ -223,7 +223,21 @@ const FOREGROUND_ART = { tree, flowers, sheep, dove, fish, boat, crown, lamp, cu
 const SKY = ['stars', 'sun', 'moon', 'clouds'];
 const SIZES = { tree: 190, flowers: 150, sheep: 220, dove: 240, fish: 200, boat: 270, crown: 150, lamp: 210, cup: 110, heart: 230 };
 const OFFSET = { sheep: -10, lamp: -15, dove: -25 };
-const MAX_SCALE = { dove: 1.3, heart: 1.3, crown: 1.6, cup: 1.7 };   // so they never fill the whole sky
+const MAX_SCALE = { dove: 1.3, heart: 1.3, crown: 1.6, cup: 1.7,     // so they never fill the whole sky
+  boat: 1.25, fish: 1.15 };                                           // and the boat and fish keep room around them
+// How far each drawing reaches below its base point at scale 1 (most stand on it; the hull and fish hang lower).
+const BOTTOM = { boat: 40, fish: 48 };
+// Where things sit on water pages, below the front edge of the hills: the boat floats on the waves and
+// the fish swims lower down, in the water.
+const FLOAT = { boat: 100, fish: 150 };
+
+/** The scale and base height for one thing in front, kept fully inside the frame. */
+export function placement(m, scale, water) {
+  const size = min(scale, MAX_SCALE[m] ?? scale);
+  const base = GROUND + (water ? FLOAT[m] ?? 150 : 150);
+  const lowest = PIC[1] + PIC[3] - 18;                                   // just above the frame's bottom edge
+  return [size, Math.min(base, lowest - (BOTTOM[m] ?? 0) * size)];
+}
 
 export function wrap(text, width = 50) {
   const lines = [];
@@ -269,7 +283,8 @@ export function drawPage(plan, seed = plan.reference) {
   let cx = x + gap;
   front.forEach((m, i) => {
     const mid = cx + widths[i] * scale / 2;
-    parts.push(FOREGROUND_ART[m](mid + (OFFSET[m] ?? 0) * scale + rng.uniform(-8, 8), GROUND + 150, min(scale, MAX_SCALE[m] ?? scale)));
+    const [size, base] = placement(m, scale, plan.background.includes('waves'));
+    parts.push(FOREGROUND_ART[m](mid + (OFFSET[m] ?? 0) * scale + rng.uniform(-8, 8), base, size));
     cx += widths[i] * scale + gap;
   });
   parts.push('</g>', frame());
