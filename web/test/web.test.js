@@ -2,6 +2,9 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
+
+// Windows installs Python as `python`; macOS and Linux as `python3`.
+const PYTHON = process.platform === 'win32' ? 'python' : 'python3';
 import { BIBLE, findBook, superBookLink } from '../src/books.js';
 import { planPage, motifCounts } from '../src/scenes.js';
 import { drawPage, wrap, randomFor, placement } from '../src/art.js';
@@ -27,7 +30,7 @@ test('the page plan matches the Python version for the chapters that ship with i
     const js = planPage(ref, verses(ref));
     let py;
     try {
-      py = JSON.parse(execFileSync('python3', ['-c', `
+      py = JSON.parse(execFileSync(PYTHON, ['-c', `
 import json
 from coe.scenes import plan_page
 from coe.text import Chapter, BUNDLED
@@ -86,7 +89,7 @@ test('chapters load from the text service, fall back to the bundled copy, and ex
 });
 
 test('the boat and fish stay inside the frame, like the Python version', () => {
-  const py = JSON.parse(execFileSync('python3', ['-c', `import json; from coe.art import placement, FOREGROUND_ART
+  const py = JSON.parse(execFileSync(PYTHON, ['-c', `import json; from coe.art import placement, FOREGROUND_ART
 print(json.dumps({f"{m}|{w}|{s}": placement(m, s, w) for m in FOREGROUND_ART for w in (False, True) for s in (0.8, 1.33, 1.9)}))`],
     { cwd: new URL('../..', import.meta.url), encoding: 'utf8' }));
   for (const [key, [size, base]] of Object.entries(py)) {
