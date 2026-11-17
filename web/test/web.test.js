@@ -9,6 +9,8 @@ import { BIBLE, findBook, superBookLink } from '../src/books.js';
 import { planPage, motifCounts } from '../src/scenes.js';
 import { drawPage, wrap, randomFor, placement } from '../src/art.js';
 import { loadChapter, BUNDLED } from '../src/text.js';
+import { CATALOG, choosePicture, pathData, loadPicture } from '../src/picture.js';
+import { readFileSync } from 'node:fs';
 
 const verses = (ref) => BUNDLED[ref].map((t, i) => [i + 1, t]);
 const superbook = new URL('../../../superbook/src/books.js', import.meta.url);
@@ -36,9 +38,9 @@ from coe.scenes import plan_page
 from coe.text import Chapter, BUNDLED
 book, n = ${JSON.stringify(ref)}.rsplit(' ', 1)
 p = plan_page(Chapter(book, int(n), list(enumerate(BUNDLED[${JSON.stringify(ref)}], 1))))
-print(json.dumps({"motifs": p.motifs, "background": p.background, "foreground": p.foreground, "verse": list(p.verse)}))`], { cwd: new URL('../..', import.meta.url) }).toString());
+print(json.dumps({"motifs": p.motifs, "background": p.background, "foreground": p.foreground, "verse": list(p.verse), "picture": p.picture}))`], { cwd: new URL('../..', import.meta.url) }).toString());
     } catch { return t.skip('python3 is not available'); }
-    assert.deepEqual({ motifs: js.motifs, background: js.background, foreground: js.foreground, verse: js.verse }, py, ref);
+    assert.deepEqual({ motifs: js.motifs, background: js.background, foreground: js.foreground, verse: js.verse, picture: js.picture }, py, ref);
   }
 });
 
@@ -98,4 +100,55 @@ print(json.dumps({f"{m}|{w}|{s}": placement(m, s, w) for m in FOREGROUND_ART for
     assert.ok(Math.abs(jsSize - size) < 1e-9 && Math.abs(jsBase - base) < 1e-9, key);
     assert.ok(jsBase + ({ boat: 40, fish: 48 }[m] ?? 0) * jsSize <= 782, key);
   }
+});
+
+const DANIEL_6 = [
+  [1, 'It pleased Darius to set over the kingdom one hundred twenty local governors.'],
+  [16, 'Then the king commanded, and they brought Daniel, and cast him into the den of lions.'],
+  [22, "My God has sent his angel, and has shut the lions' mouths, and they have not hurt me."],
+  [27, 'He has delivered Daniel from the power of the lions.'],
+];
+const python = (code) => execFileSync('python3', ['-c', code], { cwd: new URL('../..', import.meta.url), encoding: 'utf8', maxBuffer: 1 << 26 });
+
+test('a chapter that names a drawing three times gets it, chosen and drawn exactly like the Python version', (t) => {
+  assert.equal(CATALOG.length, 60);
+  assert.equal(choosePicture('a lion and another lion'), null);
+  const plan = planPage('Daniel 6', DANIEL_6);
+  assert.equal(plan.picture, 'animals/lion');
+  assert.equal(plan.verse[0], 16);
+  const outlines = pathData(readFileSync(new URL('../../coe/pictures/animals/lion.svg', import.meta.url), 'utf8'));
+  const svg = drawPage(plan, plan.reference, outlines);
+  assert.ok(svg.includes('Daniel 6:16 (WEB)') && !/NaN|undefined/.test(svg));
+  assert.ok(!drawPage(plan).includes(outlines.slice(0, 40)), 'without the outlines it falls back to the drawn page');
+  let py;
+  try {
+    py = python(`from coe.art import draw_page
+from coe.scenes import plan_page
+from coe.text import Chapter
+print(draw_page(plan_page(Chapter("Daniel", 6, ${JSON.stringify(DANIEL_6)}))), end="")`);
+  } catch { return t.skip('python3 is not available'); }
+  assert.equal(svg, py);
+});
+
+test('picture outlines are fetched once from the built site and errors explain themselves', async () => {
+  const calls = [];
+  const ok = async (url) => { calls.push(url); return { ok: true, text: async () => '<svg><path d="M1 2Z"/></svg>' }; };
+  assert.equal(await loadPicture('places/oasis', ok), 'M1 2Z');
+  assert.equal(await loadPicture('places/oasis', ok), 'M1 2Z');
+  assert.deepEqual(calls, ['pictures/places/oasis.svg']);
+  await assert.rejects(loadPicture('places/garden', async () => ({ ok: false })), /Garden picture/);
+  assert.throws(() => loadPicture('places/atlantis', ok), /no picture/);
+});
+
+test('when the text service says slow down, a chapter waits and tries again', async () => {
+  const waits = [];
+  let calls = 0;
+  const busy = async () => (++calls < 3
+    ? { ok: false, status: 429, headers: { get: () => (calls === 1 ? '2' : null) } }
+    : { ok: true, status: 200, json: async () => ({ verses: [{ chapter: 3, verse: 1, text: 'Ruth text' }] }) });
+  const ruth = await loadChapter('Ruth', 3, busy, async (ms) => { waits.push(ms); });
+  assert.deepEqual(ruth.verses, [[1, 'Ruth text']]);
+  assert.deepEqual(waits, [2000, 5000]);
+  const never = async () => ({ ok: false, status: 429, headers: { get: () => null } });
+  await assert.rejects(loadChapter('Ruth', 4, never, async () => {}), /answered 429/);
 });

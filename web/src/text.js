@@ -22,9 +22,21 @@ export const BUNDLED = {
 };
 
 const memo = new Map();
+const pause = (ms) => new Promise((done) => setTimeout(done, ms));
+
+// The text service allows about 15 chapters every 30 seconds, so a long booklet can be told to slow down
+// (429). Then it waits as long as the service asks (or 5 seconds) and tries again, up to 8 times.
+async function fetchPolitely(url, fetchFn, wait) {
+  for (let attempt = 0; ; attempt++) {
+    const res = await fetchFn(url);
+    if (res.status !== 429 || attempt >= 8) return res;
+    const asked = Number(res.headers?.get?.('retry-after'));
+    await wait(Number.isFinite(asked) && asked > 0 ? Math.min(asked, 30) * 1000 : 5000);
+  }
+}
 
 /** { book, chapter, reference, verses: [[n, text]], bundled } */
-export async function loadChapter(bookName, chapter, fetchFn = globalThis.fetch) {
+export async function loadChapter(bookName, chapter, fetchFn = globalThis.fetch, wait = pause) {
   const book = findBook(bookName);
   const n = Number(chapter);
   if (!Number.isInteger(n) || n < 1 || n > book.chapters) throw new Error(`${book.label} has chapters 1 to ${book.chapters}.`);
@@ -32,7 +44,7 @@ export async function loadChapter(bookName, chapter, fetchFn = globalThis.fetch)
   const key = `${book.id} ${n}`;
   if (memo.has(key)) return memo.get(key);
   try {
-    const res = await fetchFn(`https://bible-api.com/${encodeURIComponent(key.toLowerCase())}?translation=web`);
+    const res = await fetchPolitely(`https://bible-api.com/${encodeURIComponent(key.toLowerCase())}?translation=web`, fetchFn, wait);
     if (!res.ok) throw new Error(`the text service answered ${res.status}`);
     const body = await res.json();
     const verses = body.verses.filter((v) => Number(v.chapter) === n).map((v) => [Number(v.verse), v.text.replace(/\s+/g, ' ').trim()]);

@@ -3,6 +3,8 @@
 // layered hills, sky, water and ground, the chapter's things in front and the verse on a ribbon.
 // Black outlines with white fills, so every area is a closed space to color.
 
+import { findPicture } from './picture.js';
+
 const W = 850, H = 1100;
 const PIC = [40, 40, 770, 760];
 const GROUND = 600;
@@ -263,8 +265,7 @@ export function wrap(text, width = 50) {
   return cur ? [...lines, cur] : lines;
 }
 
-function frame() {
-  const [x, y, w, h] = PIC;
+function frame([x, y, w, h] = PIC) {
   const curls = [[x + 16, y + 16, 1, 1], [x + w - 16, y + 16, -1, 1], [x + 16, y + h - 16, 1, -1], [x + w - 16, y + h - 16, -1, -1]]
     .map(([cx, cy, dx, dy]) => line(`M${f(cx)} ${f(cy)} q ${f(dx * 26)} ${f(dy * 4)} ${f(dx * 30)} ${f(dy * 30)} q ${f(-dx * 12)} ${f(-dy * 4)} ${f(-dx * 16)} ${f(-dy * 16)}`, 3)).join('');
   return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="22" fill="none" stroke="${INK}" stroke-width="7"/>` +
@@ -277,9 +278,37 @@ function ribbon(top, height) {
     shape(`M${l + 36} ${f(top)} L${r - 36} ${f(top)} L${r - 36} ${f(top + height)} L${l + 36} ${f(top + height)} Z`);
 }
 
+function verseText(plan, top) {
+  const [number, verse] = plan.verse;
+  const lines = wrap(verse).slice(0, 4);
+  const row = 36, band = 28 + lines.length * row;
+  return [ribbon(top, band),
+    ...lines.map((t, k) => `<text x="${W / 2}" y="${f(top + 40 + k * row)}" text-anchor="middle" font-family="Georgia, serif" font-size="27" fill="${INK}">${esc(t)}</text>`),
+    `<text x="${W / 2}" y="${f(top + band + 64)}" text-anchor="middle" font-family="Georgia, serif" font-size="24" font-style="italic" fill="${INK}">${esc(plan.reference)}:${number} (WEB)</text>`];
+}
+const svgPage = (plan, parts) =>
+  `<svg xmlns="http://www.w3.org/2000/svg" width="8.5in" height="11in" viewBox="0 0 ${W} ${H}" role="img" aria-label="Coloring page for ${esc(plan.reference)}">` +
+  `<title>Colors of Eden: ${esc(plan.reference)}</title><rect width="${W}" height="${H}" fill="#fff"/>` + parts.join('') + '</svg>';
+
+const INSIDE = 18;                                                         // space between a picture and its frame
+/** Where a picture page puts its frame [x, y, w, h]: full width, as tall as the picture needs, centred with its verse. */
+export function pictureLayout(width, height, verseLines) {
+  const w = PIC[2], h = (w - 2 * INSIDE) * height / width + 2 * INSIDE;
+  const total = h + 60 + 28 + verseLines * 36 + 64;
+  return [PIC[0], max(30, (H - total) / 2), w, h];
+}
+function drawPicturePage(plan, picture, outlines) {
+  const [x, y, w, h] = pictureLayout(picture.width, picture.height, wrap(plan.verse[1]).slice(0, 4).length);
+  const k = (w - 2 * INSIDE) / picture.width;
+  return svgPage(plan, [`<g transform="translate(${f(x + INSIDE)} ${f(y + INSIDE)}) scale(${k.toFixed(4)})"><path d="${outlines}" fill="${INK}" fill-rule="evenodd"/></g>`,
+    frame([x, y, w, h]), ...verseText(plan, y + h + 60)]);
+}
+
 /** The whole coloring page for a plan (from planPage) as an SVG string. Its clip path gets an id of its own,
- * so several pages can sit in one document (a printed booklet) without borrowing each other's. */
-export function drawPage(plan, seed = plan.reference) {
+ * so several pages can sit in one document (a printed booklet) without borrowing each other's. A plan with a
+ * picture draws that picture when its outlines (from loadPicture) are given, else the page drawn in code. */
+export function drawPage(plan, seed = plan.reference, outlines = null) {
+  if (plan.picture && outlines) return drawPicturePage(plan, findPicture(plan.picture), outlines);
   const rng = randomFor(seed);
   const [x, y, w, h] = PIC;
   const clip = `pic-${String(plan.reference).toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
@@ -303,12 +332,5 @@ export function drawPage(plan, seed = plan.reference) {
     cx += widths[i] * scale + gap;
   });
   parts.push('</g>', frame());
-  const [number, verse] = plan.verse;
-  const lines = wrap(verse).slice(0, 4);
-  const top = 836, row = 36, band = 28 + lines.length * row;
-  parts.push(ribbon(top, band));
-  lines.forEach((t, k) => parts.push(`<text x="${W / 2}" y="${top + 40 + k * row}" text-anchor="middle" font-family="Georgia, serif" font-size="27" fill="${INK}">${esc(t)}</text>`));
-  parts.push(`<text x="${W / 2}" y="${top + band + 64}" text-anchor="middle" font-family="Georgia, serif" font-size="24" font-style="italic" fill="${INK}">${esc(plan.reference)}:${number} (WEB)</text>`);
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="8.5in" height="11in" viewBox="0 0 ${W} ${H}" role="img" aria-label="Coloring page for ${esc(plan.reference)}">` +
-    `<title>Colors of Eden: ${esc(plan.reference)}</title><rect width="${W}" height="${H}" fill="#fff"/>` + parts.join('') + '</svg>';
+  return svgPage(plan, [...parts, ...verseText(plan, 836)]);
 }

@@ -1,5 +1,6 @@
 // Choosing what to draw for a chapter (the same rules as coe/scenes.py): words in the text point to
 // motifs, the motifs mentioned most make the page, and one short verse goes under the picture.
+import { choosePicture, pictureVerse } from './picture.js';
 
 export const MOTIF_WORDS = {
   sun: ['sun', 'light', 'day', 'morning', 'shine', 'shined', 'bright'],
@@ -48,18 +49,21 @@ export function pickVerse(verses, motifs, maxChars = 160) {
   return best ?? verses.reduce((a, b) => (b[1].length < a[1].length ? b : a));
 }
 
-/** { reference, motifs, background, foreground, verse: [n, text] } for a chapter's verses. */
+/** { reference, motifs, background, foreground, verse: [n, text], picture } for a chapter's verses. */
 export function planPage(reference, verses, maxMotifs = 5) {
-  const counts = motifCounts(verses.map(([, t]) => t).join(' '));
+  const text = verses.map(([, t]) => t).join(' ');
+  const counts = motifCounts(text);
   const order = Object.keys(MOTIF_WORDS);
   let motifs = Object.keys(counts).sort((a, b) => counts[b] - counts[a] || order.indexOf(a) - order.indexOf(b)).slice(0, maxMotifs);
   if (!motifs.length) motifs = ['sun', 'mountains', 'tree', 'flowers'];
   if (!motifs.some((m) => !BACKGROUND.has(m))) motifs.push('tree');       // always something in front to color
   if (!motifs.some((m) => BACKGROUND.has(m))) motifs.unshift('mountains');
+  const picture = choosePicture(text);                                    // one of the drawings, if it's named
   return {
     reference, motifs,
     background: motifs.filter((m) => BACKGROUND.has(m)),
     foreground: motifs.filter((m) => !BACKGROUND.has(m)),
-    verse: pickVerse(verses, motifs),
+    verse: (picture && pictureVerse(verses, picture)) || pickVerse(verses, motifs),
+    picture,
   };
 }

@@ -3,8 +3,12 @@ import { BIBLE, findBook, superBookLink } from './books.js';
 import { loadChapter } from './text.js';
 import { planPage } from './scenes.js';
 import { drawPage } from './art.js';
+import { CATALOG, findPicture, loadPicture, pictureVerse } from './picture.js';
+
+const KINDS = [['animals', 'Animals'], ['places', 'Places'], ['people', 'People']];
 
 const NEW_TESTAMENT = BIBLE.findIndex((b) => b.id === 'Matthew');
+const BOOKLET_PAGES = 20;                  // the most chapters one booklet prints
 
 // The chapter to start on: ?book=Psalms&chapter=23 (the same links SuperBook uses), else Psalm 23.
 function startingChapter() {
@@ -32,20 +36,42 @@ export default function App() {
   }, [pick.book, pick.chapter]);
 
   const ch = state.chapter;
-  const plan = useMemo(() => (ch ? planPage(ch.reference, ch.verses) : null), [ch]);
-  const svg = useMemo(() => (plan ? drawPage(plan) : ''), [plan]);
+  const auto = useMemo(() => (ch ? planPage(ch.reference, ch.verses) : null), [ch]);
+  // Picture: 'auto' (the drawing the chapter names, if any), 'none' (drawn in code), or a picture's id.
+  const [choice, setChoice] = useState('auto');
+  useEffect(() => setChoice('auto'), [pick.book, pick.chapter]);
+  const plan = useMemo(() => {
+    if (!auto || choice === 'auto') return auto;
+    if (choice === 'none') return { ...auto, picture: null };
+    return { ...auto, picture: choice, verse: pictureVerse(ch.verses, choice) ?? auto.verse };
+  }, [auto, choice, ch]);
+  const [outlines, setOutlines] = useState({ id: null, d: null, error: '' });
+  useEffect(() => {
+    if (!plan?.picture) return;
+    let live = true;
+    loadPicture(plan.picture)
+      .then((d) => live && setOutlines({ id: plan.picture, d, error: '' }))
+      .catch((err) => live && setOutlines({ id: plan.picture, d: null, error: err.message }));
+    return () => { live = false; };
+  }, [plan?.picture]);
+  const ready = plan?.picture && outlines.id === plan.picture ? outlines.d : null;
+  const svg = useMemo(() => (plan ? drawPage(plan, plan.reference, ready) : ''), [plan, ready]);
   const fileName = plan ? `${plan.reference.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}.svg` : 'page.svg';
   const [booklet, setBooklet] = useState({ to: 0, pages: [], status: '' });
-  const bookletTo = Math.min(book.chapters, Math.max(pick.chapter, booklet.to || pick.chapter + 4));
+  const bookletTo = Math.min(book.chapters, pick.chapter + BOOKLET_PAGES - 1, Math.max(pick.chapter, booklet.to || pick.chapter + BOOKLET_PAGES - 1));
 
   // A booklet: this chapter and the ones after it, one page each, printed together (or saved as one PDF).
   async function printBooklet() {
+    const total = bookletTo - pick.chapter + 1;
     setBooklet((b) => ({ ...b, status: 'Getting the chapters ready…', pages: [] }));
     const pages = [];
     try {
       for (let n = pick.chapter; n <= bookletTo; n++) {
+        setBooklet((b) => ({ ...b, status: `Getting chapter ${n - pick.chapter + 1} of ${total}…${total > 15 ? ' (a long booklet takes up to a minute)' : ''}` }));
         const c = await loadChapter(pick.book, n);
-        pages.push({ key: c.reference, svg: drawPage(planPage(c.reference, c.verses)) });
+        const p = planPage(c.reference, c.verses);
+        const d = p.picture ? await loadPicture(p.picture).catch(() => null) : null;
+        pages.push({ key: c.reference, svg: drawPage(p, p.reference, d) });
       }
     } catch (err) {
       return setBooklet((b) => ({ ...b, status: err.message }));
@@ -87,6 +113,17 @@ export default function App() {
               {Array.from({ length: book.chapters }, (_, i) => <option key={i + 1} value={i + 1}>{i + 1}</option>)}
             </select>
           </label>
+          <label>Picture
+            <select value={choice} onChange={(e) => setChoice(e.target.value)}>
+              <option value="auto">Automatic{auto ? ` (${auto.picture ? findPicture(auto.picture).label : 'drawn in code'})` : ''}</option>
+              <option value="none">Drawn in code</option>
+              {KINDS.map(([kind, name]) => (
+                <optgroup key={kind} label={name}>
+                  {CATALOG.filter((c) => c.id.startsWith(`${kind}/`)).map((c) => <option key={c.id} value={c.id}>{c.label}</option>)}
+                </optgroup>
+              ))}
+            </select>
+          </label>
           <div className="buttons">
             <button className="primary" disabled={!svg} onClick={() => print()}>Print or save as PDF</button>
             <button disabled={!svg} onClick={download}>Download SVG</button>
@@ -96,7 +133,7 @@ export default function App() {
             <legend>Booklet</legend>
             <label>{book.label} {pick.chapter} to
               <select value={bookletTo} onChange={(e) => setBooklet((b) => ({ ...b, to: Number(e.target.value) }))}>
-                {Array.from({ length: Math.min(book.chapters - pick.chapter + 1, 10) }, (_, i) => pick.chapter + i).map((n) => <option key={n} value={n}>{n}</option>)}
+                {Array.from({ length: Math.min(book.chapters - pick.chapter + 1, BOOKLET_PAGES) }, (_, i) => pick.chapter + i).map((n) => <option key={n} value={n}>{n}</option>)}
               </select>
             </label>
             <button onClick={printBooklet}>Print booklet ({bookletTo - pick.chapter + 1} page{bookletTo === pick.chapter ? '' : 's'})</button>
@@ -107,11 +144,13 @@ export default function App() {
             {state.status === 'error' && <p className="error">{state.message}</p>}
             {plan && state.status === 'ready' && (
               <dl className="plan">
-                <dt>Behind</dt><dd>{plan.background.join(', ')}</dd>
-                <dt>In front</dt><dd>{plan.foreground.slice(0, 3).join(', ')}</dd>
+                {plan.picture ? <><dt>Picture</dt><dd>{findPicture(plan.picture).label}</dd></> : <>
+                  <dt>Behind</dt><dd>{plan.background.join(', ')}</dd>
+                  <dt>In front</dt><dd>{plan.foreground.slice(0, 3).join(', ')}</dd></>}
                 <dt>Verse {plan.verse[0]}</dt><dd>{plan.verse[1]}</dd>
               </dl>
             )}
+            {plan?.picture && outlines.id === plan.picture && outlines.error && <p className="error">{outlines.error}, so this page is drawn in code.</p>}
             {ch?.bundled && <p className="muted">The text service couldn't be reached, so this uses the copy of {ch.reference} that comes with Colors of Eden{ch.reference === 'Genesis 1' ? ' (its first five verses)' : ''}.</p>}
           </div>
         </section>
@@ -123,7 +162,7 @@ export default function App() {
         </section>
       </main>
       <footer className="no-print">
-        <p>Text: World English Bible (public domain), from <a href="https://bible-api.com/">bible-api.com</a>, in the books and order of the Eastern Orthodox Bible as <a href="https://theoyanvno.github.io/SuperBook/">SuperBook</a> has them. Every drawing is original, made in code.</p>
+        <p>Text: World English Bible (public domain), from <a href="https://bible-api.com/">bible-api.com</a>, in the books and order of the Eastern Orthodox Bible as <a href="https://theoyanvno.github.io/SuperBook/">SuperBook</a> has them. Pages are drawn in code, or use one of 60 drawings of animals, places and people of the Middle East, traced into clean line art.</p>
       </footer>
     </>
   );
