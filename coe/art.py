@@ -13,6 +13,7 @@ import re
 import random
 from xml.sax.saxutils import escape
 
+from .picture import find as find_picture, path_data
 from .scenes import Plan
 
 W, H = 850, 1100
@@ -345,8 +346,8 @@ def wrap(text: str, width: int = 50) -> list[str]:
     return lines + ([cur] if cur else [])
 
 
-def frame() -> str:
-    x, y, w, h = PIC
+def frame(box: tuple[float, float, float, float] = PIC) -> str:
+    x, y, w, h = box
     curls = "".join(line(f"M{f(cx)} {f(cy)} q {f(dx*26)} {f(dy*4)} {f(dx*30)} {f(dy*30)} "
                          f"q {f(-dx*12)} {f(-dy*4)} {f(-dx*16)} {f(-dy*16)}", 3)
                     for cx, cy, dx, dy in ((x + 16, y + 16, 1, 1), (x + w - 16, y + 16, -1, 1),
@@ -365,8 +366,54 @@ def ribbon(top: float, height: float) -> str:
     return left + right + body
 
 
+def verse_text(plan: Plan, top: float) -> list[str]:
+    """The verse on its ribbon, starting at top, and the reference under it."""
+    number, verse = plan.verse
+    lines = wrap(verse)[:4]
+    row = 36
+    band = 28 + len(lines) * row
+    parts = [ribbon(top, band)]
+    for k, text_line in enumerate(lines):
+        parts.append(f'<text x="{W // 2}" y="{f(top + 40 + k * row)}" text-anchor="middle" font-family="Georgia, serif" '
+                     f'font-size="27" fill="{INK}">{escape(text_line)}</text>')
+    parts.append(f'<text x="{W // 2}" y="{f(top + band + 64)}" text-anchor="middle" font-family="Georgia, serif" font-size="24" '
+                 f'font-style="italic" fill="{INK}">{escape(plan.reference)}:{number} (WEB)</text>')
+    return parts
+
+
+def svg_page(plan: Plan, parts: list[str]) -> str:
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" width="8.5in" height="11in" viewBox="0 0 {W} {H}" '
+            f'role="img" aria-label="Coloring page for {escape(plan.reference)}">'
+            f'<title>Colors of Eden: {escape(plan.reference)}</title><rect width="{W}" height="{H}" fill="#fff"/>'
+            + "".join(parts) + "</svg>")
+
+
+INSIDE = 18                         # space between a picture and its frame
+
+
+def picture_layout(width: float, height: float, verse_lines: int) -> tuple[float, float, float, float]:
+    """Where a picture page puts its frame (x, y, w, h): full width, as tall as the picture needs, and the
+    frame and verse together centred on the page."""
+    w = PIC[2]
+    h = (w - 2 * INSIDE) * height / width + 2 * INSIDE
+    total = h + 60 + 28 + verse_lines * 36 + 64
+    return PIC[0], max(30.0, (H - total) / 2), w, h
+
+
+def draw_picture_page(plan: Plan) -> str:
+    """A page that is one of the drawings in coe/pictures, in a frame, with the verse underneath."""
+    pic = find_picture(plan.picture)
+    x, y, w, h = picture_layout(pic["width"], pic["height"], len(wrap(plan.verse[1])[:4]))
+    k = (w - 2 * INSIDE) / pic["width"]
+    parts = [f'<g transform="translate({f(x + INSIDE)} {f(y + INSIDE)}) scale({k:.4f})">'
+             f'<path d="{path_data(plan.picture)}" fill="{INK}" fill-rule="evenodd"/></g>', frame((x, y, w, h))]
+    return svg_page(plan, parts + verse_text(plan, y + h + 60))
+
+
 def draw_page(plan: Plan, seed: str | None = None) -> str:
     """The whole coloring page as an SVG string."""
+    if plan.picture:
+        return draw_picture_page(plan)
     rng = random.Random(seed or plan.reference)
     x, y, w, h = PIC
     parts = [f'<clipPath id="pic"><rect x="{x}" y="{y}" width="{w}" height="{h}" rx="22"/></clipPath><g clip-path="url(#pic)">']
@@ -393,17 +440,4 @@ def draw_page(plan: Plan, seed: str | None = None) -> str:
         cx += width * scale + gap
     parts.append("</g>")
     parts.append(frame())
-    number, verse = plan.verse
-    lines = wrap(verse)[:4]
-    top, row = 836, 36
-    band = 28 + len(lines) * row
-    parts.append(ribbon(top, band))
-    for k, text_line in enumerate(lines):
-        parts.append(f'<text x="{W / 2}" y="{top + 40 + k * row}" text-anchor="middle" font-family="Georgia, serif" '
-                     f'font-size="27" fill="{INK}">{escape(text_line)}</text>')
-    parts.append(f'<text x="{W / 2}" y="{top + band + 64}" text-anchor="middle" font-family="Georgia, serif" font-size="24" '
-                 f'font-style="italic" fill="{INK}">{escape(plan.reference)}:{number} (WEB)</text>')
-    return (f'<svg xmlns="http://www.w3.org/2000/svg" width="8.5in" height="11in" viewBox="0 0 {W} {H}" '
-            f'role="img" aria-label="Coloring page for {escape(plan.reference)}">'
-            f'<title>Colors of Eden: {escape(plan.reference)}</title><rect width="{W}" height="{H}" fill="#fff"/>'
-            + "".join(parts) + "</svg>")
+    return svg_page(plan, parts + verse_text(plan, 836))

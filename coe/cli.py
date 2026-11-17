@@ -1,12 +1,15 @@
-"""`python -m coe plan Psalms 23` prints what the coloring page for a chapter will show."""
+"""`python -m coe plan Psalms 23` prints what the coloring page for a chapter will show; `page` draws it;
+`pictures` lists the 60 drawings a page can use."""
 from __future__ import annotations
 
 import argparse
 import sys
+from dataclasses import replace
 
 from .books import BadReference
 from .art import draw_page
-from .scenes import plan_page
+from .picture import catalog, find as find_picture
+from .scenes import picture_verse, plan_page
 from pathlib import Path
 from .text import load_chapter
 
@@ -21,13 +24,30 @@ def main(argv: list[str] | None = None) -> int:
     g.add_argument("book", nargs="+", help='book name, e.g. Genesis or "1 John"')
     g.add_argument("chapter", type=int)
     g.add_argument("--out", default="out", help="folder for the page (default: out)")
+    for cmd in (p, g):
+        cmd.add_argument("--picture", help='use this drawing (e.g. animals/lion), or "none" for the page drawn in code')
+    sub.add_parser("pictures", help="list the drawings a page can use and the words that choose them")
     args = parser.parse_args(argv)
+    if args.cmd == "pictures":
+        for pic in catalog():
+            print(f"{pic['id']:<28} {pic['label']:<30} {', '.join(pic['words']) or '(choose it with --picture)'}")
+        return 0
+    if args.picture and args.picture != "none":
+        try:
+            find_picture(args.picture)
+        except KeyError as e:
+            print(e.args[0], file=sys.stderr)
+            return 1
     try:
         chapter = load_chapter(" ".join(args.book), args.chapter)
     except (BadReference, ConnectionError) as e:
         print(e, file=sys.stderr)
         return 1
     plan = plan_page(chapter)
+    if args.picture == "none":
+        plan = replace(plan, picture=None)
+    elif args.picture:
+        plan = replace(plan, picture=args.picture, verse=picture_verse(chapter, args.picture) or plan.verse)
     if args.cmd == "page":
         out = Path(args.out)
         out.mkdir(parents=True, exist_ok=True)
@@ -36,8 +56,11 @@ def main(argv: list[str] | None = None) -> int:
         print(f"Saved {path} (print it at 100% on US Letter paper)")
         return 0
     print(f"{plan.reference} ({chapter.translation})")
-    print(f"Background: {', '.join(plan.background) or '-'}")
-    print(f"In front:   {', '.join(plan.foreground) or '-'}")
+    if plan.picture:
+        print(f"Picture:    {find_picture(plan.picture)['label']} ({plan.picture})")
+    else:
+        print(f"Background: {', '.join(plan.background) or '-'}")
+        print(f"In front:   {', '.join(plan.foreground) or '-'}")
     print(f"Verse {plan.verse[0]}: {plan.verse[1]}")
     return 0
 

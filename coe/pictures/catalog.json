@@ -1,0 +1,702 @@
+[
+ {
+  "id": "animals/lion",
+  "label": "Lion",
+  "width": 211,
+  "height": 154,
+  "words": [
+   "lion",
+   "lions",
+   "lioness",
+   "lionesses"
+  ]
+ },
+ {
+  "id": "animals/arabian-oryx",
+  "label": "Arabian Oryx",
+  "width": 210,
+  "height": 154,
+  "words": [
+   "oryx",
+   "antelope",
+   "antelopes"
+  ]
+ },
+ {
+  "id": "animals/camel",
+  "label": "Camel",
+  "width": 211,
+  "height": 154,
+  "words": [
+   "camel",
+   "camels"
+  ]
+ },
+ {
+  "id": "animals/bull",
+  "label": "Bull",
+  "width": 213,
+  "height": 154,
+  "words": [
+   "bull",
+   "bulls",
+   "bullock",
+   "bullocks",
+   "ox",
+   "oxen",
+   "calf",
+   "calves",
+   "heifer"
+  ]
+ },
+ {
+  "id": "animals/goat",
+  "label": "Goat",
+  "width": 208,
+  "height": 154,
+  "words": [
+   "goat",
+   "goats"
+  ]
+ },
+ {
+  "id": "animals/sheep",
+  "label": "Sheep",
+  "width": 211,
+  "height": 145,
+  "words": [
+   "sheep",
+   "lamb",
+   "lambs",
+   "ewe",
+   "ewes",
+   "ram",
+   "rams",
+   "flock",
+   "flocks"
+  ]
+ },
+ {
+  "id": "animals/leopard",
+  "label": "Leopard",
+  "width": 210,
+  "height": 145,
+  "words": [
+   "leopard",
+   "leopards"
+  ]
+ },
+ {
+  "id": "animals/snake",
+  "label": "Snake",
+  "width": 210,
+  "height": 145,
+  "words": [
+   "serpent",
+   "serpents",
+   "snake",
+   "snakes",
+   "viper",
+   "vipers",
+   "adder",
+   "adders",
+   "asp"
+  ]
+ },
+ {
+  "id": "animals/crocodile",
+  "label": "Crocodile",
+  "width": 214,
+  "height": 145,
+  "words": [
+   "crocodile",
+   "crocodiles",
+   "leviathan"
+  ]
+ },
+ {
+  "id": "animals/scorpion",
+  "label": "Scorpion",
+  "width": 207,
+  "height": 145,
+  "words": [
+   "scorpion",
+   "scorpions"
+  ]
+ },
+ {
+  "id": "animals/fish",
+  "label": "Fish",
+  "width": 213,
+  "height": 138,
+  "words": [
+   "fish",
+   "fishes",
+   "fishermen",
+   "fishers"
+  ]
+ },
+ {
+  "id": "animals/shark",
+  "label": "Shark",
+  "width": 210,
+  "height": 138,
+  "words": [
+   "shark",
+   "sharks"
+  ]
+ },
+ {
+  "id": "animals/sea-turtle",
+  "label": "Sea Turtle",
+  "width": 210,
+  "height": 138,
+  "words": [
+   "tortoise",
+   "tortoises"
+  ]
+ },
+ {
+  "id": "animals/dolphin",
+  "label": "Dolphin",
+  "width": 214,
+  "height": 138,
+  "words": [
+   "dolphin",
+   "dolphins",
+   "porpoise"
+  ]
+ },
+ {
+  "id": "animals/ray",
+  "label": "Ray",
+  "width": 206,
+  "height": 138,
+  "words": []
+ },
+ {
+  "id": "animals/fennec-fox",
+  "label": "Fennec Fox",
+  "width": 213,
+  "height": 159,
+  "words": [
+   "fox",
+   "foxes",
+   "jackal",
+   "jackals"
+  ]
+ },
+ {
+  "id": "animals/desert-hare",
+  "label": "Desert Hare",
+  "width": 210,
+  "height": 159,
+  "words": [
+   "hare",
+   "hares",
+   "rabbit",
+   "rabbits"
+  ]
+ },
+ {
+  "id": "animals/hyrax",
+  "label": "Hyrax",
+  "width": 210,
+  "height": 159,
+  "words": [
+   "hyrax",
+   "hyraxes",
+   "coney",
+   "conies"
+  ]
+ },
+ {
+  "id": "animals/ibex",
+  "label": "Ibex",
+  "width": 214,
+  "height": 159,
+  "words": [
+   "ibex",
+   "ibexes"
+  ]
+ },
+ {
+  "id": "animals/gazelle",
+  "label": "Gazelle",
+  "width": 206,
+  "height": 159,
+  "words": [
+   "gazelle",
+   "gazelles",
+   "deer",
+   "roe",
+   "doe",
+   "hart",
+   "harts",
+   "hind",
+   "hinds"
+  ]
+ },
+ {
+  "id": "places/pyramids",
+  "label": "The Pyramids",
+  "width": 217,
+  "height": 150,
+  "words": [
+   "egypt",
+   "pyramid",
+   "pyramids"
+  ]
+ },
+ {
+  "id": "places/sea-of-galilee",
+  "label": "The Sea of Galilee",
+  "width": 209,
+  "height": 150,
+  "words": [
+   "galilee",
+   "gennesaret",
+   "tiberias",
+   "capernaum"
+  ]
+ },
+ {
+  "id": "places/dead-sea",
+  "label": "The Dead Sea",
+  "width": 210,
+  "height": 150,
+  "words": [
+   "sodom",
+   "gomorrah",
+   "zoar"
+  ]
+ },
+ {
+  "id": "places/nile-river",
+  "label": "The Nile River",
+  "width": 213,
+  "height": 150,
+  "words": [
+   "nile"
+  ]
+ },
+ {
+  "id": "places/desert",
+  "label": "The Desert",
+  "width": 213,
+  "height": 150,
+  "words": [
+   "wilderness",
+   "desert",
+   "deserts"
+  ]
+ },
+ {
+  "id": "places/egyptian-slave-homes",
+  "label": "Ancient Egyptian Slave Homes",
+  "width": 217,
+  "height": 151,
+  "words": [
+   "brick",
+   "bricks",
+   "taskmasters",
+   "bondage",
+   "straw"
+  ]
+ },
+ {
+  "id": "places/babylonian-palace",
+  "label": "Babylonian Palace",
+  "width": 208,
+  "height": 151,
+  "words": [
+   "babylon",
+   "babylonians",
+   "chaldeans",
+   "chaldean",
+   "nebuchadnezzar",
+   "belshazzar"
+  ]
+ },
+ {
+  "id": "places/hebrew-tents",
+  "label": "Hebrew Tents",
+  "width": 210,
+  "height": 151,
+  "words": [
+   "tent",
+   "tents"
+  ]
+ },
+ {
+  "id": "places/temple",
+  "label": "Temple",
+  "width": 213,
+  "height": 151,
+  "words": [
+   "temple",
+   "sanctuary"
+  ]
+ },
+ {
+  "id": "places/farm",
+  "label": "Farm",
+  "width": 212,
+  "height": 151,
+  "words": [
+   "harvest",
+   "reap",
+   "reaped",
+   "reapers",
+   "vineyard",
+   "vineyards",
+   "sow",
+   "sowed",
+   "sower",
+   "plow",
+   "threshing"
+  ]
+ },
+ {
+  "id": "places/forest",
+  "label": "Forest",
+  "width": 217,
+  "height": 148,
+  "words": [
+   "forest",
+   "forests",
+   "woods",
+   "cedar",
+   "cedars"
+  ]
+ },
+ {
+  "id": "places/mountains",
+  "label": "Mountains",
+  "width": 209,
+  "height": 148,
+  "words": [
+   "mountain",
+   "mountains",
+   "mount",
+   "sinai",
+   "horeb",
+   "zion"
+  ]
+ },
+ {
+  "id": "places/garden",
+  "label": "Garden",
+  "width": 210,
+  "height": 148,
+  "words": [
+   "garden",
+   "gardens",
+   "eden",
+   "gethsemane"
+  ]
+ },
+ {
+  "id": "places/oasis",
+  "label": "Oasis",
+  "width": 213,
+  "height": 148,
+  "words": [
+   "springs",
+   "fountain",
+   "fountains",
+   "palm",
+   "palms",
+   "elim",
+   "oasis"
+  ]
+ },
+ {
+  "id": "places/rocky-canyon",
+  "label": "Rocky Canyon",
+  "width": 211,
+  "height": 148,
+  "words": [
+   "rock",
+   "rocks",
+   "cave",
+   "caves",
+   "cleft"
+  ]
+ },
+ {
+  "id": "places/coastal-shore",
+  "label": "Coastal Shore",
+  "width": 217,
+  "height": 163,
+  "words": [
+   "shore",
+   "seashore",
+   "coast",
+   "coasts",
+   "beach"
+  ]
+ },
+ {
+  "id": "places/ancient-ruins",
+  "label": "Ancient Ruins",
+  "width": 208,
+  "height": 163,
+  "words": [
+   "ruins",
+   "ruin",
+   "desolate",
+   "desolation"
+  ]
+ },
+ {
+  "id": "places/desert-wadi",
+  "label": "Desert Wadi",
+  "width": 209,
+  "height": 163,
+  "words": [
+   "brook",
+   "brooks",
+   "ravine"
+  ]
+ },
+ {
+  "id": "places/caravan-route",
+  "label": "Caravan Route",
+  "width": 213,
+  "height": 163,
+  "words": [
+   "caravan",
+   "caravans",
+   "ishmaelites",
+   "spices"
+  ]
+ },
+ {
+  "id": "places/village",
+  "label": "Traditional Village",
+  "width": 211,
+  "height": 163,
+  "words": [
+   "village",
+   "villages",
+   "town",
+   "towns"
+  ]
+ },
+ {
+  "id": "people/hebrew-man",
+  "label": "Hebrew Man",
+  "width": 211,
+  "height": 161,
+  "words": [
+   "hebrew",
+   "hebrews",
+   "abraham",
+   "isaac",
+   "jacob",
+   "moses",
+   "joshua",
+   "elijah",
+   "elisha"
+  ]
+ },
+ {
+  "id": "people/hebrew-woman",
+  "label": "Hebrew Woman",
+  "width": 214,
+  "height": 161,
+  "words": [
+   "sarah",
+   "rebekah",
+   "rachel",
+   "leah",
+   "ruth",
+   "naomi",
+   "miriam",
+   "hannah",
+   "deborah"
+  ]
+ },
+ {
+  "id": "people/hebrew-child",
+  "label": "Hebrew Child",
+  "width": 213,
+  "height": 161,
+  "words": [
+   "child",
+   "boy",
+   "lad",
+   "infant",
+   "babe"
+  ]
+ },
+ {
+  "id": "people/egyptian-man",
+  "label": "Egyptian Man",
+  "width": 215,
+  "height": 161,
+  "words": [
+   "pharaoh",
+   "pharaohs"
+  ]
+ },
+ {
+  "id": "people/egyptian-woman",
+  "label": "Egyptian Woman",
+  "width": 211,
+  "height": 161,
+  "words": [
+   "hagar"
+  ]
+ },
+ {
+  "id": "people/egyptian-child",
+  "label": "Egyptian Child",
+  "width": 211,
+  "height": 154,
+  "words": []
+ },
+ {
+  "id": "people/babylonian-man",
+  "label": "Babylonian Man",
+  "width": 215,
+  "height": 154,
+  "words": []
+ },
+ {
+  "id": "people/babylonian-woman",
+  "label": "Babylonian Woman",
+  "width": 213,
+  "height": 154,
+  "words": []
+ },
+ {
+  "id": "people/babylonian-child",
+  "label": "Babylonian Child",
+  "width": 214,
+  "height": 154,
+  "words": []
+ },
+ {
+  "id": "people/roman-man",
+  "label": "Roman Man",
+  "width": 211,
+  "height": 154,
+  "words": [
+   "centurion",
+   "centurions",
+   "soldier",
+   "soldiers",
+   "caesar",
+   "pilate",
+   "roman",
+   "romans"
+  ]
+ },
+ {
+  "id": "people/roman-woman",
+  "label": "Roman Woman",
+  "width": 212,
+  "height": 154,
+  "words": []
+ },
+ {
+  "id": "people/roman-child",
+  "label": "Roman Child",
+  "width": 215,
+  "height": 154,
+  "words": []
+ },
+ {
+  "id": "people/merchant",
+  "label": "Merchant",
+  "width": 212,
+  "height": 154,
+  "words": [
+   "merchant",
+   "merchants",
+   "trade",
+   "traders"
+  ]
+ },
+ {
+  "id": "people/farmer",
+  "label": "Farmer",
+  "width": 215,
+  "height": 154,
+  "words": [
+   "farmer",
+   "farmers",
+   "husbandman",
+   "husbandmen",
+   "vinedresser",
+   "vinedressers",
+   "plowman"
+  ]
+ },
+ {
+  "id": "people/shepherd",
+  "label": "Shepherd",
+  "width": 211,
+  "height": 154,
+  "words": [
+   "shepherd",
+   "shepherds",
+   "herdsman",
+   "herdsmen"
+  ]
+ },
+ {
+  "id": "people/desert-nomad",
+  "label": "Desert Nomad",
+  "width": 212,
+  "height": 157,
+  "words": [
+   "nomad",
+   "nomads"
+  ]
+ },
+ {
+  "id": "people/bedouin-woman",
+  "label": "Bedouin Woman",
+  "width": 216,
+  "height": 157,
+  "words": []
+ },
+ {
+  "id": "people/bedouin-child",
+  "label": "Bedouin Child",
+  "width": 211,
+  "height": 157,
+  "words": []
+ },
+ {
+  "id": "people/royal-persian",
+  "label": "Royal Persian",
+  "width": 215,
+  "height": 157,
+  "words": [
+   "ahasuerus",
+   "xerxes",
+   "cyrus",
+   "darius",
+   "persia",
+   "persians",
+   "medes"
+  ]
+ },
+ {
+  "id": "people/priest",
+  "label": "Priest",
+  "width": 210,
+  "height": 157,
+  "words": [
+   "priest",
+   "priests",
+   "levite",
+   "levites",
+   "aaron"
+  ]
+ }
+]
