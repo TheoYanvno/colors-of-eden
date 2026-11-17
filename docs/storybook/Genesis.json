@@ -1,0 +1,117 @@
+{
+  "book": "Genesis",
+  "cover": "places/garden",
+  "about": "Genesis means \"the beginning.\" It tells how God made the world and chose a family to bless.",
+  "pages": [
+    {
+      "title": "God Makes the World",
+      "chapter": 1,
+      "to": 2,
+      "picture": "places/garden",
+      "scene": "God making the world: sun, moon, stars, land, sea, plants and animals",
+      "text": "In the beginning, God made everything. He said, \"Let there be light!\" and there was light. He made the sky, the sea and the land. He made the sun, moon and stars. He made fish, birds and animals. Then God made people. God looked at it all. It was very good!",
+      "lesson": "God made everything, and He made you too."
+    },
+    {
+      "title": "A Sad Choice in the Garden",
+      "chapter": 3,
+      "picture": "animals/snake",
+      "scene": "Adam and Eve in the garden with the snake in the tree",
+      "text": "God gave Adam and Eve a beautiful garden. He told them not to eat from one tree. But a sneaky snake tricked Eve. She ate the fruit, and Adam ate it too. They had to leave the garden. But God still loved them, and He promised to help them.",
+      "lesson": "Listen to God, because He knows what is best."
+    },
+    {
+      "title": "Noah and the Big Boat",
+      "chapter": 6,
+      "to": 9,
+      "picture": "places/mountains",
+      "scene": "Noah's ark on the water with animals and a rainbow",
+      "text": "Noah loved God. God told him, \"Build a big boat.\" Noah obeyed. Two of every animal came inside. Then it rained and rained for forty days! The water covered the earth, but everyone in the boat was safe. The boat stopped on a mountain. God put a rainbow in the sky as a promise.",
+      "lesson": "Obey God, and trust Him to keep you safe."
+    },
+    {
+      "title": "The Tall Tower",
+      "chapter": 11,
+      "picture": "places/ancient-ruins",
+      "scene": "People building the tall Tower of Babel",
+      "text": "People wanted to build a tower up to the sky. They wanted everyone to think they were great. So God mixed up their words. Now no one could understand each other! They had to stop building. The people moved all over the world.",
+      "lesson": "Don't be proud. Put God first."
+    },
+    {
+      "title": "Abram Leaves Home",
+      "chapter": 12,
+      "picture": "places/caravan-route",
+      "scene": "Abram and his family traveling with tents and animals",
+      "text": "God told Abram, \"Leave your home. Go to a new land I will show you. I will bless you.\" Abram did not know where he was going. But he trusted God. He packed his tents and animals and started the long trip.",
+      "lesson": "Trust God, even when you don't know the way."
+    },
+    {
+      "title": "Count the Stars",
+      "chapter": 15,
+      "picture": "places/hebrew-tents",
+      "scene": "Abram outside his tent looking up at a sky full of stars",
+      "text": "Abram had no children, and he was very old. One night God said, \"Look at the stars. Can you count them? Your family will be like the stars!\" Abram believed God. God gave him a new name, Abraham, which means \"father of many.\"",
+      "lesson": "God always keeps His promises."
+    },
+    {
+      "title": "Sarah Laughs",
+      "chapter": 18,
+      "to": 21,
+      "picture": "people/bedouin-woman",
+      "scene": "Sarah laughing in the tent doorway with baby Isaac",
+      "text": "Abraham's wife Sarah was ninety years old. God said, \"Next year Sarah will have a baby boy.\" Sarah laughed. She thought she was too old! But nothing is too hard for God. Sarah had a baby. They named him Isaac, which means \"he laughs.\"",
+      "lesson": "Nothing is too hard for God."
+    },
+    {
+      "title": "A Wife for Isaac",
+      "chapter": 24,
+      "picture": "animals/camel",
+      "scene": "Rebekah giving water to camels at a well",
+      "text": "Abraham sent his helper to find a wife for Isaac. The helper went far away with ten camels. At a well he prayed for God to show him the right girl. A kind girl named Rebekah came. She gave water to him and to all ten camels! Rebekah went home to marry Isaac.",
+      "lesson": "Be kind and helpful, and pray about everything."
+    },
+    {
+      "title": "Twin Brothers",
+      "chapter": 25,
+      "to": 27,
+      "picture": "animals/goat",
+      "scene": "Jacob with goat skins on his arms kneeling by old Isaac",
+      "text": "Isaac had twin boys, Esau and Jacob. Esau was hairy. Jacob was not. When Isaac was old and could not see, Jacob put goat skins on his arms. He tricked his dad into giving him Esau's blessing. Esau was very angry, so Jacob ran away.",
+      "lesson": "Always tell the truth."
+    },
+    {
+      "title": "Jacob's Dream",
+      "chapter": 28,
+      "picture": "places/rocky-canyon",
+      "scene": "Jacob asleep on a rock, dreaming of a stairway with angels",
+      "text": "Jacob slept outside with a rock for a pillow. He dreamed of stairs going up to heaven, with angels on them. God said, \"I am with you. I will take care of you wherever you go.\" Jacob woke up and said, \"God is here!\"",
+      "lesson": "God is always with you, wherever you go."
+    },
+    {
+      "title": "Joseph's Special Coat",
+      "chapter": 37,
+      "picture": "people/shepherd",
+      "scene": "Joseph in his special coat with his jealous brothers",
+      "text": "Jacob had twelve sons. Joseph was his favorite. Jacob gave Joseph a special coat. Joseph's brothers were jealous. One day they took his coat and sold him to men going to Egypt. They told their dad that Joseph was gone. Jacob was very sad.",
+      "lesson": "Don't be jealous. Love your family."
+    },
+    {
+      "title": "Joseph in Egypt",
+      "chapter": 39,
+      "to": 41,
+      "picture": "places/pyramids",
+      "scene": "Joseph in Egypt explaining Pharaoh's dreams",
+      "text": "Joseph went to Egypt. Even when bad things happened, he did what was right. God was with him. The king of Egypt had strange dreams. God helped Joseph tell what they meant: \"Lots of food is coming, then no food.\" The king put Joseph in charge of saving food.",
+      "lesson": "Do what is right, even when it's hard."
+    },
+    {
+      "title": "Joseph Forgives His Brothers",
+      "chapter": 42,
+      "to": 50,
+      "picture": "places/farm",
+      "scene": "Joseph hugging his brothers in Egypt",
+      "text": "There was no food at home, so Joseph's brothers came to Egypt. They bowed to Joseph, but they did not know him. Joseph cried, \"I am your brother!\" He forgave them and hugged them. \"God made something good happen,\" he said. The whole family was together again.",
+      "lesson": "Forgive others, just as God forgives you."
+    }
+  ]
+}

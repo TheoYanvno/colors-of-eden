@@ -1,0 +1,15 @@
+{
+  "book": "Titus",
+  "cover": "people/roman-man",
+  "about": "Titus is Paul's letter to his helper Titus about living a good life because God is kind to us.",
+  "pages": [
+    {
+      "title": "God's Kindness",
+      "chapter": 3,
+      "picture": "people/roman-man",
+      "scene": "Titus helping people on the island of Crete",
+      "text": "Paul wrote, \"Be kind to everyone. Don't say mean things about others.\" Why? \"Because when God's kindness and love appeared, He saved us, not because of good things we did, but because of His mercy.\"",
+      "lesson": "Be kind, because God was kind to you."
+    }
+  ]
+}

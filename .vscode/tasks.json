@@ -11,16 +11,19 @@
     { "label": "Test: web page", "type": "shell", "command": "npm test", "group": "test", "problemMatcher": [] },
     { "label": "Test: Python", "type": "shell", "command": "python3 -m unittest", "windows": { "command": "python -m unittest" },
       "group": "test", "problemMatcher": [] },
-    { "label": "Draw a page (asks for the chapter)", "type": "shell",
-      "command": "python3 -m coe page ${input:book} ${input:chapter}",
-      "windows": { "command": "python -m coe page ${input:book} ${input:chapter}" }, "problemMatcher": [] },
+    { "label": "List the storybooks", "type": "shell", "command": "python3 -m coe books",
+      "windows": { "command": "python -m coe books" }, "problemMatcher": [] },
+    { "label": "Draw a storybook (asks for the book)", "type": "shell",
+      "command": "python3 -m coe book ${input:book}",
+      "windows": { "command": "python -m coe book ${input:book}" }, "problemMatcher": [] },
+    { "label": "Update the list of pictures needed", "type": "shell", "command": "python3 tools/pictures_needed.py",
+      "windows": { "command": "python tools/pictures_needed.py" }, "problemMatcher": [] },
     { "label": "List the 60 pictures", "type": "shell", "command": "python3 -m coe pictures",
       "windows": { "command": "python -m coe pictures" }, "problemMatcher": [] },
     { "label": "Re-trace the picture sheets", "type": "shell", "command": "python3 tools/trace_pictures.py",
       "windows": { "command": "python tools/trace_pictures.py" }, "problemMatcher": [] }
   ],
   "inputs": [
-    { "id": "book", "type": "promptString", "description": "Book (e.g. Daniel, Psalms, \"1 John\")", "default": "Psalms" },
-    { "id": "chapter", "type": "promptString", "description": "Chapter", "default": "23" }
+    { "id": "book", "type": "promptString", "description": "Book (e.g. Genesis, Tobit, \"1 John\")", "default": "Genesis" }
   ]
 }

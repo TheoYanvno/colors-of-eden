@@ -1,0 +1,16 @@
+{
+  "book": "3 Maccabees",
+  "cover": "animals/bull",
+  "about": "Third Maccabees tells how God protected His people in Egypt when a king wanted to harm them.",
+  "pages": [
+    {
+      "title": "God Protects His People",
+      "chapter": 5,
+      "to": 6,
+      "picture": "places/pyramids",
+      "scene": "Two shining angels stopping charging elephants",
+      "text": "A king in Egypt was angry with God's people. He planned to send wild elephants to hurt them. The people prayed together. An old priest named Eleazar prayed too. God sent two shining angels, and the elephants turned around!",
+      "lesson": "Pray together, and trust God to protect you."
+    }
+  ]
+}

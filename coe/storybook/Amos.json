@@ -1,0 +1,24 @@
+{
+  "book": "Amos",
+  "cover": "people/shepherd",
+  "about": "Amos was a shepherd whom God sent to tell people to be fair and kind to the poor.",
+  "pages": [
+    {
+      "title": "A Shepherd Speaks Up",
+      "chapter": 1,
+      "to": 7,
+      "picture": "people/shepherd",
+      "scene": "Amos with his sheep, looking toward the city",
+      "text": "Amos took care of sheep and fig trees. God sent him to talk to rich people who were unfair to the poor. Amos said, \"God sees how you treat people. Stop cheating! Help those who need it.\"",
+      "lesson": "God cares how we treat the poor."
+    },
+    {
+      "title": "Let Justice Flow",
+      "chapter": 5,
+      "picture": "places/desert-wadi",
+      "scene": "A river rolling through the land",
+      "text": "The people sang songs to God but were mean to others. Amos said God wants something more: \"Let fairness roll on like a river. Let doing right flow like a stream that never dries up.\"",
+      "lesson": "Be fair and do what's right."
+    }
+  ]
+}

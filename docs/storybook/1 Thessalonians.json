@@ -1,0 +1,16 @@
+{
+  "book": "1 Thessalonians",
+  "cover": "people/roman-man",
+  "about": "First Thessalonians is Paul's letter of encouragement about Jesus coming back.",
+  "pages": [
+    {
+      "title": "Pray Always",
+      "chapter": 4,
+      "to": 5,
+      "picture": "people/roman-woman",
+      "scene": "A family praying and giving thanks together",
+      "text": "Paul told his friends, \"Jesus will come back one day! So encourage each other. Be joyful always. Pray all the time. Thank God in every situation.\"",
+      "lesson": "Be joyful, pray and give thanks always."
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "book": "1 Timothy",
+  "cover": "people/roman-man",
+  "about": "First Timothy is Paul's letter to his young helper Timothy about leading God's church.",
+  "pages": [
+    {
+      "title": "Be an Example",
+      "chapter": 4,
+      "picture": "people/roman-child",
+      "scene": "A young person helping an older one",
+      "text": "Timothy was young. Paul told him, \"Don't let anyone think less of you because you are young. Be an example in what you say, how you live, how you love, your faith and your purity.\"",
+      "lesson": "Young people can be good examples."
+    }
+  ]
+}

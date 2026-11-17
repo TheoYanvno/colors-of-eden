@@ -1,0 +1,25 @@
+{
+  "book": "1 Esdras",
+  "cover": "places/temple",
+  "about": "First Esdras tells how God's people came home and rebuilt the temple, and how a young man named Zerubbabel praised the truth.",
+  "pages": [
+    {
+      "title": "What Is Strongest?",
+      "chapter": 3,
+      "to": 4,
+      "picture": "people/royal-persian",
+      "scene": "Three young guards talking before King Darius",
+      "text": "Three young guards of King Darius had a contest: what is the strongest thing? One said wine. One said the king. Young Zerubbabel said, \"Truth is strongest of all!\" Everyone cheered. The king let him go home to rebuild God's city.",
+      "lesson": "Truth is stronger than anything."
+    },
+    {
+      "title": "Building Again",
+      "chapter": 5,
+      "to": 7,
+      "picture": "places/temple",
+      "scene": "People cheering at the new temple foundation",
+      "text": "God's people went home to Jerusalem. They laid the new temple's foundation. The priests blew trumpets, and everyone sang, \"God is good! His love lasts forever!\" Some shouted for joy and some cried happy tears.",
+      "lesson": "Praise God for new beginnings."
+    }
+  ]
+}

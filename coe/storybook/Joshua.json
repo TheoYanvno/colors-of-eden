@@ -1,0 +1,40 @@
+{
+  "book": "Joshua",
+  "cover": "places/ancient-ruins",
+  "about": "Joshua tells how God brought His people into the land He had promised them.",
+  "pages": [
+    {
+      "title": "Rahab Helps the Spies",
+      "chapter": 2,
+      "picture": "people/hebrew-woman",
+      "scene": "Rahab letting the spies down the wall with a red rope",
+      "text": "Joshua sent two spies to the city of Jericho. A woman named Rahab hid them on her roof. She said, \"I know your God is the true God.\" She helped them escape with a red rope. The spies promised to keep her family safe.",
+      "lesson": "Be brave and help others."
+    },
+    {
+      "title": "Crossing the River",
+      "chapter": 3,
+      "to": 4,
+      "picture": "places/desert-wadi",
+      "scene": "Priests carrying the ark of the covenant across the river",
+      "text": "God's people came to the Jordan River. It was very full. The priests carried God's special box into the water. The water stopped, and everyone walked across on dry land! They piled up twelve stones to remember what God did.",
+      "lesson": "Remember the good things God has done."
+    },
+    {
+      "title": "The Walls Fall Down",
+      "chapter": 6,
+      "picture": "places/ancient-ruins",
+      "scene": "The walls of Jericho falling as people blow horns",
+      "text": "Jericho had big, strong walls. God told Joshua, \"March around the city once a day for six days. On day seven, march seven times. Then blow the horns and shout!\" The people obeyed. When they shouted, the walls fell down flat!",
+      "lesson": "Do things God's way, even when it seems strange."
+    },
+    {
+      "title": "Choose Today",
+      "chapter": 24,
+      "picture": "places/village",
+      "scene": "Joshua speaking to the people: we will serve the Lord",
+      "text": "When Joshua was old, he called the people together. \"Choose today whom you will serve,\" he said. \"As for me and my family, we will serve the Lord.\" The people said, \"We will serve the Lord too!\"",
+      "lesson": "Choose to serve God with your family."
+    }
+  ]
+}

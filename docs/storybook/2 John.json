@@ -1,0 +1,15 @@
+{
+  "book": "2 John",
+  "cover": "people/roman-man",
+  "about": "Second John is a short letter about walking in truth and love.",
+  "pages": [
+    {
+      "title": "Walk in Love",
+      "chapter": 1,
+      "picture": "people/hebrew-woman",
+      "scene": "A mother walking with her children",
+      "text": "John wrote to a lady and her children, \"I'm so happy that your children are walking in the truth. Let's love one another. Love means doing what God asks.\"",
+      "lesson": "Love means doing what God asks."
+    }
+  ]
+}

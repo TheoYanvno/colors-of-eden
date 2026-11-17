@@ -1,0 +1,15 @@
+{
+  "book": "Colossians",
+  "cover": "people/roman-man",
+  "about": "Colossians is Paul's letter about how great Jesus is and how to live for Him.",
+  "pages": [
+    {
+      "title": "Dress in Kindness",
+      "chapter": 3,
+      "picture": "people/roman-child",
+      "scene": "A child getting dressed, with hearts on the clothes",
+      "text": "Paul wrote, \"Put on kindness, gentleness and patience, like clothes. Forgive each other, because the Lord forgave you. And over everything, put on love. Whatever you do, do it with all your heart, as if for the Lord.\"",
+      "lesson": "Put on kindness like clothes."
+    }
+  ]
+}

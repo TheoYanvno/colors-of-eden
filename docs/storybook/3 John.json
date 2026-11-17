@@ -1,0 +1,15 @@
+{
+  "book": "3 John",
+  "cover": "people/roman-man",
+  "about": "Third John is a short letter thanking a man named Gaius for helping others.",
+  "pages": [
+    {
+      "title": "Thank You, Gaius",
+      "chapter": 1,
+      "picture": "people/merchant",
+      "scene": "Gaius welcoming travelers into his home",
+      "text": "John thanked his friend Gaius for welcoming travelers who taught about Jesus. Gaius gave them food and a place to stay. John wrote, \"Copy what is good, not what is bad.\"",
+      "lesson": "Welcome and help others."
+    }
+  ]
+}

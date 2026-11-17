@@ -1,341 +1,33 @@
-"""Original storybook-style line art for coloring pages, drawn from shapes in code.
+"""Storybook pages: one of the 60 drawings to color, with a short paragraph to read and its lesson.
 
-A page is US Letter (8.5 x 11 in) as an SVG with an 850 x 1100 view box: a framed picture with
-layered hills, a textured sky, water and ground, the things the chapter talks about in front, and the
-verse on a ribbon underneath. Outlines are black with white fills, so shapes in front cover the lines
-behind them and every area is a closed space to color. Thinner texture lines (bark, wool, ripples,
-grass) add detail without boxing areas in.
+A page is US Letter (8.5 x 11 in) as an SVG with an 850 x 1100 view box. A book starts with a cover (its
+name, a drawing and a sentence about the book), then one page per story: the title and chapter at the top,
+the drawing in a frame, a short paragraph, the lesson it teaches in a box and the page number. The drawings are the only things to color; the
+words are plain black type. web/src/art.js draws exactly the same pages, and a test checks they match.
 """
 from __future__ import annotations
 
-import math
-import re
-import random
 from xml.sax.saxutils import escape
 
 from .picture import find as find_picture, path_data
-from .scenes import Plan
+from .storybook import chapters
 
 W, H = 850, 1100
-PIC = (40, 40, 770, 760)            # x, y, width, height of the picture frame
-GROUND = 600                        # the front edge of the hills
 INK = "#111"
-LINE = 4.5                          # outlines
-FINE = 2.5                          # texture lines
+INSIDE = 18                         # space between the drawing and its frame
+PIC_W, PIC_H = 700, 560             # the most room a drawing and its frame can take on a story page
+COVER_H = 520
+TEXT_X = 80                         # left edge of the paragraph
+ROW = 42                            # paragraph line height
+TEXT_WRAP = 50                      # characters a paragraph line holds at 28px Georgia across 690px
+FONT = "Georgia, serif"
 
 
 def f(n: float) -> str:
     return f"{n:.1f}"
 
 
-def shape(d: str, fill: str = "#fff", width: float = LINE) -> str:
-    return (f'<path d="{d}" fill="{fill}" stroke="{INK}" stroke-width="{width}" '
-            f'stroke-linejoin="round" stroke-linecap="round"/>')
-
-
-def line(d: str, width: float = FINE) -> str:
-    return shape(d, "none", width)
-
-
-def dot(x, y, r) -> str:
-    return f'<circle cx="{f(x)}" cy="{f(y)}" r="{f(r)}" fill="{INK}"/>'
-
-
-def ellipse(cx, cy, rx, ry, width=LINE, angle=0.0) -> str:
-    turn = f' transform="rotate({f(angle)} {f(cx)} {f(cy)})"' if angle else ""
-    return (f'<ellipse cx="{f(cx)}" cy="{f(cy)}" rx="{f(rx)}" ry="{f(ry)}" fill="#fff" stroke="{INK}" '
-            f'stroke-width="{width}"{turn}/>')
-
-
-def scallop(cx, cy, rx, ry, n, bulge=0.6, start=0.0) -> str:
-    """A closed puffy outline (a cloud, a tree's leaves, a sheep's wool): n arcs around an ellipse."""
-    pts = [(cx + rx * math.cos(start + 2 * math.pi * k / n), cy + ry * math.sin(start + 2 * math.pi * k / n))
-           for k in range(n)]
-    d = f"M{f(pts[0][0])} {f(pts[0][1])} "
-    for k in range(n):
-        (x1, y1), (x2, y2) = pts[k], pts[(k + 1) % n]
-        r = math.hypot(x2 - x1, y2 - y1) * bulge
-        d += f"A{f(r)} {f(r)} 0 0 1 {f(x2)} {f(y2)} "
-    return d + "Z"
-
-
-# ---- sky ----
-
-def sun(rng, x=175, y=165, r=50) -> str:
-    rays = []
-    for k in range(16):
-        a = k * math.pi / 8
-        reach = 34 if k % 2 == 0 else 20
-        rays.append(shape(f"M{f(x + math.cos(a - .12) * (r + 10))} {f(y + math.sin(a - .12) * (r + 10))} "
-                          f"L{f(x + math.cos(a) * (r + 10 + reach))} {f(y + math.sin(a) * (r + 10 + reach))} "
-                          f"L{f(x + math.cos(a + .12) * (r + 10))} {f(y + math.sin(a + .12) * (r + 10))} Z", width=3))
-    glow = line(f"M{f(x - r * .55)} {f(y + 8)} a{f(r * .55)} {f(r * .5)} 0 0 0 {f(r * 1.1)} 0")
-    return "".join(rays) + ellipse(x, y, r, r) + glow
-
-
-def sparkle(x, y, r) -> str:
-    return line(f"M{f(x - r)} {f(y)} L{f(x + r)} {f(y)} M{f(x)} {f(y - r)} L{f(x)} {f(y + r)}")
-
-
-def moon(rng, x=690, y=150, r=46) -> str:
-    inner = r * 1.3
-    crescent = shape(f"M{f(x)} {f(y - r)} A{r} {r} 0 1 0 {f(x)} {f(y + r)} A{f(inner)} {f(inner)} 0 0 1 {f(x)} {f(y - r)} Z")
-    return crescent + sparkle(x - 70, y + 50, 10) + sparkle(x + 40, y + 70, 7)
-
-
-def star(x, y, r) -> str:
-    pts = []
-    for k in range(10):
-        a = -math.pi / 2 + k * math.pi / 5
-        rr = r if k % 2 == 0 else r * 0.45
-        pts.append(f"{f(x + math.cos(a) * rr)} {f(y + math.sin(a) * rr)}")
-    return shape("M" + " L".join(pts) + " Z", width=3)
-
-
-def stars(rng) -> str:
-    out = [star(rng.uniform(290, 760), rng.uniform(75, 250), rng.uniform(11, 20)) for _ in range(6)]
-    out += [sparkle(rng.uniform(260, 780), rng.uniform(70, 280), rng.uniform(5, 8)) for _ in range(6)]
-    return "".join(out)
-
-
-def cloud(x, y, s=1.0) -> str:
-    puff = shape(scallop(x, y, 85 * s, 34 * s, 9, 0.62, start=0.3))
-    swirls = line(f"M{f(x - 40 * s)} {f(y + 6 * s)} q {f(18 * s)} {f(-16 * s)} {f(36 * s)} 0 "
-                  f"M{f(x + 10 * s)} {f(y - 4 * s)} q {f(16 * s)} {f(-14 * s)} {f(32 * s)} 0")
-    return puff + swirls
-
-
-def clouds(rng) -> str:
-    return cloud(rng.uniform(330, 400), 120, 1.0) + cloud(rng.uniform(560, 620), 215, 0.8)
-
-
-# ---- land, water and the way through ----
-
-def hill(top, height, bulges) -> str:
-    x0, x1, n = 40, 810, len(bulges) - 1
-    d = f"M{x0} {f(top + height)} L{x0} {f(top + bulges[0])} "
-    for k in range(n):
-        xa, xb = x0 + (x1 - x0) * k / n, x0 + (x1 - x0) * (k + 1) / n
-        ya, yb = top + bulges[k], top + bulges[k + 1]
-        d += f"C {f(xa + (xb - xa) * .35)} {f(ya - 40)}, {f(xa + (xb - xa) * .65)} {f(yb - 40)}, {f(xb)} {f(yb)} "
-    return d + f"L{x1} {f(top + height)} Z"
-
-
-def hills(rng) -> str:
-    """Three layers of rolling hills, back to front, each with a few strokes of texture."""
-    out = []
-    for top, rows in ((GROUND - 170, 3), (GROUND - 95, 4), (GROUND - 25, 3)):
-        out.append(shape(hill(top, 320, [rng.uniform(-25, 25) for _ in range(rows + 1)])))
-        for _ in range(5):
-            x, y = rng.uniform(80, 770), top + rng.uniform(28, 62)
-            out.append(line(f"M{f(x)} {f(y)} q 14 -8 28 0"))
-    return "".join(out)
-
-
-def mountains(rng) -> str:
-    peaks = [(40, 430), (150, 300), (260, 380), (390, 250), (520, 360), (640, 280), (810, 400)]
-    pts = [(x, y + rng.uniform(-15, 15)) for x, y in peaks]
-    out = [shape(f"M40 {GROUND} " + " ".join(f"L{f(x)} {f(y)}" for x, y in pts) + f" L810 {GROUND} Z")]
-    for x, y in pts[1:-1]:                          # snow caps and ridge lines
-        if y < 330:
-            out.append(line(f"M{f(x - 34)} {f(y + 40)} l 14 -8 l 10 10 l 10 -10 l 14 8"))
-        out.append(line(f"M{f(x)} {f(y + 6)} q {f(rng.uniform(-14, 14))} 60 {f(rng.uniform(-30, 30))} 120"))
-    return "".join(out)
-
-
-def waves(rng, top=GROUND + 60) -> str:
-    out = [shape(f"M40 {top} C 240 {top - 14}, 560 {top + 14}, 810 {top} L810 800 L40 800 Z")]
-    for row in range(4):
-        y, x = top + 30 + row * 34, 40 - (row % 2) * 40
-        while x < 810:                              # a crest that curls over at its tip
-            out.append(line(f"M{f(x)} {f(y)} q 30 -22 60 0 q -10 -2 -14 -9 q 4 -5 10 -3", 3))
-            x += 80
-    return "".join(out)
-
-
-def path(rng) -> str:
-    """A path that starts narrow far away in the hills and widens toward the front."""
-    top = GROUND - 120
-    road = shape(f"M405 {top} C 380 {top + 70}, 470 {top + 140}, 400 {top + 210} C 350 {top + 260}, 360 770, 320 800 "
-                 f"L 545 800 C 520 770, 520 {top + 260}, 470 {top + 210} C 540 {top + 140}, 430 {top + 70}, 425 {top} Z")
-    stones = "".join(ellipse(rng.uniform(390, 490), rng.uniform(top + 230, 790), rng.uniform(7, 12), rng.uniform(4, 7), FINE)
-                     for _ in range(5))
-    return road + stones
-
-
-def meadow(rng) -> str:
-    """Grass tufts across the front of the land."""
-    out = []
-    for _ in range(14):
-        x, y = rng.uniform(60, 790), rng.uniform(GROUND + 30, 790)
-        out.append(line(f"M{f(x)} {f(y)} q -4 -14 -12 -22 M{f(x)} {f(y)} q 0 -16 2 -28 M{f(x)} {f(y)} q 4 -12 12 -20"))
-    return "".join(out)
-
-
-# ---- things in front (each drawn around a base point x, y on the ground, at scale s) ----
-
-def tree(x, y, s=1.0) -> str:
-    trunk = shape(f"M{f(x - 34*s)} {f(y)} q {f(16*s)} {f(-8*s)} {f(20*s)} {f(-30*s)} L{f(x - 12*s)} {f(y - 120*s)} "
-                  f"L{f(x + 12*s)} {f(y - 120*s)} L{f(x + 14*s)} {f(y - 30*s)} q {f(4*s)} {f(22*s)} {f(20*s)} {f(30*s)} Z")
-    bark = line(f"M{f(x - 4*s)} {f(y - 20*s)} q {f(-4*s)} {f(-30*s)} 0 {f(-60*s)} "
-                f"M{f(x + 6*s)} {f(y - 50*s)} q {f(4*s)} {f(-20*s)} 0 {f(-40*s)}")
-    leaves = shape(scallop(x, y - 180 * s, 95 * s, 78 * s, 11, 0.6, start=0.2))
-    clumps = "".join(line(f"M{f(x + dx*s)} {f(y + dy*s)} q {f(14*s)} {f(-14*s)} {f(28*s)} 0")
-                     for dx, dy in ((-60, -195), (-10, -230), (20, -165), (-40, -145), (40, -205)))
-    return trunk + bark + leaves + clumps
-
-
-def flower(x, y, s=1.0) -> str:
-    head = y - 80 * s
-    stem = line(f"M{f(x)} {f(y)} q {f(-6*s)} {f(-40*s)} 0 {f(-80*s)}", 3)
-    leaf = shape(f"M{f(x - 2*s)} {f(y - 30*s)} q {f(26*s)} {f(-22*s)} {f(40*s)} {f(-6*s)} "
-                 f"q {f(-18*s)} {f(18*s)} {f(-40*s)} {f(6*s)} Z", width=3)
-    petals = "".join(ellipse(x + math.cos(a) * 20 * s, head + math.sin(a) * 20 * s, 15 * s, 8 * s, 3, math.degrees(a))
-                     for a in (k * math.pi / 4 for k in range(8)))
-    return stem + leaf + petals + ellipse(x, head, 10 * s, 10 * s, 3) + dot(x, head, 2.5 * s)
-
-
-def flowers(x, y, s=1.0) -> str:
-    return flower(x - 48 * s, y + 6 * s, s * 0.85) + flower(x + 46 * s, y + 4 * s, s * 0.9) + flower(x, y, s * 1.05)
-
-
-def sheep(x, y, s=1.0) -> str:
-    legs = ""
-    for dx in (-48, -22, 22, 46):
-        lx = x + dx * s
-        legs += shape(f"M{f(lx - 6*s)} {f(y - 40*s)} L{f(lx - 6*s)} {f(y - 4*s)} L{f(lx + 7*s)} {f(y - 4*s)} L{f(lx + 7*s)} {f(y - 40*s)} Z", width=3.5)
-        legs += shape(f"M{f(lx - 7*s)} {f(y - 6*s)} h {f(15*s)} v {f(7*s)} h {f(-15*s)} Z", INK, 2)
-    wool = shape(scallop(x, y - 75 * s, 78 * s, 44 * s, 13, 0.62))
-    curls = "".join(line(f"M{f(x + dx*s)} {f(y + dy*s)} a {f(6*s)} {f(6*s)} 0 1 1 {f(8*s)} {f(4*s)}", 2.2)
-                    for dx, dy in ((-40, -90), (-12, -70), (14, -95), (36, -68), (-30, -60), (2, -108)))
-    head = shape(f"M{f(x + 58*s)} {f(y - 100*s)} q {f(34*s)} {f(-10*s)} {f(44*s)} {f(16*s)} "
-                 f"q {f(4*s)} {f(30*s)} {f(-22*s)} {f(36*s)} q {f(-26*s)} {f(-4*s)} {f(-30*s)} {f(-24*s)} Z")
-    ear = shape(f"M{f(x + 64*s)} {f(y - 96*s)} q {f(-24*s)} {f(-6*s)} {f(-30*s)} {f(10*s)} q {f(14*s)} {f(8*s)} {f(28*s)} {f(4*s)} Z", width=3)
-    face = dot(x + 86 * s, y - 86 * s, 3.5 * s) + line(f"M{f(x + 92*s)} {f(y - 66*s)} q {f(4*s)} {f(4*s)} {f(8*s)} 0", 2.2)
-    tail = shape(scallop(x - 82 * s, y - 84 * s, 12 * s, 10 * s, 6, 0.6), width=3)
-    return legs + tail + wool + curls + head + ear + face
-
-
-# The dove: an original line drawing in flight, facing right: two wings with soft rounded feathers, a
-# far one behind the near one, and a fanned tail. Each part is drawn in its own coordinates around the
-# bird's middle and placed with place().
-DOVE_FAR_WING = "M66 2 C 60 -40 50 -86 30 -124 C 56 -134 80 -120 74 -102 C 98 -104 110 -84 98 -70 C 116 -62 116 -40 102 -34 C 108 -18 98 -6 84 -4 Z"
-DOVE_BODY = "M74 -4 C 76 -36 100 -48 120 -36 C 128 -31 132 -24 133 -18 L 152 -12 L 132 -4 C 130 40 86 84 20 90 C -24 94 -60 86 -88 74 C -100 86 -112 98 -126 104 C -120 94 -116 86 -114 78 C -126 82 -138 82 -146 78 C -136 72 -126 66 -118 60 C -128 56 -136 50 -140 42 C -120 44 -100 46 -84 44 C -50 38 -16 30 14 20 C 42 12 62 6 74 -4 Z"
-DOVE_NEAR_WING = "M62 12 C 44 -40 10 -92 -40 -130 C -66 -122 -76 -102 -60 -88 C -86 -80 -92 -60 -74 -48 C -98 -40 -100 -16 -80 -8 C -44 6 -12 18 22 24 C 38 22 52 18 62 12 Z"
-DOVE_FEATHERS = "M-44 -76 C -28 -68 -14 -58 -2 -48 M-56 -36 C -36 -30 -18 -24 0 -18 M66 -88 C 72 -78 76 -70 78 -60"
-
-
-def place(d: str, x: float, y: float, k: float) -> str:
-    """Moves and scales a path written with absolute M, C and L commands: each x y pair goes to (x + px*k, y + py*k)."""
-    return re.sub(r"-?\d+(?:\.\d+)?\s+-?\d+(?:\.\d+)?",
-                  lambda m: (lambda px, py: f"{f(x + float(px) * k)} {f(y + float(py) * k)}")(*m.group(0).split()), d)
-
-
-def dove(x, y, s=1.0) -> str:
-    y = max(190 + 60 * s, y - 290 * s)               # doves fly low in the sky, clear of the sun and clouds
-    k = 0.8 * s
-    return (shape(place(DOVE_FAR_WING, x, y, k)) + shape(place(DOVE_BODY, x, y, k))
-            + shape(place(DOVE_NEAR_WING, x, y, k)) + line(place(DOVE_FEATHERS, x, y, k), 3)
-            + dot(x + 112 * k, y - 24 * k, 5 * k))
-
-
-def fish(x, y, s=1.0) -> str:
-    y = y + 20 * s
-    tail = shape(f"M{f(x - 58*s)} {f(y)} q {f(-20*s)} {f(-30*s)} {f(-40*s)} {f(-32*s)} q {f(10*s)} {f(32*s)} 0 {f(64*s)} "
-                 f"q {f(20*s)} {f(-2*s)} {f(40*s)} {f(-32*s)} Z")
-    body = shape(f"M{f(x - 60*s)} {f(y)} q {f(60*s)} {f(-56*s)} {f(120*s)} 0 q {f(-60*s)} {f(56*s)} {f(-120*s)} 0 Z")
-    fin = shape(f"M{f(x - 10*s)} {f(y - 26*s)} q {f(14*s)} {f(-28*s)} {f(40*s)} {f(-22*s)} q {f(-12*s)} {f(12*s)} {f(-10*s)} {f(24*s)} Z", width=3)
-    scales = "".join(line(f"M{f(x + dx*s)} {f(y + dy*s)} a {f(9*s)} {f(9*s)} 0 0 0 0 {f(16*s)}", 2.2)
-                     for dx in (-30, -12, 6) for dy in (-16, 0))
-    gill = line(f"M{f(x + 26*s)} {f(y - 20*s)} q {f(-10*s)} {f(20*s)} 0 {f(40*s)}", 3)
-    return tail + body + fin + scales + gill + dot(x + 40 * s, y - 8 * s, 4 * s)
-
-
-def boat(x, y, s=1.0) -> str:
-    y = y - 20 * s
-    hull = shape(f"M{f(x - 130*s)} {f(y - 10*s)} L{f(x + 130*s)} {f(y - 10*s)} q {f(-10*s)} {f(50*s)} {f(-40*s)} {f(70*s)} "
-                 f"L{f(x - 90*s)} {f(y + 60*s)} q {f(-30*s)} {f(-20*s)} {f(-40*s)} {f(-70*s)} Z")
-    planks = line(f"M{f(x - 118*s)} {f(y + 14*s)} L{f(x + 118*s)} {f(y + 14*s)} M{f(x - 104*s)} {f(y + 38*s)} L{f(x + 104*s)} {f(y + 38*s)}")
-    house = shape(f"M{f(x - 70*s)} {f(y - 10*s)} L{f(x - 70*s)} {f(y - 70*s)} L{f(x + 70*s)} {f(y - 70*s)} L{f(x + 70*s)} {f(y - 10*s)} Z")
-    roof = shape(f"M{f(x - 84*s)} {f(y - 70*s)} L{f(x)} {f(y - 124*s)} L{f(x + 84*s)} {f(y - 70*s)} Z")
-    shingles = line(f"M{f(x - 56*s)} {f(y - 86*s)} L{f(x + 56*s)} {f(y - 86*s)} M{f(x - 30*s)} {f(y - 103*s)} L{f(x + 30*s)} {f(y - 103*s)}")
-    windows = "".join(shape(f"M{f(x + wx*s)} {f(y - 56*s)} h {f(26*s)} v {f(24*s)} h {f(-26*s)} Z", width=3) for wx in (-34, 8))
-    return hull + planks + house + roof + shingles + windows
-
-
-def crown(x, y, s=1.0) -> str:
-    y = y - 50 * s
-    band = shape(f"M{f(x - 70*s)} {f(y)} L{f(x - 70*s)} {f(y - 70*s)} L{f(x - 38*s)} {f(y - 36*s)} L{f(x)} {f(y - 86*s)} "
-                 f"L{f(x + 38*s)} {f(y - 36*s)} L{f(x + 70*s)} {f(y - 70*s)} L{f(x + 70*s)} {f(y)} Z")
-    trim = line(f"M{f(x - 70*s)} {f(y - 18*s)} L{f(x + 70*s)} {f(y - 18*s)}", 3)
-    jewels = "".join(ellipse(x + dx * s, y - 9 * s, 8 * s, 6 * s, 3) for dx in (-40, 0, 40))
-    tips = "".join(ellipse(x + dx * s, y + dy * s, 7 * s, 7 * s, 3) for dx, dy in ((-70, -76), (0, -93), (70, -76)))
-    return band + trim + jewels + tips
-
-
-def lamp(x, y, s=1.0) -> str:
-    y = y - 10 * s
-    handle = line(f"M{f(x - 70*s)} {f(y - 22*s)} q {f(-30*s)} {f(-10*s)} {f(-20*s)} {f(-36*s)} q {f(10*s)} {f(-10*s)} {f(24*s)} {f(4*s)}", 4)
-    body = shape(f"M{f(x - 70*s)} {f(y - 20*s)} q {f(60*s)} {f(-60*s)} {f(120*s)} {f(-30*s)} l {f(24*s)} {f(-10*s)} "
-                 f"l {f(-6*s)} {f(18*s)} q {f(-50*s)} {f(46*s)} {f(-138*s)} {f(22*s)} Z")
-    foot = shape(f"M{f(x - 40*s)} {f(y - 4*s)} q {f(30*s)} {f(-14*s)} {f(60*s)} 0 l {f(6*s)} {f(12*s)} h {f(-72*s)} Z", width=3.5)
-    flame = shape(f"M{f(x + 80*s)} {f(y - 58*s)} q {f(-22*s)} {f(-30*s)} {f(6*s)} {f(-70*s)} q {f(24*s)} {f(38*s)} {f(-6*s)} {f(70*s)} Z")
-    inner = line(f"M{f(x + 82*s)} {f(y - 64*s)} q {f(-6*s)} {f(-14*s)} {f(4*s)} {f(-30*s)}")
-    deco = line(f"M{f(x - 30*s)} {f(y - 40*s)} q {f(30*s)} {f(-14*s)} {f(60*s)} {f(-6*s)}")
-    return handle + body + foot + flame + inner + deco
-
-
-def cup(x, y, s=1.0) -> str:
-    foot = shape(f"M{f(x - 40*s)} {f(y)} q {f(40*s)} {f(-28*s)} {f(80*s)} 0 Z")
-    stem = shape(f"M{f(x - 7*s)} {f(y - 60*s)} L{f(x - 7*s)} {f(y - 16*s)} L{f(x + 7*s)} {f(y - 16*s)} L{f(x + 7*s)} {f(y - 60*s)} Z")
-    knot = ellipse(x, y - 40 * s, 13 * s, 7 * s, 3)
-    bowl = shape(f"M{f(x - 50*s)} {f(y - 140*s)} L{f(x + 50*s)} {f(y - 140*s)} q {f(4*s)} {f(70*s)} {f(-50*s)} {f(80*s)} "
-                 f"q {f(-54*s)} {f(-10*s)} {f(-50*s)} {f(-80*s)} Z")
-    band = line(f"M{f(x - 46*s)} {f(y - 112*s)} q {f(46*s)} {f(12*s)} {f(92*s)} 0", 3)
-    rim = ellipse(x, y - 140 * s, 50 * s, 9 * s, 3.5)
-    drop = shape(f"M{f(x + 44*s)} {f(y - 136*s)} q {f(10*s)} {f(16*s)} 0 {f(26*s)} q {f(-10*s)} {f(-10*s)} 0 {f(-26*s)} Z", width=2.5)
-    return foot + stem + knot + bowl + band + rim + drop
-
-
-def heart(x, y, s=1.0) -> str:
-    y = max(130 + 60 * s, y - 260 * s)
-
-    def outline(k):
-        return (f"M{f(x)} {f(y + 44*s*k)} C {f(x - 76*s*k)} {f(y - 8*s*k)}, {f(x - 44*s*k)} {f(y - 76*s*k)}, {f(x)} {f(y - 38*s*k)} "
-                f"C {f(x + 44*s*k)} {f(y - 76*s*k)}, {f(x + 76*s*k)} {f(y - 8*s*k)}, {f(x)} {f(y + 44*s*k)} Z")
-    rays = "".join(line(f"M{f(x + math.cos(a) * 90 * s)} {f(y + math.sin(a) * 80 * s)} "
-                        f"L{f(x + math.cos(a) * 112 * s)} {f(y + math.sin(a) * 100 * s)}", 3)
-                   for a in (k * math.pi / 5 - math.pi / 2 for k in range(10)))
-    return rays + shape(outline(1)) + line(outline(0.6))
-
-
-BACKGROUND_ART = {"sun": sun, "moon": moon, "stars": stars, "clouds": clouds, "mountains": mountains,
-                  "waves": waves, "path": path}
-FOREGROUND_ART = {"tree": tree, "flowers": flowers, "sheep": sheep, "dove": dove, "fish": fish, "boat": boat,
-                  "crown": crown, "lamp": lamp, "cup": cup, "heart": heart}
-SKY = ["stars", "sun", "moon", "clouds"]
-# About how wide each drawing is at scale 1, and how far its base point sits from its middle.
-SIZES = {"tree": 190, "flowers": 150, "sheep": 220, "dove": 240, "fish": 200, "boat": 270, "crown": 150,
-         "lamp": 210, "cup": 110, "heart": 230}
-OFFSET = {"sheep": -10, "lamp": -15, "dove": -25}
-MAX_SCALE = {"dove": 1.3, "heart": 1.3, "crown": 1.6, "cup": 1.7,   # so they never fill the whole sky
-             "boat": 1.25, "fish": 1.15}                            # and the boat and fish keep room around them
-# How far each drawing reaches below its base point at scale 1 (most stand on it; the hull and fish hang lower).
-BOTTOM = {"boat": 40, "fish": 48}
-# Where things sit on water pages, below the front edge of the hills: the boat floats on the waves and
-# the fish swims lower down, in the water.
-FLOAT = {"boat": 100, "fish": 150}
-
-
-def placement(m: str, scale: float, water: bool) -> tuple[float, float]:
-    """The scale and base height for one thing in front, kept fully inside the frame."""
-    size = min(scale, MAX_SCALE.get(m, scale))
-    base = GROUND + (FLOAT.get(m, 150) if water else 150)
-    lowest = PIC[1] + PIC[3] - 18                     # just above the frame's bottom edge
-    return size, min(base, lowest - BOTTOM.get(m, 0) * size)
-
-
-def wrap(text: str, width: int = 50) -> list[str]:
+def wrap(text: str, width: int) -> list[str]:
     lines, cur = [], ""
     for word in text.split():
         if cur and len(cur) + 1 + len(word) > width:
@@ -346,98 +38,84 @@ def wrap(text: str, width: int = 50) -> list[str]:
     return lines + ([cur] if cur else [])
 
 
-def frame(box: tuple[float, float, float, float] = PIC) -> str:
-    x, y, w, h = box
-    curls = "".join(line(f"M{f(cx)} {f(cy)} q {f(dx*26)} {f(dy*4)} {f(dx*30)} {f(dy*30)} "
-                         f"q {f(-dx*12)} {f(-dy*4)} {f(-dx*16)} {f(-dy*16)}", 3)
-                    for cx, cy, dx, dy in ((x + 16, y + 16, 1, 1), (x + w - 16, y + 16, -1, 1),
-                                           (x + 16, y + h - 16, 1, -1), (x + w - 16, y + h - 16, -1, -1)))
-    return (f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="22" fill="none" stroke="{INK}" stroke-width="7"/>'
-            f'<rect x="{x + 10}" y="{y + 10}" width="{w - 20}" height="{h - 20}" rx="16" fill="none" stroke="{INK}" stroke-width="2.5"/>'
-            + curls)
+def frame(x: float, y: float, w: float, h: float) -> str:
+    """A double-line frame with rounded corners."""
+    return (f'<rect x="{f(x)}" y="{f(y)}" width="{f(w)}" height="{f(h)}" rx="22" fill="none" stroke="{INK}" stroke-width="7"/>'
+            f'<rect x="{f(x + 10)}" y="{f(y + 10)}" width="{f(w - 20)}" height="{f(h - 20)}" rx="16" fill="none" stroke="{INK}" stroke-width="2.5"/>')
 
 
-def ribbon(top: float, height: float) -> str:
-    """A banner for the verse, with folded ends tucked behind it."""
-    l, r = 70, 780
-    left = shape(f"M{l + 50} {f(top + 18)} L{l} {f(top + 18)} L{l + 24} {f(top + 18 + height / 2)} L{l} {f(top + 18 + height)} L{l + 50} {f(top + 18 + height)} Z")
-    right = shape(f"M{r - 50} {f(top + 18)} L{r} {f(top + 18)} L{r - 24} {f(top + 18 + height / 2)} L{r} {f(top + 18 + height)} L{r - 50} {f(top + 18 + height)} Z")
-    body = shape(f"M{l + 36} {f(top)} L{r - 36} {f(top)} L{r - 36} {f(top + height)} L{l + 36} {f(top + height)} Z")
-    return left + right + body
+def text(x: float, y: float, words: str, size: float, anchor: str = "middle", style: str = "") -> str:
+    return (f'<text x="{f(x)}" y="{f(y)}" text-anchor="{anchor}" font-family="{FONT}" font-size="{f(size)}"{style} '
+            f'fill="{INK}">{escape(words)}</text>')
 
 
-def verse_text(plan: Plan, top: float) -> list[str]:
-    """The verse on its ribbon, starting at top, and the reference under it."""
-    number, verse = plan.verse
-    lines = wrap(verse)[:4]
-    row = 36
-    band = 28 + len(lines) * row
-    parts = [ribbon(top, band)]
-    for k, text_line in enumerate(lines):
-        parts.append(f'<text x="{W // 2}" y="{f(top + 40 + k * row)}" text-anchor="middle" font-family="Georgia, serif" '
-                     f'font-size="27" fill="{INK}">{escape(text_line)}</text>')
-    parts.append(f'<text x="{W // 2}" y="{f(top + band + 64)}" text-anchor="middle" font-family="Georgia, serif" font-size="24" '
-                 f'font-style="italic" fill="{INK}">{escape(plan.reference)}:{number} (WEB)</text>')
-    return parts
+def picture_box(picture_id: str, top: float, max_h: float) -> tuple[float, float, float, float, float]:
+    """Where a drawing's frame goes (x, y, w, h) and the drawing's scale: as big as fits PIC_W x max_h,
+    centred across the page."""
+    pic = find_picture(picture_id)
+    k = min((PIC_W - 2 * INSIDE) / pic["width"], (max_h - 2 * INSIDE) / pic["height"])
+    w, h = pic["width"] * k + 2 * INSIDE, pic["height"] * k + 2 * INSIDE
+    return (W - w) / 2, top, w, h, k
 
 
-def svg_page(plan: Plan, parts: list[str]) -> str:
+def drawing(picture_id: str, box: tuple, outlines: str | None) -> str:
+    x, y, w, h, k = box
+    d = outlines if outlines is not None else path_data(picture_id)
+    return (f'<g transform="translate({f(x + INSIDE)} {f(y + INSIDE)}) scale({k:.4f})">'
+            f'<path d="{d}" fill="{INK}" fill-rule="evenodd"/></g>' + frame(x, y, w, h))
+
+
+def svg_page(label: str, parts: list[str]) -> str:
+    label = escape(label)
     return (f'<svg xmlns="http://www.w3.org/2000/svg" width="8.5in" height="11in" viewBox="0 0 {W} {H}" '
-            f'role="img" aria-label="Coloring page for {escape(plan.reference)}">'
-            f'<title>Colors of Eden: {escape(plan.reference)}</title><rect width="{W}" height="{H}" fill="#fff"/>'
+            f'role="img" aria-label="Coloring page: {label}">'
+            f'<title>Colors of Eden: {label}</title><rect width="{W}" height="{H}" fill="#fff"/>'
             + "".join(parts) + "</svg>")
 
 
-INSIDE = 18                         # space between a picture and its frame
+def page_layout(page: dict) -> dict:
+    """Where everything on a story page sits, so the drawing code and the tests share one plan."""
+    box = picture_box(page["picture"], 136, PIC_H)
+    lines = wrap(page["text"], TEXT_WRAP)
+    top = box[1] + box[3] + 52
+    lesson_top = top + (len(lines) - 1) * ROW + 34
+    lesson = wrap(page["lesson"], 46)
+    lesson_h = 24 + len(lesson) * 34
+    return {"box": box, "lines": lines, "top": top, "lesson": (lesson_top, lesson_h, lesson),
+            "bottom": lesson_top + lesson_h}
 
 
-def picture_layout(width: float, height: float, verse_lines: int) -> tuple[float, float, float, float]:
-    """Where a picture page puts its frame (x, y, w, h): full width, as tall as the picture needs, and the
-    frame and verse together centred on the page."""
-    w = PIC[2]
-    h = (w - 2 * INSIDE) * height / width + 2 * INSIDE
-    total = h + 60 + 28 + verse_lines * 36 + 64
-    return PIC[0], max(30.0, (H - total) / 2), w, h
+def draw_story_page(book: dict, n: int, outlines: str | None = None) -> str:
+    """Story page n (counting from 1) of a book as an SVG string. outlines is the drawing's path data
+    (read from coe/pictures when not given)."""
+    page = book["pages"][n - 1]
+    plan = page_layout(page)
+    parts = [text(W / 2, 78, page["title"], 40, style=' font-weight="bold"'),
+             text(W / 2, 112, chapters(book, page), 22, style=' font-style="italic"'),
+             drawing(page["picture"], plan["box"], outlines)]
+    parts += [text(TEXT_X, plan["top"] + i * ROW, line, 28, anchor="start") for i, line in enumerate(plan["lines"])]
+    lesson_top, lesson_h, lesson = plan["lesson"]
+    parts.append(f'<rect x="{f(TEXT_X - 10)}" y="{f(lesson_top)}" width="{f(W - 2 * (TEXT_X - 10))}" height="{f(lesson_h)}" rx="14" '
+                 f'fill="none" stroke="{INK}" stroke-width="2.5"/>')
+    parts += [text(W / 2, lesson_top + 36 + i * 34, line, 26, style=' font-weight="bold"') for i, line in enumerate(lesson)]
+    parts.append(text(W / 2, H - 34, str(n), 18))
+    return svg_page(f"{page['title']} ({chapters(book, page)})", parts)
 
 
-def draw_picture_page(plan: Plan) -> str:
-    """A page that is one of the drawings in coe/pictures, in a frame, with the verse underneath."""
-    pic = find_picture(plan.picture)
-    x, y, w, h = picture_layout(pic["width"], pic["height"], len(wrap(plan.verse[1])[:4]))
-    k = (w - 2 * INSIDE) / pic["width"]
-    parts = [f'<g transform="translate({f(x + INSIDE)} {f(y + INSIDE)}) scale({k:.4f})">'
-             f'<path d="{path_data(plan.picture)}" fill="{INK}" fill-rule="evenodd"/></g>', frame((x, y, w, h))]
-    return svg_page(plan, parts + verse_text(plan, y + h + 60))
+def cover_layout(book: dict) -> dict:
+    size = min(72.0, 1300 / len(book["label"]))
+    box = picture_box(book["cover"], 290, COVER_H)
+    about = wrap(book["about"], 62)
+    top = box[1] + box[3] + 56
+    return {"size": size, "box": box, "about": about, "top": top, "bottom": top + (len(about) - 1) * 32 + 10}
 
 
-def draw_page(plan: Plan, seed: str | None = None) -> str:
-    """The whole coloring page as an SVG string."""
-    if plan.picture:
-        return draw_picture_page(plan)
-    rng = random.Random(seed or plan.reference)
-    x, y, w, h = PIC
-    parts = [f'<clipPath id="pic"><rect x="{x}" y="{y}" width="{w}" height="{h}" rx="22"/></clipPath><g clip-path="url(#pic)">']
-    for m in SKY:
-        if m in plan.background:
-            parts.append(BACKGROUND_ART[m](rng))
-    if len([m for m in plan.background if m in SKY]) < 2:
-        parts.append(clouds(rng))                     # a sky with something in it to color
-    if "mountains" in plan.background:
-        parts.append(mountains(rng))
-    parts.append(hills(rng))
-    if "path" in plan.background:
-        parts.append(path(rng))
-    parts.append(waves(rng) if "waves" in plan.background else meadow(rng))
-    front = plan.foreground[:3]                       # up to three things, so each has room
-    widths = [SIZES.get(m, 150) for m in front]
-    scale = min(1.9, (w - 80) / (sum(widths) + 50 * (len(front) - 1)))
-    gap = (w - sum(widths) * scale) / (len(front) + 1)
-    cx = x + gap
-    for m, width in zip(front, widths):
-        mid = cx + width * scale / 2
-        size, base = placement(m, scale, "waves" in plan.background)
-        parts.append(FOREGROUND_ART[m](mid + OFFSET.get(m, 0) * scale + rng.uniform(-8, 8), base, size))
-        cx += width * scale + gap
-    parts.append("</g>")
-    parts.append(frame())
-    return svg_page(plan, parts + verse_text(plan, 836))
+def draw_cover(book: dict, outlines: str | None = None) -> str:
+    """The book's cover: its name, "A Coloring Storybook", a drawing and a sentence about the book."""
+    plan = cover_layout(book)
+    parts = [text(W / 2, 100, "Colors of Eden", 24, style=' letter-spacing="3"'),
+             text(W / 2, 190, book["label"], plan["size"], style=' font-weight="bold"'),
+             text(W / 2, 244, "A Coloring Storybook", 30, style=' font-style="italic"'),
+             drawing(book["cover"], plan["box"], outlines)]
+    parts += [text(W / 2, plan["top"] + i * 32, line, 22) for i, line in enumerate(plan["about"])]
+    return svg_page(f"{book['label']}, a coloring storybook", parts)

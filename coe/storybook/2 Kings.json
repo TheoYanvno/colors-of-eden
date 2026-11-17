@@ -1,0 +1,40 @@
+{
+  "book": "2 Kings",
+  "cover": "places/village",
+  "about": "Fourth Kingdoms (2 Kings) tells about the prophet Elisha and the kings who followed or forgot God.",
+  "pages": [
+    {
+      "title": "The Chariot of Fire",
+      "chapter": 2,
+      "picture": "places/desert",
+      "scene": "Elijah going up in a chariot of fire while Elisha watches",
+      "text": "Elijah and his helper Elisha walked together. Suddenly a chariot of fire with horses of fire came down! Elijah went up to heaven in a whirlwind. Elisha picked up Elijah's coat. Now Elisha would be God's prophet.",
+      "lesson": "God gives each of us a job to do."
+    },
+    {
+      "title": "The Jars of Oil",
+      "chapter": 4,
+      "picture": "people/hebrew-woman",
+      "scene": "A widow and her sons pouring oil into many jars",
+      "text": "A poor widow had only a little oil. Elisha said, \"Borrow lots of empty jars.\" She poured her oil, and it kept flowing until every jar was full! She sold the oil and paid what she owed.",
+      "lesson": "God can make a little into a lot."
+    },
+    {
+      "title": "Naaman Gets Well",
+      "chapter": 5,
+      "picture": "people/hebrew-child",
+      "scene": "Naaman coming up out of the Jordan River healed",
+      "text": "Naaman was an army captain with a bad skin sickness. A little servant girl said, \"God's prophet can help you!\" Elisha told Naaman to wash in the river seven times. Naaman did, and his skin became healthy like a child's!",
+      "lesson": "Even a child can tell others about God."
+    },
+    {
+      "title": "Young King Josiah",
+      "chapter": 22,
+      "to": 23,
+      "picture": "people/royal-persian",
+      "scene": "Boy King Josiah listening to God's book being read",
+      "text": "Josiah became king when he was only eight years old! He loved God. Workers fixing the temple found God's book. When Josiah heard it read, he was sorry the people had forgotten God. He helped everyone follow God again.",
+      "lesson": "You are never too young to follow God."
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "book": "Baruch",
+  "cover": "people/priest",
+  "about": "Baruch was Jeremiah's helper. His book helps God's people say sorry and find hope again.",
+  "pages": [
+    {
+      "title": "Find Wisdom",
+      "chapter": 3,
+      "to": 5,
+      "picture": "places/coastal-shore",
+      "scene": "Stars shining over people walking home",
+      "text": "Baruch reminded God's people far from home, \"Wisdom is found in God's law. God made the stars, and they shine happily for Him. Hold on to His ways.\" He said, \"Jerusalem, take off your sad clothes! Your children are coming home.\"",
+      "lesson": "God's ways lead us home."
+    }
+  ]
+}

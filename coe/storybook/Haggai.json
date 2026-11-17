@@ -1,0 +1,16 @@
+{
+  "book": "Haggai",
+  "cover": "places/temple",
+  "about": "Haggai encouraged God's people to finish building God's house.",
+  "pages": [
+    {
+      "title": "Finish God's House",
+      "chapter": 1,
+      "to": 2,
+      "picture": "places/temple",
+      "scene": "Workers building the temple again",
+      "text": "God's people came home and built their own nice houses. But God's temple was still not finished. Haggai said, \"Think about it! Put God first.\" The people listened and got to work. God said, \"Be strong, all of you. I am with you!\"",
+      "lesson": "Put God first."
+    }
+  ]
+}

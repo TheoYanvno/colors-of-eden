@@ -1,0 +1,23 @@
+{
+  "book": "1 Corinthians",
+  "cover": "people/roman-man",
+  "about": "First Corinthians is Paul's letter to the church in Corinth, teaching them to love each other.",
+  "pages": [
+    {
+      "title": "One Body",
+      "chapter": 12,
+      "picture": "people/roman-child",
+      "scene": "Children with different talents working together",
+      "text": "Paul said the church is like a body. A foot isn't a hand, and an ear isn't an eye, but each part is important! God gives each person different gifts. We need each other, just like a body needs all its parts.",
+      "lesson": "Everyone is important in God's family."
+    },
+    {
+      "title": "Love Is Patient",
+      "chapter": 13,
+      "picture": "people/roman-woman",
+      "scene": "A child sharing with a friend",
+      "text": "\"Love is patient. Love is kind. Love isn't jealous or proud. It isn't rude. It doesn't get angry easily or keep score of wrongs. Love never gives up.\" Faith, hope and love are important, but the greatest is love.",
+      "lesson": "Love is the greatest of all."
+    }
+  ]
+}

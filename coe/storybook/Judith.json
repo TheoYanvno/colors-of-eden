@@ -1,0 +1,25 @@
+{
+  "book": "Judith",
+  "cover": "people/bedouin-woman",
+  "about": "Judith is the story of a brave woman who trusted God when her town was in danger.",
+  "pages": [
+    {
+      "title": "A Town in Trouble",
+      "chapter": 7,
+      "to": 8,
+      "picture": "places/village",
+      "scene": "A small hill town surrounded by tents of an army",
+      "text": "A huge army surrounded the town of Bethulia. They took away the water. The people were thirsty and scared. They wanted to give up. But a wise woman named Judith said, \"Don't give up! Trust God. He will help us.\"",
+      "lesson": "Trust God instead of giving up."
+    },
+    {
+      "title": "Brave Judith",
+      "chapter": 9,
+      "to": 16,
+      "picture": "people/bedouin-woman",
+      "scene": "Judith praying before she goes out",
+      "text": "Judith prayed hard. Then she bravely went into the enemy camp with her helper. God used her to stop the army's mean general. The enemy soldiers ran away, and the town was saved! Judith sang a song of thanks to God.",
+      "lesson": "God can use one brave person to help many."
+    }
+  ]
+}

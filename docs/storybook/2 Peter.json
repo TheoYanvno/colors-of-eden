@@ -1,0 +1,16 @@
+{
+  "book": "2 Peter",
+  "cover": "people/roman-man",
+  "about": "Second Peter reminds us to grow in goodness and to trust God's promises.",
+  "pages": [
+    {
+      "title": "Grow, Grow, Grow",
+      "chapter": 1,
+      "to": 3,
+      "picture": "places/garden",
+      "scene": "A plant growing taller step by step",
+      "text": "Peter said to keep adding good things to our faith: goodness, knowledge, self-control, patience, godliness, kindness and love. God is patient. He wants everyone to come back to Him.",
+      "lesson": "Keep growing in God's love."
+    }
+  ]
+}

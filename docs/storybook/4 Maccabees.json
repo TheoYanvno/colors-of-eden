@@ -1,0 +1,16 @@
+{
+  "book": "4 Maccabees",
+  "cover": "people/priest",
+  "about": "Fourth Maccabees teaches that loving God helps us choose what is right, even when it's hard.",
+  "pages": [
+    {
+      "title": "Reason and Faith",
+      "chapter": 1,
+      "to": 18,
+      "picture": "people/hebrew-woman",
+      "scene": "A mother with her seven sons",
+      "text": "This book tells again about old Eleazar, and a mother and her seven sons, who stayed faithful to God. It teaches that when we love God, we can control our feelings and choose what is right, even when it's hard.",
+      "lesson": "Love for God helps us choose what's right."
+    }
+  ]
+}

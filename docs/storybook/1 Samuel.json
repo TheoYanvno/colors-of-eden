@@ -1,0 +1,66 @@
+{
+  "book": "1 Samuel",
+  "cover": "people/shepherd",
+  "about": "First Kingdoms (1 Samuel) tells about Samuel, Israel's first king Saul, and a shepherd boy named David.",
+  "pages": [
+    {
+      "title": "Hannah's Prayer",
+      "chapter": 1,
+      "to": 2,
+      "picture": "places/temple",
+      "scene": "Hannah praying at God's house",
+      "text": "Hannah wanted a baby very much. She went to God's house and prayed with all her heart. God heard her! She had a baby boy named Samuel. Hannah thanked God and sang a happy song.",
+      "lesson": "Tell God everything. He hears you."
+    },
+    {
+      "title": "Samuel Hears God",
+      "chapter": 3,
+      "picture": "people/hebrew-child",
+      "scene": "Young Samuel in bed, listening, with a lamp glowing",
+      "text": "Young Samuel helped the old priest Eli. One night someone called, \"Samuel!\" He ran to Eli, but Eli had not called. This happened three times. Eli said, \"It is God. Say, 'Speak, Lord, I am listening.'\" Samuel did, and God spoke to him.",
+      "lesson": "Listen when God speaks."
+    },
+    {
+      "title": "The First King",
+      "chapter": 8,
+      "to": 10,
+      "picture": "people/royal-persian",
+      "scene": "Samuel pouring oil on Saul's head",
+      "text": "The people said, \"We want a king like other countries.\" God was sad, because He was their King. But He let them have one. Samuel poured oil on a tall man named Saul. Saul became the first king of Israel.",
+      "lesson": "God is the greatest King."
+    },
+    {
+      "title": "God Looks at the Heart",
+      "chapter": 16,
+      "picture": "people/shepherd",
+      "scene": "Samuel choosing young David from his brothers",
+      "text": "Saul stopped obeying God. So God sent Samuel to find a new king. Jesse's tall, strong sons came by, but God said no to each one. God said, \"People look at the outside. I look at the heart.\" God chose the youngest, David, a shepherd boy.",
+      "lesson": "God cares about what's inside you."
+    },
+    {
+      "title": "David and the Giant",
+      "chapter": 17,
+      "picture": "places/rocky-canyon",
+      "scene": "David with his sling facing the giant Goliath",
+      "text": "A giant named Goliath made fun of God's people. Everyone was scared. But David said, \"God saved me from a lion and a bear. He will save me now!\" David took his sling and five smooth stones. One stone hit Goliath, and the giant fell down.",
+      "lesson": "When you are afraid, God can make you brave."
+    },
+    {
+      "title": "Best Friends",
+      "chapter": 18,
+      "to": 20,
+      "picture": "people/hebrew-man",
+      "scene": "Jonathan and David hugging as friends",
+      "text": "King Saul's son Jonathan loved David like a brother. He gave David his own coat and sword. When Saul wanted to hurt David, Jonathan warned him. The two friends hugged and promised to always be kind to each other's families.",
+      "lesson": "Be a loyal friend."
+    },
+    {
+      "title": "David Spares Saul",
+      "chapter": 24,
+      "picture": "places/desert-wadi",
+      "scene": "David in the cave holding a piece of Saul's robe",
+      "text": "Saul chased David into the desert. One day Saul went into the cave where David was hiding! David's men said, \"Get him now!\" But David only cut off a piece of Saul's robe. He said, \"I will not hurt the king God chose.\"",
+      "lesson": "Be kind, even to people who are mean to you."
+    }
+  ]
+}

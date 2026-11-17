@@ -1,0 +1,33 @@
+{
+  "book": "Esther",
+  "cover": "people/royal-persian",
+  "about": "Esther tells how a brave young queen saved her people.",
+  "pages": [
+    {
+      "title": "A New Queen",
+      "chapter": 2,
+      "picture": "people/royal-persian",
+      "scene": "Esther being crowned queen",
+      "text": "The king of Persia was looking for a new queen. He chose a beautiful young woman named Esther. She was Jewish, but she kept it secret. Her cousin Mordecai, who raised her, still checked on her every day.",
+      "lesson": "God has a plan for your life."
+    },
+    {
+      "title": "For Such a Time as This",
+      "chapter": 3,
+      "to": 4,
+      "picture": "places/babylonian-palace",
+      "scene": "Mordecai talking to Esther outside the palace",
+      "text": "A mean man named Haman tricked the king into making a law to hurt all the Jewish people. Mordecai told Esther, \"Maybe you became queen for such a time as this!\" Going to the king without being called was dangerous. But Esther said, \"I will go.\"",
+      "lesson": "Be brave and speak up for others."
+    },
+    {
+      "title": "Esther Saves Her People",
+      "chapter": 5,
+      "to": 10,
+      "picture": "people/royal-persian",
+      "scene": "Queen Esther at dinner pointing at Haman before the king",
+      "text": "Esther invited the king and Haman to a dinner. Then she told the king about Haman's plan. The king was angry with Haman! He made a new law so the Jewish people could be safe. Everyone celebrated with a happy feast called Purim.",
+      "lesson": "God can turn sad things into joy."
+    }
+  ]
+}

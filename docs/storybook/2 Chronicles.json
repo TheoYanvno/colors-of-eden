@@ -1,0 +1,32 @@
+{
+  "book": "2 Chronicles",
+  "cover": "places/temple",
+  "about": "Second Chronicles tells about the kings after David, and how God helped His people whenever they turned back to Him.",
+  "pages": [
+    {
+      "title": "When My People Pray",
+      "chapter": 7,
+      "picture": "places/temple",
+      "scene": "People praying together at the temple",
+      "text": "After Solomon built the temple, God made a promise. \"If my people are humble and pray and turn from wrong things, I will hear them from heaven. I will forgive them and heal their land.\"",
+      "lesson": "When we pray and turn back, God forgives."
+    },
+    {
+      "title": "The Battle Is God's",
+      "chapter": 20,
+      "picture": "people/hebrew-man",
+      "scene": "Singers marching ahead of the army, praising God",
+      "text": "Big armies came to fight King Jehoshaphat. He was afraid, so he prayed. God said, \"Don't be afraid. The battle is mine.\" The people sent singers out first, praising God. The enemy armies got confused and ran away!",
+      "lesson": "When you're afraid, pray and praise God."
+    },
+    {
+      "title": "Fixing God's House",
+      "chapter": 34,
+      "to": 35,
+      "picture": "places/ancient-ruins",
+      "scene": "Workers repairing the temple",
+      "text": "Good King Josiah fixed up God's temple. He threw away the idols. Then the people had a big Passover feast to remember how God set them free. There had not been a celebration like it in a very long time!",
+      "lesson": "Make room for God in your life."
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "book": "Job",
+  "cover": "places/farm",
+  "about": "Job is about a good man who lost almost everything, and who learned that God is great and good.",
+  "pages": [
+    {
+      "title": "Job Loses Everything",
+      "chapter": 1,
+      "to": 2,
+      "picture": "places/farm",
+      "scene": "Job sitting sadly while friends come to visit",
+      "text": "Job loved God. He had a big family and many animals. Then terrible things happened. He lost his animals and his children, and he got very sick. Job was very sad. But he did not turn away from God.",
+      "lesson": "Keep trusting God, even in sad times."
+    },
+    {
+      "title": "Who Made the Stars?",
+      "chapter": 38,
+      "to": 41,
+      "picture": "animals/arabian-oryx",
+      "scene": "Job looking up at a big storm and stars",
+      "text": "Job had many questions. Then God spoke from a storm. \"Where were you when I made the world? Do you tell the sun when to rise? Do you feed the wild animals?\" Job understood. God is wise and strong, and He takes care of everything.",
+      "lesson": "God is greater than we can understand."
+    },
+    {
+      "title": "Blessed Again",
+      "chapter": 42,
+      "picture": "places/oasis",
+      "scene": "Job with his new family and animals",
+      "text": "Job prayed for his friends, even though they had not been kind to him. Then God blessed Job with twice as much as before. He had a new family, lots of animals and a long, happy life.",
+      "lesson": "God brings good things after hard times."
+    }
+  ]
+}

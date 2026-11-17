@@ -1,0 +1,15 @@
+{
+  "book": "Bel and the Dragon",
+  "cover": "places/babylonian-palace",
+  "about": "Bel and the Dragon shows that idols are not real gods, but the living God is.",
+  "pages": [
+    {
+      "title": "Footprints on the Floor",
+      "chapter": 1,
+      "picture": "places/babylonian-palace",
+      "scene": "Daniel pointing at footprints in the ashes",
+      "text": "The king thought his idol Bel ate the food left for it each night. Daniel sprinkled ashes on the floor. In the morning the food was gone, but there were footprints! The priests had sneaked in to eat it. The idol was only a statue.",
+      "lesson": "Idols are not real. Only God is alive."
+    }
+  ]
+}

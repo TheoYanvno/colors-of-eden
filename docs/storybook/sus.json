@@ -1,0 +1,15 @@
+{
+  "book": "sus",
+  "cover": "people/hebrew-woman",
+  "about": "Susanna is a story about a brave woman who was blamed for something she didn't do, and a wise young man who helped.",
+  "pages": [
+    {
+      "title": "Daniel Finds the Truth",
+      "chapter": 1,
+      "picture": "people/hebrew-woman",
+      "scene": "Young Daniel asking questions while Susanna prays",
+      "text": "Two mean men told lies about Susanna. Everyone believed them. Susanna prayed to God. Then young Daniel spoke up: \"Ask each man separately!\" Each man told a different story, so everyone knew they were lying. Susanna was safe.",
+      "lesson": "Always tell the truth. God protects the innocent."
+    }
+  ]
+}

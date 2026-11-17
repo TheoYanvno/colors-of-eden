@@ -1,0 +1,34 @@
+{
+  "book": "1 Chronicles",
+  "cover": "people/priest",
+  "about": "First Chronicles remembers God's people from Adam to King David, and how David got ready to build God's house.",
+  "pages": [
+    {
+      "title": "God Remembers Every Name",
+      "chapter": 1,
+      "to": 9,
+      "picture": "people/hebrew-child",
+      "scene": "A big family tree with many faces",
+      "text": "First Chronicles starts with long lists of names. They go all the way from Adam to the people who came home from far away. Every name matters, because God remembers every family. He knows your name too!",
+      "lesson": "God knows you by name."
+    },
+    {
+      "title": "Songs of Thanks",
+      "chapter": 15,
+      "to": 16,
+      "picture": "people/priest",
+      "scene": "Musicians with harps and cymbals singing to God",
+      "text": "King David brought God's special box to Jerusalem. He chose singers and players with harps, horns and cymbals. They sang, \"Give thanks to the Lord, for He is good! His love lasts forever!\"",
+      "lesson": "Give thanks to God, for He is good."
+    },
+    {
+      "title": "Getting Ready for the Temple",
+      "chapter": 22,
+      "to": 29,
+      "picture": "places/temple",
+      "scene": "David giving Solomon plans for the temple",
+      "text": "David wanted to build a house for God, but God said his son Solomon would build it. So David got everything ready: gold, silver, wood and stone. He told Solomon, \"Be strong and brave. God will be with you.\"",
+      "lesson": "Help others do great things for God."
+    }
+  ]
+}

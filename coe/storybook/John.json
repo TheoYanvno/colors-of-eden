@@ -1,0 +1,47 @@
+{
+  "book": "John",
+  "cover": "places/coastal-shore",
+  "about": "John tells the good news of Jesus so that we can believe He is God's Son and have life.",
+  "pages": [
+    {
+      "title": "Water into Wine",
+      "chapter": 2,
+      "picture": "places/village",
+      "scene": "Servants filling big jars with water at a wedding",
+      "text": "Jesus and His friends went to a wedding. The wine ran out! Jesus's mother Mary told the servants, \"Do whatever He tells you.\" Jesus said, \"Fill the jars with water.\" When they poured it, it had become the best wine!",
+      "lesson": "Do whatever Jesus tells you."
+    },
+    {
+      "title": "God So Loved the World",
+      "chapter": 3,
+      "picture": "places/desert",
+      "scene": "Jesus talking with Nicodemus at night",
+      "text": "A man named Nicodemus visited Jesus at night. Jesus told him, \"God loved the world so much that He gave His only Son. Whoever believes in Him will not be lost but will live forever.\"",
+      "lesson": "God loves the whole world, and that includes you."
+    },
+    {
+      "title": "A Boy's Lunch",
+      "chapter": 6,
+      "picture": "animals/fish",
+      "scene": "A boy giving loaves and fish to Jesus",
+      "text": "Thousands of people were hungry. A boy had five small loaves and two fish. He gave them to Jesus. Jesus thanked God and shared the food. Everyone ate until they were full, and there were twelve baskets left over!",
+      "lesson": "Share what you have. God can do a lot with it."
+    },
+    {
+      "title": "The Good Shepherd",
+      "chapter": 10,
+      "picture": "people/shepherd",
+      "scene": "Jesus with sheep following Him",
+      "text": "Jesus said, \"I am the good shepherd. I know my sheep, and they know me. They listen to my voice and follow me. The good shepherd gives His life for the sheep.\"",
+      "lesson": "Jesus knows you and takes care of you."
+    },
+    {
+      "title": "Breakfast on the Beach",
+      "chapter": 21,
+      "picture": "places/coastal-shore",
+      "scene": "Jesus cooking fish on the beach for His friends",
+      "text": "After Jesus rose, His friends went fishing all night and caught nothing. Jesus called from the shore, \"Throw your net on the other side!\" The net was full! Jesus made them breakfast. He asked Peter, \"Do you love me?\" and said, \"Feed my sheep.\"",
+      "lesson": "Show your love for Jesus by caring for others."
+    }
+  ]
+}

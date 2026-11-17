@@ -1,0 +1,40 @@
+{
+  "book": "Psalms",
+  "cover": "people/shepherd",
+  "about": "Psalms is a book of 150 songs and prayers for every feeling: happy, sad, scared and thankful.",
+  "pages": [
+    {
+      "title": "The Lord Is My Shepherd",
+      "chapter": 23,
+      "picture": "people/shepherd",
+      "scene": "A shepherd with sheep by quiet water",
+      "text": "King David wrote this song. \"The Lord is my shepherd. I have everything I need. He lets me rest in green fields. He leads me by quiet water. Even when I walk through dark places, I won't be afraid, because You are with me.\"",
+      "lesson": "God takes care of you like a shepherd."
+    },
+    {
+      "title": "The Sky Tells About God",
+      "chapter": 19,
+      "picture": "places/desert",
+      "scene": "A big sun rising over hills",
+      "text": "\"The sky tells how great God is! Every day the sun comes up like a happy runner. Every night the stars shine.\" When we look at the sky, it reminds us that God made it all. God's words are sweeter than honey!",
+      "lesson": "God's world shows how great He is."
+    },
+    {
+      "title": "Be Still",
+      "chapter": 46,
+      "picture": "places/mountains",
+      "scene": "A child resting quietly on a mountain",
+      "text": "\"God is our safe place and our strength. He always helps us in trouble. So we won't be afraid, even if mountains fall into the sea!\" God says, \"Be still, and know that I am God.\"",
+      "lesson": "When you're worried, be still and remember God is with you."
+    },
+    {
+      "title": "Everything Praise the Lord!",
+      "chapter": 148,
+      "to": 150,
+      "picture": "animals/dolphin",
+      "scene": "Animals, people and instruments all praising God",
+      "text": "\"Praise the Lord! Sun and moon, praise Him! Shining stars, praise Him! Sea creatures, praise Him! Mountains and trees, animals and birds, kings and children, praise Him! Praise Him with horns, harps and drums! Let everything that breathes praise the Lord!\"",
+      "lesson": "Praise God with everything you have."
+    }
+  ]
+}

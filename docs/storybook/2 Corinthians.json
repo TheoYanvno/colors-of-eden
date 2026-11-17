@@ -1,0 +1,24 @@
+{
+  "book": "2 Corinthians",
+  "cover": "people/roman-man",
+  "about": "Second Corinthians is Paul's letter about God's comfort and joyful giving.",
+  "pages": [
+    {
+      "title": "God Comforts Us",
+      "chapter": 1,
+      "to": 4,
+      "picture": "people/roman-man",
+      "scene": "A clay jar with light shining out",
+      "text": "Paul had many hard times. But he wrote, \"God comforts us in all our troubles, so we can comfort others.\" We are like clay jars holding a great treasure: God's light inside us!",
+      "lesson": "God comforts us so we can comfort others."
+    },
+    {
+      "title": "A Cheerful Giver",
+      "chapter": 9,
+      "picture": "people/merchant",
+      "scene": "A child happily giving a gift",
+      "text": "Paul asked the church to help poor believers. He said, \"Give what you decide in your heart, not because you have to. God loves a cheerful giver!\"",
+      "lesson": "Give with a happy heart."
+    }
+  ]
+}

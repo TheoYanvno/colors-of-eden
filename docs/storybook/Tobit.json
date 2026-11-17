@@ -1,0 +1,34 @@
+{
+  "book": "Tobit",
+  "cover": "places/caravan-route",
+  "about": "Tobit is the story of a kind family, a long trip and an angel named Raphael who helped them.",
+  "pages": [
+    {
+      "title": "Kind Tobit",
+      "chapter": 1,
+      "to": 3,
+      "picture": "people/hebrew-man",
+      "scene": "Old Tobit sharing bread with a hungry man",
+      "text": "Tobit lived far from home, but he still loved God. He shared his food with hungry people and helped those who were poor. One day he became blind. Tobit was very sad, but he still prayed to God.",
+      "lesson": "Keep loving God and helping others, even when life is hard."
+    },
+    {
+      "title": "A Helper for the Trip",
+      "chapter": 4,
+      "to": 6,
+      "picture": "places/caravan-route",
+      "scene": "Tobias, the angel Raphael and their dog walking by a river",
+      "text": "Tobit sent his son Tobias on a long trip. A friendly man came along to help. His name was Raphael. Tobias didn't know he was really an angel! On the way, a big fish jumped at Tobias from the river. Raphael said, \"Catch it! It will be useful.\"",
+      "lesson": "God sends help when we need it."
+    },
+    {
+      "title": "Home Again",
+      "chapter": 7,
+      "to": 14,
+      "picture": "animals/fish",
+      "scene": "Tobit seeing again and hugging Tobias",
+      "text": "Tobias married a kind woman named Sarah. Then they went home. Raphael told Tobias how to use the fish to heal his father's eyes. Tobit could see again! Raphael said, \"I am an angel of God. Thank God for all He has done!\"",
+      "lesson": "Always thank God for His help."
+    }
+  ]
+}

@@ -12,9 +12,12 @@ select, button, .button { font: inherit; padding: 8px 12px; border-radius: 10px;
 button, .button { cursor: pointer; text-align: center; text-decoration: none; }
 .primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
 button:disabled { opacity: .5; cursor: default; }
-.plan { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin: 0; font-size: .95rem; }
-.plan dt { font-weight: 600; }
-.plan dd { margin: 0; }
+.controls { position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow: auto; }
+.contents { margin: 8px 0 0; padding-left: 1.4em; display: grid; gap: 2px; font-size: .95rem; }
+.contents .muted { font-size: .85rem; }
+.book { display: grid; gap: 24px; }
+.page { margin: 0; display: grid; gap: 8px; scroll-margin-top: 16px; }
+.page figcaption { text-align: right; }
 .muted { color: var(--muted); font-size: .95rem; }
 .error { color: var(--error); }
 .status p { margin: 0; }
@@ -23,11 +26,9 @@ button:disabled { opacity: .5; cursor: default; }
 footer { max-width: 980px; margin: 8px auto 32px; padding: 0 16px; color: var(--muted); font-size: .9rem; text-align: center; }
 a { color: var(--accent); }
 @media (max-width: 760px) { main { grid-template-columns: 1fr; } }
-fieldset.booklet { border: 1px solid var(--line); border-radius: 12px; padding: 8px 12px 12px; display: grid; gap: 8px; margin: 0; }
-fieldset.booklet legend { font-weight: 600; padding: 0 4px; }
-.booklet-pages { display: none; }
+@media (max-width: 760px) { .controls { position: static; max-height: none; } }
 
-/* Printing: just the page, full size on US Letter, so "Save as PDF" makes a ready-to-print file. */
+/* Printing: the whole book, one page per sheet, full size on US Letter, so "Save as PDF" makes a ready-to-print file. */
 @media print {
   @page { size: letter; margin: 0; }
   body { background: #fff; }
@@ -35,6 +36,5 @@ fieldset.booklet legend { font-weight: 600; padding: 0 4px; }
   main { display: block; padding: 0; }
   .sheet { border: 0; box-shadow: none; border-radius: 0; width: 8.5in; height: 11in; break-after: page; }
   .sheet svg { width: 8.5in; height: 11in; }
-  body.printing-booklet .page { display: none; }
-  body.printing-booklet .booklet-pages { display: block; }
+  .book { display: block; }
 }

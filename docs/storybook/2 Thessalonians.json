@@ -1,0 +1,15 @@
+{
+  "book": "2 Thessalonians",
+  "cover": "people/roman-man",
+  "about": "Second Thessalonians encourages believers to keep going and keep working while they wait for Jesus.",
+  "pages": [
+    {
+      "title": "Keep Doing Good",
+      "chapter": 3,
+      "picture": "people/farmer",
+      "scene": "A worker happily doing his job",
+      "text": "Some people stopped working while they waited for Jesus to come back. Paul said, \"Don't be lazy. Do your work quietly. And never get tired of doing what is good.\" God is faithful. He will make you strong.",
+      "lesson": "Never get tired of doing good."
+    }
+  ]
+}

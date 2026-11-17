@@ -1,0 +1,24 @@
+{
+  "book": "James",
+  "cover": "people/roman-man",
+  "about": "James is a letter that teaches us to show our faith by what we do.",
+  "pages": [
+    {
+      "title": "Be Doers",
+      "chapter": 1,
+      "to": 2,
+      "picture": "people/hebrew-man",
+      "scene": "A child giving a coat to someone cold",
+      "text": "James wrote, \"Be quick to listen, slow to speak and slow to get angry.\" Don't just hear God's word. Do what it says! If someone needs food or clothes, help them. Faith shows in what we do.",
+      "lesson": "Show your faith by what you do."
+    },
+    {
+      "title": "Tame Your Tongue",
+      "chapter": 3,
+      "picture": "places/forest",
+      "scene": "A small spark near a big forest",
+      "text": "A tiny spark can start a big forest fire. A small tongue can say very big, hurtful things. James said, \"Use your words to bless, not to hurt.\"",
+      "lesson": "Use your words to help, not hurt."
+    }
+  ]
+}

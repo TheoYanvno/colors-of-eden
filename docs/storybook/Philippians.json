@@ -1,0 +1,15 @@
+{
+  "book": "Philippians",
+  "cover": "people/roman-man",
+  "about": "Philippians is Paul's happy letter, written from jail, about joy in Jesus.",
+  "pages": [
+    {
+      "title": "Rejoice Always",
+      "chapter": 4,
+      "picture": "people/roman-woman",
+      "scene": "A child praying with a peaceful smile",
+      "text": "Even though Paul was in jail, he wrote, \"Be happy in the Lord always! Don't worry about anything. Pray about everything, and thank God. His peace will guard your heart.\" Paul also said, \"I can do all things through Christ, who gives me strength.\"",
+      "lesson": "Don't worry. Pray and be thankful."
+    }
+  ]
+}

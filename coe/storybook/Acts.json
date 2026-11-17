@@ -1,0 +1,56 @@
+{
+  "book": "Acts",
+  "cover": "places/coastal-shore",
+  "about": "Acts tells how Jesus' friends spread the good news everywhere with the Holy Spirit's help.",
+  "pages": [
+    {
+      "title": "Jesus Goes Up to Heaven",
+      "chapter": 1,
+      "picture": "places/mountains",
+      "scene": "Jesus rising into the clouds as friends watch",
+      "text": "Jesus told His friends, \"The Holy Spirit will give you power. Tell everyone about me, all over the world!\" Then He went up into the clouds. Two angels said, \"Jesus will come back the same way.\"",
+      "lesson": "Tell others about Jesus."
+    },
+    {
+      "title": "The Holy Spirit Comes",
+      "chapter": 2,
+      "picture": "people/hebrew-man",
+      "scene": "Friends praying with flames above their heads",
+      "text": "Jesus' friends were praying together. Suddenly there was a sound like a strong wind. Little flames rested on each of them. They were filled with the Holy Spirit and spoke in other languages! That day three thousand people believed in Jesus.",
+      "lesson": "The Holy Spirit helps us share God's love."
+    },
+    {
+      "title": "Peter and John Help a Man",
+      "chapter": 3,
+      "picture": "places/temple",
+      "scene": "A man leaping for joy by the temple gate",
+      "text": "A man who could not walk sat by the temple gate asking for money. Peter said, \"I don't have money, but I'll give you what I have. In Jesus' name, walk!\" The man jumped up, walking and leaping and praising God!",
+      "lesson": "Give what you have in Jesus' name."
+    },
+    {
+      "title": "Saul Meets Jesus",
+      "chapter": 9,
+      "picture": "places/caravan-route",
+      "scene": "Saul falling down in a bright light on the road",
+      "text": "Saul was mean to people who loved Jesus. On the road to Damascus, a bright light flashed. Jesus said, \"Saul, why are you hurting me?\" Saul couldn't see for three days. Then God healed him, and Saul, also called Paul, began telling everyone about Jesus!",
+      "lesson": "Jesus can change anyone."
+    },
+    {
+      "title": "Singing in Jail",
+      "chapter": 16,
+      "picture": "people/roman-man",
+      "scene": "Paul and Silas singing in jail",
+      "text": "Paul and Silas were put in jail for teaching about Jesus. At midnight they sang songs to God! An earthquake opened all the doors. The jailer was afraid, but Paul said, \"We're all here!\" The jailer and his family believed in Jesus.",
+      "lesson": "Praise God even in hard times."
+    },
+    {
+      "title": "Shipwreck!",
+      "chapter": 27,
+      "to": 28,
+      "picture": "places/coastal-shore",
+      "scene": "People swimming to shore from a broken ship",
+      "text": "Paul was on a ship to Rome when a huge storm hit. An angel told Paul, \"Everyone will be safe.\" The ship broke apart, but everyone swam or floated to shore! Paul kept telling people about Jesus, even in Rome.",
+      "lesson": "God keeps His promises in every storm."
+    }
+  ]
+}

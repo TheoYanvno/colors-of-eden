@@ -1,0 +1,39 @@
+{
+  "book": "Mark",
+  "cover": "places/sea-of-galilee",
+  "about": "Mark tells the good news of Jesus quickly, full of action and amazing things Jesus did.",
+  "pages": [
+    {
+      "title": "Fishers of People",
+      "chapter": 1,
+      "picture": "places/sea-of-galilee",
+      "scene": "Jesus calling fishermen by the sea",
+      "text": "Jesus walked by the sea and saw Simon and Andrew throwing their nets. \"Follow me,\" Jesus said, \"and I will make you fishers of people.\" Right away they left their nets and followed Him. James and John came too.",
+      "lesson": "Follow Jesus right away."
+    },
+    {
+      "title": "Through the Roof",
+      "chapter": 2,
+      "picture": "places/village",
+      "scene": "Friends lowering a man through a roof",
+      "text": "A man could not walk. His four friends carried him to see Jesus, but the house was too crowded. So they made a hole in the roof and lowered him down! Jesus said, \"Get up and walk.\" And he did!",
+      "lesson": "Good friends bring each other to Jesus."
+    },
+    {
+      "title": "Jesus Calms the Storm",
+      "chapter": 4,
+      "picture": "places/sea-of-galilee",
+      "scene": "Jesus calming the storm from the boat",
+      "text": "Jesus and His friends were in a boat. A big storm came. Waves splashed in! Jesus was asleep. His friends cried, \"Teacher, help!\" Jesus stood up and said, \"Peace! Be still!\" The wind stopped. Even the wind and waves obey Him!",
+      "lesson": "When you're afraid, Jesus is with you."
+    },
+    {
+      "title": "Let the Children Come",
+      "chapter": 10,
+      "picture": "people/hebrew-child",
+      "scene": "Jesus hugging children",
+      "text": "Parents brought their children to Jesus. His friends said, \"Go away, Jesus is busy.\" But Jesus said, \"Let the children come to me! God's kingdom belongs to people like them.\" He took the children in His arms and blessed them.",
+      "lesson": "Jesus loves children."
+    }
+  ]
+}

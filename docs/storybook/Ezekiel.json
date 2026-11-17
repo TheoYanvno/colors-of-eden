@@ -1,0 +1,23 @@
+{
+  "book": "Ezekiel",
+  "cover": "places/desert-wadi",
+  "about": "Ezekiel was a prophet who saw amazing visions about God's glory and His power to bring new life.",
+  "pages": [
+    {
+      "title": "The Good Shepherd",
+      "chapter": 34,
+      "picture": "animals/sheep",
+      "scene": "A shepherd carrying a hurt lamb",
+      "text": "God said, \"My sheep are lost and scattered. I myself will look for them. I will bring them home, feed them in green fields and take care of the hurt ones. I will be their shepherd.\"",
+      "lesson": "God looks for us and takes care of us."
+    },
+    {
+      "title": "Dry Bones Live",
+      "chapter": 37,
+      "picture": "places/desert-wadi",
+      "scene": "A valley of dry bones coming together",
+      "text": "God showed Ezekiel a valley full of dry bones. God said, \"Tell the bones to listen!\" The bones came together, and God's breath made them alive! They stood up like a big army. God can give new life to anything.",
+      "lesson": "God can bring new life."
+    }
+  ]
+}

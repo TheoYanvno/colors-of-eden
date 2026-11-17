@@ -1,0 +1,23 @@
+{
+  "book": "Galatians",
+  "cover": "people/roman-man",
+  "about": "Galatians is Paul's letter about the freedom we have in Jesus.",
+  "pages": [
+    {
+      "title": "The Fruit of the Spirit",
+      "chapter": 5,
+      "picture": "places/farm",
+      "scene": "A tree full of nine kinds of fruit",
+      "text": "Paul wrote that the Holy Spirit grows good things in us, like fruit on a tree: love, joy, peace, patience, kindness, goodness, faithfulness, gentleness and self-control.",
+      "lesson": "Let God grow good fruit in you."
+    },
+    {
+      "title": "Don't Give Up",
+      "chapter": 6,
+      "picture": "places/farm",
+      "scene": "Friends helping carry a heavy basket",
+      "text": "\"Help carry each other's heavy loads. Don't get tired of doing good. If you don't give up, you will enjoy a good harvest at the right time.\"",
+      "lesson": "Keep doing good, and don't give up."
+    }
+  ]
+}

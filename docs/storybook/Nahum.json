@@ -1,0 +1,15 @@
+{
+  "book": "Nahum",
+  "cover": "places/ancient-ruins",
+  "about": "Nahum tells that God is good and keeps His people safe, and that cruel Nineveh would fall.",
+  "pages": [
+    {
+      "title": "A Safe Place",
+      "chapter": 1,
+      "picture": "places/ancient-ruins",
+      "scene": "Strong walls of an old city",
+      "text": "Nineveh had become cruel again. It hurt many nations. Nahum said, \"The Lord is good. He is a safe place in times of trouble. He takes care of those who trust Him.\" God would stop the cruel city.",
+      "lesson": "God is a safe place when you're in trouble."
+    }
+  ]
+}

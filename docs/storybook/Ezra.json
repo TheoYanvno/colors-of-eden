@@ -1,0 +1,25 @@
+{
+  "book": "Ezra",
+  "cover": "places/temple",
+  "about": "Second Esdras (Ezra) tells how God's people came home from far away to rebuild God's house and learn God's law again.",
+  "pages": [
+    {
+      "title": "Going Home",
+      "chapter": 1,
+      "to": 3,
+      "picture": "places/caravan-route",
+      "scene": "God's people walking home to Jerusalem",
+      "text": "God's people had been taken far away to Babylon. Then King Cyrus said, \"You may go home and build God's house again!\" Thousands of people packed up and walked back to Jerusalem. They were so happy to be home.",
+      "lesson": "God keeps His promises."
+    },
+    {
+      "title": "Ezra the Teacher",
+      "chapter": 7,
+      "to": 10,
+      "picture": "people/priest",
+      "scene": "Ezra reading God's law to the people",
+      "text": "Ezra loved God's law. He studied it, he obeyed it, and he taught it to others. He led more people home to Jerusalem. He prayed for God to keep them safe on the long trip, and God did.",
+      "lesson": "Learn God's word, obey it and share it."
+    }
+  ]
+}

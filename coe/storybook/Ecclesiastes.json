@@ -1,0 +1,23 @@
+{
+  "book": "Ecclesiastes",
+  "cover": "places/garden",
+  "about": "Ecclesiastes is written by a teacher who tried everything and learned what really matters.",
+  "pages": [
+    {
+      "title": "A Time for Everything",
+      "chapter": 3,
+      "picture": "places/garden",
+      "scene": "A garden with seeds planted and fruit picked",
+      "text": "\"There is a time for everything. A time to plant and a time to pick. A time to cry and a time to laugh. A time to be quiet and a time to talk.\" God makes everything beautiful in its time.",
+      "lesson": "God has the right time for everything."
+    },
+    {
+      "title": "Remember God While You're Young",
+      "chapter": 12,
+      "picture": "people/hebrew-child",
+      "scene": "A child looking up at the sky with wonder",
+      "text": "The teacher tried to be happy with money, toys and parties. But it was all like chasing the wind. In the end he said, \"Remember God while you are young. Love Him and do what He says. That is what matters most.\"",
+      "lesson": "Love God now, while you're young."
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "book": "Song of Solomon",
+  "cover": "places/garden",
+  "about": "The Song of Songs is a love song. It shows that love is a beautiful gift from God.",
+  "pages": [
+    {
+      "title": "A Song About Love",
+      "chapter": 2,
+      "to": 8,
+      "picture": "places/garden",
+      "scene": "Spring flowers blooming and birds singing in a garden",
+      "text": "This book is a beautiful song about a husband and wife who love each other. They say, \"Winter is over. Flowers are blooming. Birds are singing!\" The song says love is very strong. Lots of water can't put it out. Christians also hear in it how much God loves us.",
+      "lesson": "Love is a strong and beautiful gift from God."
+    }
+  ]
+}

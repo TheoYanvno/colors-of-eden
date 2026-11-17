@@ -1,0 +1,33 @@
+{
+  "book": "Revelation",
+  "cover": "places/garden",
+  "about": "Revelation is the last book of the Bible. It tells how Jesus wins and makes everything new.",
+  "pages": [
+    {
+      "title": "Jesus at the Door",
+      "chapter": 3,
+      "picture": "places/village",
+      "scene": "Jesus knocking at a door",
+      "text": "Jesus said, \"Look! I am standing at the door and knocking. If anyone hears my voice and opens the door, I will come in and eat with them as a friend.\"",
+      "lesson": "Open your heart to Jesus."
+    },
+    {
+      "title": "Worship in Heaven",
+      "chapter": 4,
+      "to": 5,
+      "picture": "places/temple",
+      "scene": "God's throne with a rainbow and people singing",
+      "text": "John saw God's throne in heaven with a rainbow around it. Angels and people from every nation sang, \"Holy, holy, holy is the Lord God!\" They praised Jesus, the Lamb, who saved people from every language and land.",
+      "lesson": "People everywhere will praise God together."
+    },
+    {
+      "title": "Everything New",
+      "chapter": 21,
+      "to": 22,
+      "picture": "places/garden",
+      "scene": "A river of life with a tree beside it",
+      "text": "At the end, God will make a new heaven and a new earth. He will wipe every tear away. No more crying, no more pain! There will be a river of life and a tree with fruit for everyone. Jesus says, \"I am coming soon!\"",
+      "lesson": "God will make everything new."
+    }
+  ]
+}

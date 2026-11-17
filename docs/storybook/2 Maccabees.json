@@ -1,0 +1,32 @@
+{
+  "book": "2 Maccabees",
+  "cover": "places/temple",
+  "about": "Second Maccabees tells more about God's people who stayed faithful in hard times.",
+  "pages": [
+    {
+      "title": "Old Eleazar",
+      "chapter": 6,
+      "picture": "people/priest",
+      "scene": "Old Eleazar standing tall with his walking stick",
+      "text": "Eleazar was ninety years old. The king's men told him to eat food God had said not to eat. Friends said, \"Just pretend!\" But Eleazar said, \"I won't pretend. The young people are watching me. I will be a good example.\"",
+      "lesson": "Be a good example, even when no one else is."
+    },
+    {
+      "title": "A Brave Mother",
+      "chapter": 7,
+      "picture": "people/hebrew-woman",
+      "scene": "A mother with her seven sons, looking up to heaven",
+      "text": "A mother and her seven sons would not turn away from God, even when the king was very cruel to them. The mother told her sons, \"God made everything from nothing. He gave you life, and He will give it back to you.\"",
+      "lesson": "God gives life, and His love is forever."
+    },
+    {
+      "title": "Judah Prays",
+      "chapter": 12,
+      "to": 15,
+      "picture": "people/hebrew-man",
+      "scene": "Judah Maccabee kneeling in prayer",
+      "text": "Judah Maccabee always prayed before a battle. He prayed for his friends who had died, too, because he believed God would raise them to life. In a dream he saw the prophet Jeremiah praying for God's people.",
+      "lesson": "Pray for others, both living and departed."
+    }
+  ]
+}

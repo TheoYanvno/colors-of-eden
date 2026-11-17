@@ -1,67 +1,54 @@
-"""`python -m coe plan Psalms 23` prints what the coloring page for a chapter will show; `page` draws it;
-`pictures` lists the 60 drawings a page can use."""
+"""`python -m coe books` lists the storybooks; `book Genesis` saves a book's cover and pages; `pictures`
+lists the 60 drawings."""
 from __future__ import annotations
 
 import argparse
+import re
 import sys
-from dataclasses import replace
-
-from .books import BadReference
-from .art import draw_page
-from .picture import catalog, find as find_picture
-from .scenes import picture_verse, plan_page
 from pathlib import Path
-from .text import load_chapter
+
+from .art import draw_cover, draw_story_page
+from .books import BIBLE, BadReference
+from .picture import catalog
+from .storybook import storybook, written
+
+
+def save_book(book: dict, out: Path) -> Path:
+    """Save the cover as 00-cover.svg and the pages as 01-<title>.svg and on, in out/<book>/."""
+    folder = out / re.sub(r"[^a-z0-9]+", "-", book["label"].lower()).strip("-")
+    folder.mkdir(parents=True, exist_ok=True)
+    (folder / "00-cover.svg").write_text(draw_cover(book), encoding="utf-8")
+    for n, page in enumerate(book["pages"], 1):
+        name = re.sub(r"[^a-z0-9]+", "-", page["title"].lower()).strip("-")
+        (folder / f"{n:02d}-{name}.svg").write_text(draw_story_page(book, n), encoding="utf-8")
+    return folder
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(prog="coe", description="Coloring pages from any Bible chapter.")
+    parser = argparse.ArgumentParser(prog="coe", description="Coloring storybooks of the Bible.")
     sub = parser.add_subparsers(dest="cmd", required=True)
-    p = sub.add_parser("plan", help="show the motifs and verse chosen for a chapter")
-    p.add_argument("book", nargs="+", help='book name, e.g. Genesis or "1 John"')
-    p.add_argument("chapter", type=int)
-    g = sub.add_parser("page", help="draw the coloring page for a chapter as an SVG file")
-    g.add_argument("book", nargs="+", help='book name, e.g. Genesis or "1 John"')
-    g.add_argument("chapter", type=int)
-    g.add_argument("--out", default="out", help="folder for the page (default: out)")
-    for cmd in (p, g):
-        cmd.add_argument("--picture", help='use this drawing (e.g. animals/lion), or "none" for the page drawn in code')
-    sub.add_parser("pictures", help="list the drawings a page can use and the words that choose them")
+    sub.add_parser("books", help="list the books and how many pages each storybook has")
+    b = sub.add_parser("book", help="save a book's cover and pages as SVG files, ready to print")
+    b.add_argument("name", nargs="+", help='the book, e.g. Genesis, "1 Samuel" or Tobit')
+    b.add_argument("--out", default="out", help="folder for the pages (default: out)")
+    sub.add_parser("pictures", help="list the 60 drawings")
     args = parser.parse_args(argv)
+    if args.cmd == "books":
+        have = set(written())
+        for book_id, _, label in BIBLE:
+            print(f"{label:<28} {len(storybook(book_id)['pages']):>2} pages" if book_id in have else f"{label:<28} not written yet")
+        return 0
     if args.cmd == "pictures":
         for pic in catalog():
-            print(f"{pic['id']:<28} {pic['label']:<30} {', '.join(pic['words']) or '(choose it with --picture)'}")
+            print(f"{pic['id']:<28} {pic['label']}")
         return 0
-    if args.picture and args.picture != "none":
-        try:
-            find_picture(args.picture)
-        except KeyError as e:
-            print(e.args[0], file=sys.stderr)
-            return 1
     try:
-        chapter = load_chapter(" ".join(args.book), args.chapter)
-    except (BadReference, ConnectionError) as e:
-        print(e, file=sys.stderr)
+        book = storybook(" ".join(args.name))
+    except (KeyError, BadReference) as e:
+        print(e.args[0], file=sys.stderr)
         return 1
-    plan = plan_page(chapter)
-    if args.picture == "none":
-        plan = replace(plan, picture=None)
-    elif args.picture:
-        plan = replace(plan, picture=args.picture, verse=picture_verse(chapter, args.picture) or plan.verse)
-    if args.cmd == "page":
-        out = Path(args.out)
-        out.mkdir(parents=True, exist_ok=True)
-        path = out / f"{plan.reference.replace(' ', '-').lower()}.svg"
-        path.write_text(draw_page(plan), encoding="utf-8")
-        print(f"Saved {path} (print it at 100% on US Letter paper)")
-        return 0
-    print(f"{plan.reference} ({chapter.translation})")
-    if plan.picture:
-        print(f"Picture:    {find_picture(plan.picture)['label']} ({plan.picture})")
-    else:
-        print(f"Background: {', '.join(plan.background) or '-'}")
-        print(f"In front:   {', '.join(plan.foreground) or '-'}")
-    print(f"Verse {plan.verse[0]}: {plan.verse[1]}")
+    folder = save_book(book, Path(args.out))
+    print(f"Saved the cover and {len(book['pages'])} pages of {book['label']} in {folder}/ (print them at 100% on US Letter paper)")
     return 0
 
 

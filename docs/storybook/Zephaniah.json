@@ -1,0 +1,15 @@
+{
+  "book": "Zephaniah",
+  "cover": "places/village",
+  "about": "Zephaniah told God's people to turn back to Him, and promised that God would sing over them with joy.",
+  "pages": [
+    {
+      "title": "God Sings Over You",
+      "chapter": 3,
+      "picture": "people/hebrew-child",
+      "scene": "A happy child under a starry sky",
+      "text": "Zephaniah warned people to stop doing wrong. Then he shared good news: \"The Lord your God is with you. He is very happy with you. His love will calm you. He will sing over you with joy!\"",
+      "lesson": "God loves you and sings over you with joy."
+    }
+  ]
+}

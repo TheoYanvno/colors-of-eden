@@ -1,0 +1,16 @@
+{
+  "book": "1 John",
+  "cover": "people/roman-man",
+  "about": "First John is a letter about God's love and how we can love each other.",
+  "pages": [
+    {
+      "title": "God Is Love",
+      "chapter": 3,
+      "to": 4,
+      "picture": "people/hebrew-child",
+      "scene": "Children holding hands in a circle",
+      "text": "John wrote, \"See how much God loves us! He calls us His children!\" John said, \"God is love. We love because He loved us first. Since God loved us so much, we should love each other too.\"",
+      "lesson": "We love because God loved us first."
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "book": "Ephesians",
+  "cover": "people/roman-man",
+  "about": "Ephesians is Paul's letter about God's love and how to live as God's children.",
+  "pages": [
+    {
+      "title": "Saved by Grace",
+      "chapter": 2,
+      "picture": "people/roman-child",
+      "scene": "A child painting, with God's love all around",
+      "text": "Paul wrote, \"God saved you by His grace, because you trusted Him. It is a gift from God, not something you earned. We are God's work of art, made to do good things.\"",
+      "lesson": "You are God's work of art."
+    },
+    {
+      "title": "Put On God's Armor",
+      "chapter": 6,
+      "picture": "people/roman-man",
+      "scene": "A child dressed in God's armor",
+      "text": "Paul said to be strong in the Lord, like a soldier in armor: the belt of truth, the breastplate of doing right, the shoes of peace, the shield of faith, the helmet of salvation and the sword of God's word.",
+      "lesson": "Be strong in the Lord."
+    }
+  ]
+}

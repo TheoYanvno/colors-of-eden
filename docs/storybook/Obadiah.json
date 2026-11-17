@@ -1,0 +1,15 @@
+{
+  "book": "Obadiah",
+  "cover": "places/rocky-canyon",
+  "about": "Obadiah is the shortest book in the Old Testament. It warns against being proud and unkind to others.",
+  "pages": [
+    {
+      "title": "Don't Be Proud",
+      "chapter": 1,
+      "picture": "places/rocky-canyon",
+      "scene": "A city carved high in the rocky cliffs",
+      "text": "The people of Edom lived high in the rocky mountains. They thought no one could reach them. When their cousins in Israel were in trouble, Edom laughed and didn't help. Obadiah said, \"Pride brings you down. Help others in trouble.\"",
+      "lesson": "Don't be proud. Help people in trouble."
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "book": "Wisdom",
+  "cover": "places/temple",
+  "about": "The Wisdom of Solomon teaches that God's wisdom is a treasure, better than gold.",
+  "pages": [
+    {
+      "title": "Better Than Gold",
+      "chapter": 7,
+      "to": 9,
+      "picture": "people/royal-persian",
+      "scene": "Solomon praying, with gold and crowns set aside",
+      "text": "Solomon said, \"I prayed, and God gave me wisdom. I loved wisdom more than crowns, gold or jewels. It is brighter than the sun!\" Wisdom helps us know what is right and how to live well.",
+      "lesson": "Ask God for wisdom. It's better than gold."
+    },
+    {
+      "title": "God Loves Everything He Made",
+      "chapter": 11,
+      "picture": "animals/gazelle",
+      "scene": "Many animals and people in God's beautiful world",
+      "text": "\"Lord, you love everything that exists. You would not have made anything you didn't love. You are kind to all, because they are yours.\" God cares about every person and every creature.",
+      "lesson": "God loves everything He made, including you."
+    }
+  ]
+}

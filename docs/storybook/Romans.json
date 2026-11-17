@@ -1,0 +1,33 @@
+{
+  "book": "Romans",
+  "cover": "people/roman-man",
+  "about": "Romans is a letter from Paul to the church in Rome. It explains God's great love and how Jesus saves us.",
+  "pages": [
+    {
+      "title": "A Gift from God",
+      "chapter": 3,
+      "to": 6,
+      "picture": "people/roman-child",
+      "scene": "A child opening a gift with a cross on it",
+      "text": "Paul wrote, \"Everyone has done wrong things. No one is perfect.\" But God has a gift for us: Jesus. When we trust Jesus, God forgives us and makes us right with Him. We can't earn this gift. God gives it because He loves us.",
+      "lesson": "God's forgiveness is a free gift."
+    },
+    {
+      "title": "Nothing Can Separate Us",
+      "chapter": 8,
+      "picture": "people/roman-woman",
+      "scene": "A parent hugging a child tightly",
+      "text": "Paul wrote, \"Nothing can separate us from God's love. Not trouble, not danger, not anything in the whole world. Not angels, not today, not tomorrow. Nothing!\" And God works all things together for good for those who love Him.",
+      "lesson": "Nothing can take God's love away from you."
+    },
+    {
+      "title": "Love One Another",
+      "chapter": 12,
+      "to": 13,
+      "picture": "people/roman-man",
+      "scene": "Friends helping each other",
+      "text": "Paul wrote, \"Love each other like family. Be happy with those who are happy. Cry with those who cry. Don't pay back mean things with mean things. Beat evil by doing good.\"",
+      "lesson": "Beat evil by doing good."
+    }
+  ]
+}
