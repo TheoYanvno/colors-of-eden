@@ -22,7 +22,7 @@ class Pictures(unittest.TestCase):
         for kind in ("animals", "places", "people"):
             self.assertEqual(sum(p["id"].startswith(kind + "/") for p in pics), 20, kind)
         for p in pics:
-            svg = (FOLDER / f"{p['id']}.svg").read_text()
+            svg = (FOLDER / f"{p['id']}.svg").read_text(encoding="utf-8")
             self.assertIn(f'viewBox="0 0 {p["width"]} {p["height"]}"', svg, p["id"])
             self.assertTrue(path_data(p["id"]).startswith("M"), p["id"])
             self.assertEqual(p["words"], [w.lower() for w in p["words"]], p["id"])

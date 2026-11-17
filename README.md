@@ -19,6 +19,12 @@ npm test       # the web page's tests, including a check that it plans pages exa
 npm run build  # build into docs/ for GitHub Pages
 ```
 
+## On Windows
+
+Everything runs on Windows (and macOS or Linux). On Windows, Python is `python` instead of `python3`, and the commands below work as written in the VS Code terminal (PowerShell). Open the folder in VS Code and it offers the recommended extensions (Python, SVG preview); **Terminal > Run Task** has ready-made tasks to install everything, start the web page, run both test suites, draw a page or list the pictures.
+
+You only need Python and Node.js. Re-tracing the picture sheets (rarely needed) also takes `pip install -r tools/requirements.txt`.
+
 ## The command line
 
 ```bash
@@ -45,7 +51,7 @@ Verse 2: He makes me lie down in green pastures. He leads me beside still waters
 ## Run the tests
 
 ```bash
-python -m unittest   # the Python version
+python -m unittest   # the Python version (python3 on macOS or Linux)
 npm test             # the web page
 ```
 

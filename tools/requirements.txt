@@ -1,0 +1,6 @@
+# Only needed to re-trace the picture sheets (python tools/trace_pictures.py). The coloring pages
+# themselves need nothing beyond Python.
+pillow
+numpy
+scipy
+potracer

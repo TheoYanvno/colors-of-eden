@@ -7,13 +7,19 @@ with potrace into smooth outlines that stay sharp at any size. The result goes t
 coe/pictures/<sheet>/<name>.svg, and each drawing's size is written into coe/pictures/catalog.json
 (the words that choose a drawing are kept as they are).
 
-Run from the repository root:  python tools/trace_pictures.py
-Needs Pillow, NumPy, SciPy and the potrace library (libpotrace.so.0, e.g. `apt install libpotrace0`).
+Run from the repository root (Windows, macOS or Linux):
+    pip install -r tools/requirements.txt
+    python tools/trace_pictures.py
+It traces with the potrace library when one is installed (libpotrace on Linux or macOS, potrace.dll on
+Windows) and otherwise with potracer, a pure-Python copy of potrace that installs anywhere with pip (slower:
+a few minutes for all 60). Both give the same kind of outlines.
 """
 from __future__ import annotations
 
 import ctypes as C
+import ctypes.util
 import json
+import sys
 from pathlib import Path
 
 import numpy as np
@@ -45,9 +51,25 @@ def slug(label: str) -> str:
     return "-".join(words.split())
 
 
-# --- potrace, through its C library -------------------------------------------------------------
-_lib = C.CDLL("libpotrace.so.0")
-_WORD = C.c_ulong
+# --- potrace: its C library when there is one, else the pure-Python potracer ----------------------
+def _number(v: float, scale: float) -> str:
+    return f"{v * scale:.1f}".rstrip("0").rstrip(".")
+
+
+def _find_library():
+    """The potrace C library, or None. Windows: potrace.dll or libpotrace-0.dll on PATH or in tools/."""
+    names = (["potrace.dll", "libpotrace-0.dll", str(Path(__file__).with_name("potrace.dll"))] if sys.platform == "win32"
+             else ["libpotrace.so.0", "libpotrace.dylib", ctypes.util.find_library("potrace") or "libpotrace.so"])
+    for name in names:
+        try:
+            return C.CDLL(name)
+        except OSError:
+            continue
+    return None
+
+
+_lib = _find_library()
+_WORD = C.c_ulong                 # potrace_word: unsigned long (32 bits on Windows, 64 on Linux and macOS)
 _BITS = C.sizeof(_WORD) * 8
 
 
@@ -85,13 +107,15 @@ class _State(C.Structure):
     _fields_ = [("status", C.c_int), ("plist", C.POINTER(_Path)), ("priv", C.c_void_p)]
 
 
-_lib.potrace_param_default.restype = C.POINTER(_Param)
-_lib.potrace_trace.restype = C.POINTER(_State)
-_lib.potrace_trace.argtypes = [C.POINTER(_Param), C.POINTER(_Bitmap)]
+if _lib is not None:
+    _lib.potrace_param_default.restype = C.POINTER(_Param)
+    _lib.potrace_trace.restype = C.POINTER(_State)
+    _lib.potrace_trace.argtypes = [C.POINTER(_Param), C.POINTER(_Bitmap)]
+
+TURDSIZE = 40                     # drop specks smaller than this many (enlarged) pixels
 
 
-def trace(black: np.ndarray, scale: float) -> str:
-    """SVG path data for the black pixels (True) of a bitmap, its coordinates multiplied by scale."""
+def _trace_with_library(black: np.ndarray, scale: float) -> str:
     h, w = black.shape
     dy = (w + _BITS - 1) // _BITS
     bits = np.zeros((h, dy * _BITS), dtype=np.uint8)
@@ -101,28 +125,48 @@ def trace(black: np.ndarray, scale: float) -> str:
     words = (groups << shifts).sum(axis=2).astype(np.uint64).ravel()
     bitmap = _Bitmap(w, h, dy, (_WORD * len(words))(*words.tolist()))
     param = _lib.potrace_param_default()
-    param.contents.turdsize = 40                    # drop specks smaller than this (in enlarged pixels)
+    param.contents.turdsize = TURDSIZE
     state = _lib.potrace_trace(param, C.byref(bitmap))
     if not state or state.contents.status != 0:
         raise RuntimeError("potrace failed")
-
-    def n(v: float) -> str:
-        return f"{v * scale:.1f}".rstrip("0").rstrip(".")
-
     out, node = [], state.contents.plist
     while node:
         curve = node.contents.curve
         end = curve.c[curve.n - 1][2]
-        parts = [f"M{n(end.x)} {n(end.y)}"]
+        parts = [f"M{_number(end.x, scale)} {_number(end.y, scale)}"]
         for i in range(curve.n):
-            a, b, c = curve.c[i]
-            parts.append(f"C{n(a.x)} {n(a.y)} {n(b.x)} {n(b.y)} {n(c.x)} {n(c.y)}" if curve.tag[i] == 1
-                         else f"L{n(b.x)} {n(b.y)} {n(c.x)} {n(c.y)}")
+            pts = [f"{_number(p.x, scale)} {_number(p.y, scale)}" for p in curve.c[i]]
+            parts.append(f"C{' '.join(pts)}" if curve.tag[i] == 1 else f"L{pts[1]} {pts[2]}")
         out.append("".join(parts) + "Z")
         node = node.contents.next
     _lib.potrace_state_free(state)
     _lib.potrace_param_free(param)
     return "".join(out)
+
+
+def _trace_with_potracer(black: np.ndarray, scale: float) -> str:
+    try:
+        import potrace                # pip install potracer
+    except ImportError:
+        sys.exit("No potrace found. Run:  pip install -r tools/requirements.txt")
+    out = []
+    for curve in potrace.Bitmap(black.astype(bool)).trace(turdsize=TURDSIZE):
+        p = curve.start_point
+        parts = [f"M{_number(p.x, scale)} {_number(p.y, scale)}"]
+        for seg in curve.segments:
+            e = f"{_number(seg.end_point.x, scale)} {_number(seg.end_point.y, scale)}"
+            if seg.is_corner:
+                parts.append(f"L{_number(seg.c.x, scale)} {_number(seg.c.y, scale)} {e}")
+            else:
+                parts.append(f"C{_number(seg.c1.x, scale)} {_number(seg.c1.y, scale)} "
+                             f"{_number(seg.c2.x, scale)} {_number(seg.c2.y, scale)} {e}")
+        out.append("".join(parts) + "Z")
+    return "".join(out)
+
+
+def trace(black: np.ndarray, scale: float) -> str:
+    """SVG path data for the black pixels (True) of a bitmap, its coordinates multiplied by scale."""
+    return (_trace_with_library if _lib is not None else _trace_with_potracer)(black, scale)
 
 
 # --- finding and cleaning each drawing ----------------------------------------------------------
@@ -201,7 +245,7 @@ def remove_border_bits(gray: np.ndarray) -> None:
 
 def main() -> None:
     catalog_file = ROOT / "catalog.json"
-    old = {p["id"]: p for p in json.loads(catalog_file.read_text())} if catalog_file.exists() else {}
+    old = {p["id"]: p for p in json.loads(catalog_file.read_text(encoding="utf-8"))} if catalog_file.exists() else {}
     catalog = []
     for sheet, labels in SHEETS.items():
         gray_sheet = np.array(Image.open(ROOT / "source" / f"{sheet}.png").convert("L"))
@@ -216,11 +260,11 @@ def main() -> None:
             d = trace(big < 150, 1 / SCALE)
             (ROOT / sheet / f"{name}.svg").write_text(
                 f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}">'
-                f'<path d="{d}" fill="#111" fill-rule="evenodd"/></svg>\n')
+                f'<path d="{d}" fill="#111" fill-rule="evenodd"/></svg>\n', encoding="utf-8")
             pid = f"{sheet}/{name}"
             catalog.append({"id": pid, "label": label, "width": w, "height": h,
                             "words": old.get(pid, {}).get("words", [])})
-    catalog_file.write_text(json.dumps(catalog, indent=1) + "\n")
+    catalog_file.write_text(json.dumps(catalog, indent=1) + "\n", encoding="utf-8", newline="\n")
     print(f"traced {len(catalog)} drawings into {ROOT}")
 
 

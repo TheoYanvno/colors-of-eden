@@ -2,9 +2,6 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
-
-// Windows installs Python as `python`; macOS and Linux as `python3`.
-const PYTHON = process.platform === 'win32' ? 'python' : 'python3';
 import { BIBLE, findBook, superBookLink } from '../src/books.js';
 import { planPage, motifCounts } from '../src/scenes.js';
 import { drawPage, wrap, randomFor, placement } from '../src/art.js';
@@ -12,6 +9,8 @@ import { loadChapter, BUNDLED } from '../src/text.js';
 import { CATALOG, choosePicture, pathData, loadPicture } from '../src/picture.js';
 import { readFileSync } from 'node:fs';
 
+// Windows installs Python as `python` (or `py`); macOS and Linux as `python3`. PYTHON overrides both.
+const PY = process.env.PYTHON || (process.platform === 'win32' ? 'python' : 'python3');
 const verses = (ref) => BUNDLED[ref].map((t, i) => [i + 1, t]);
 const superbook = new URL('../../../superbook/src/books.js', import.meta.url);
 
@@ -32,14 +31,14 @@ test('the page plan matches the Python version for the chapters that ship with i
     const js = planPage(ref, verses(ref));
     let py;
     try {
-      py = JSON.parse(execFileSync(PYTHON, ['-c', `
+      py = JSON.parse(execFileSync(PY, ['-c', `
 import json
 from coe.scenes import plan_page
 from coe.text import Chapter, BUNDLED
 book, n = ${JSON.stringify(ref)}.rsplit(' ', 1)
 p = plan_page(Chapter(book, int(n), list(enumerate(BUNDLED[${JSON.stringify(ref)}], 1))))
 print(json.dumps({"motifs": p.motifs, "background": p.background, "foreground": p.foreground, "verse": list(p.verse), "picture": p.picture}))`], { cwd: new URL('../..', import.meta.url) }).toString());
-    } catch { return t.skip('python3 is not available'); }
+    } catch { return t.skip('Python is not available'); }
     assert.deepEqual({ motifs: js.motifs, background: js.background, foreground: js.foreground, verse: js.verse, picture: js.picture }, py, ref);
   }
 });
@@ -91,7 +90,7 @@ test('chapters load from the text service, fall back to the bundled copy, and ex
 });
 
 test('the boat and fish stay inside the frame, like the Python version', () => {
-  const py = JSON.parse(execFileSync(PYTHON, ['-c', `import json; from coe.art import placement, FOREGROUND_ART
+  const py = JSON.parse(execFileSync(PY, ['-c', `import json; from coe.art import placement, FOREGROUND_ART
 print(json.dumps({f"{m}|{w}|{s}": placement(m, s, w) for m in FOREGROUND_ART for w in (False, True) for s in (0.8, 1.33, 1.9)}))`],
     { cwd: new URL('../..', import.meta.url), encoding: 'utf8' }));
   for (const [key, [size, base]] of Object.entries(py)) {
@@ -108,7 +107,7 @@ const DANIEL_6 = [
   [22, "My God has sent his angel, and has shut the lions' mouths, and they have not hurt me."],
   [27, 'He has delivered Daniel from the power of the lions.'],
 ];
-const python = (code) => execFileSync('python3', ['-c', code], { cwd: new URL('../..', import.meta.url), encoding: 'utf8', maxBuffer: 1 << 26 });
+const python = (code) => execFileSync(PY, ['-c', code], { cwd: new URL('../..', import.meta.url), encoding: 'utf8', maxBuffer: 1 << 26 });
 
 test('a chapter that names a drawing three times gets it, chosen and drawn exactly like the Python version', (t) => {
   assert.equal(CATALOG.length, 60);
@@ -126,7 +125,7 @@ test('a chapter that names a drawing three times gets it, chosen and drawn exact
 from coe.scenes import plan_page
 from coe.text import Chapter
 print(draw_page(plan_page(Chapter("Daniel", 6, ${JSON.stringify(DANIEL_6)}))), end="")`);
-  } catch { return t.skip('python3 is not available'); }
+  } catch { return t.skip('Python is not available'); }
   assert.equal(svg, py);
 });
 

@@ -1,0 +1,9 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    { "name": "Debug: draw Psalm 23", "type": "debugpy", "request": "launch", "module": "coe",
+      "args": ["page", "Psalms", "23"], "cwd": "${workspaceFolder}" },
+    { "name": "Debug: web tests", "type": "node", "request": "launch", "runtimeExecutable": "node",
+      "runtimeArgs": ["--test", "web/test/web.test.js"], "cwd": "${workspaceFolder}" }
+  ]
+}

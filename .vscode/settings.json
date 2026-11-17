@@ -1,0 +1,8 @@
+{
+  "python.testing.unittestEnabled": true,
+  "python.testing.pytestEnabled": false,
+  "python.testing.unittestArgs": ["-v", "-s", "tests", "-p", "test_*.py"],
+  "files.exclude": { "**/__pycache__": true, "node_modules": true },
+  "search.exclude": { "docs/app.js": true, "docs/pictures": true, "coe/pictures/**/*.svg": true },
+  "files.eol": "\n"
+}
