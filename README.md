@@ -4,7 +4,7 @@ A coloring storybook for every book of the Bible, for children ages 5 to 8. Pick
 
 **Try it:** https://theoyanvno.github.io/colors-of-eden/
 
-**Status:** in progress. All 79 books (in SuperBook's Orthodox order) have their stories written, 202 pages in all. For now each page borrows one of the 60 drawings; new drawings for each scene are listed in [PICTURES_NEEDED.md](PICTURES_NEEDED.md) and will replace them as they're made.
+**Status:** nearly finished. All 79 books (in SuperBook's Orthodox order) have their stories written, 202 pages in all, and 162 pages have their own drawing of their story. The other 40 borrow one of the cover drawings for now; [PICTURES_NEEDED.md](PICTURES_NEEDED.md) lists them.
 
 ![The Genesis cover, the Noah page and the Walking on Water page from Matthew: each a framed drawing to color with a short story underneath and its lesson in a box](docs/examples.png)
 
@@ -23,7 +23,7 @@ npm run build  # build into docs/ for GitHub Pages
 
 Everything runs on Windows (and macOS or Linux). On Windows, Python is `python` instead of `python3`, and the commands below work as written in the VS Code terminal (PowerShell). Open the folder in VS Code and it offers the recommended extensions (Python, SVG preview); **Terminal > Run Task** has ready-made tasks to install everything, start the web page, run both test suites, list the storybooks, draw one, update the list of pictures needed and list the pictures.
 
-You only need Python and Node.js. Re-tracing the picture sheets (rarely needed) also takes `pip install -r tools/requirements.txt`.
+You only need Python and Node.js. Cutting out or re-tracing the drawings (rarely needed) also takes `pip install -r tools/requirements.txt`.
 
 ## The command line
 
@@ -31,7 +31,7 @@ You only need Python and Node.js. Re-tracing the picture sheets (rarely needed) 
 python -m coe books              # every book and how many pages its storybook has
 python -m coe book Genesis       # saves the cover and pages in out/genesis/, ready to print on US Letter paper
 python -m coe book "1 Samuel"    # any name works: 1 Kingdoms finds the same book
-python -m coe pictures           # the 60 drawings
+python -m coe pictures           # every drawing
 python tools/pictures_needed.py  # rewrites PICTURES_NEEDED.md
 ```
 
@@ -39,7 +39,7 @@ python tools/pictures_needed.py  # rewrites PICTURES_NEEDED.md
 
 - **Stories:** each book's stories are retold for young children in short, simple sentences that keep the Bible's core message, each with a one-line lesson. They live in `coe/storybook/<book>.json`, which the Python version and the web page both read.
 - **Books:** the same books, order and names as SuperBook, which is the reference for this project: the Old Testament in Orthodox order (with Tobit, Judith, the Maccabees, Wisdom, Sirach, Baruch and the others) and the New Testament. `tests/test_superbook.py` checks the list still matches SuperBook's.
-- **Pictures:** 60 drawings (20 animals, 20 places, 20 people of the Middle East) from the author's own picture sheets, kept in `coe/pictures/source/`. `tools/trace_pictures.py` cuts out each drawing, removes its printed name and traces it with [potrace](https://potrace.sourceforge.net/) into smooth outlines that print sharp at full size. Every page also names the scene it should show, and `PICTURES_NEEDED.md` lists them all, so new sheets can be drawn in the same style.
+- **Pictures:** a drawing of each story (162 so far) from the author's picture sheets. `tools/cut_scenes.py` cuts each numbered panel out of its sheet and erases its number, title and border, keeping each drawing as `coe/pictures/source/scenes/<number>.png`. The covers, and the pages still waiting for a drawing, use 60 more drawings (20 animals, 20 places, 20 people of the Middle East) from the author's first three sheets. `tools/trace_pictures.py` traces every drawing with [potrace](https://potrace.sourceforge.net/) into smooth outlines that print sharp at full size.
 
 ## Run the tests
 

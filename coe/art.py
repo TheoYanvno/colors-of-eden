@@ -1,4 +1,4 @@
-"""Storybook pages: one of the 60 drawings to color, with a short paragraph to read and its lesson.
+"""Storybook pages: a drawing of the story to color, with a short paragraph to read and its lesson.
 
 A page is US Letter (8.5 x 11 in) as an SVG with an 850 x 1100 view box. A book starts with a cover (its
 name, a drawing and a sentence about the book), then one page per story: the title and chapter at the top,
@@ -17,6 +17,7 @@ INK = "#111"
 INSIDE = 18                         # space between the drawing and its frame
 PIC_W, PIC_H = 700, 560             # the most room a drawing and its frame can take on a story page
 COVER_H = 520
+BOTTOM = H - 50                     # the lowest a story page's words may reach (the page number is below)
 TEXT_X = 80                         # left edge of the paragraph
 ROW = 42                            # paragraph line height
 TEXT_WRAP = 50                      # characters a paragraph line holds at 28px Georgia across 690px
@@ -74,13 +75,15 @@ def svg_page(label: str, parts: list[str]) -> str:
 
 
 def page_layout(page: dict) -> dict:
-    """Where everything on a story page sits, so the drawing code and the tests share one plan."""
-    box = picture_box(page["picture"], 136, PIC_H)
+    """Where everything on a story page sits, so the drawing code and the tests share one plan. The drawing
+    gets the room the words leave, up to PIC_H, so a long story still fits above the page number."""
     lines = wrap(page["text"], TEXT_WRAP)
-    top = box[1] + box[3] + 52
-    lesson_top = top + (len(lines) - 1) * ROW + 34
     lesson = wrap(page["lesson"], 46)
     lesson_h = 24 + len(lesson) * 34
+    words_h = 52 + (len(lines) - 1) * ROW + 34 + lesson_h
+    box = picture_box(page["picture"], 136, min(PIC_H, BOTTOM - 136 - words_h))
+    top = box[1] + box[3] + 52
+    lesson_top = top + (len(lines) - 1) * ROW + 34
     return {"box": box, "lines": lines, "top": top, "lesson": (lesson_top, lesson_h, lesson),
             "bottom": lesson_top + lesson_h}
 

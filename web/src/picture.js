@@ -1,5 +1,6 @@
-// The 60 drawings of animals, places and people of the Middle East (the same as coe/picture.py), traced
-// into clean outlines. The catalog is bundled; each drawing's outlines are fetched from pictures/<id>.svg
+// The drawings (the same as coe/picture.py), traced into clean outlines: a scene for most story pages and
+// the 60 drawings of animals, places and people of the Middle East used on the covers and the other pages. The catalog is
+// bundled; each drawing's outlines are fetched from pictures/<id>.svg
 // when a story page needs them.
 import CATALOG from '../../coe/pictures/catalog.json' with { type: 'json' };
 

@@ -1,5 +1,5 @@
 """`python -m coe books` lists the storybooks; `book Genesis` saves a book's cover and pages; `pictures`
-lists the 60 drawings."""
+lists the drawings."""
 from __future__ import annotations
 
 import argparse
@@ -31,7 +31,7 @@ def main(argv: list[str] | None = None) -> int:
     b = sub.add_parser("book", help="save a book's cover and pages as SVG files, ready to print")
     b.add_argument("name", nargs="+", help='the book, e.g. Genesis, "1 Samuel" or Tobit')
     b.add_argument("--out", default="out", help="folder for the pages (default: out)")
-    sub.add_parser("pictures", help="list the 60 drawings")
+    sub.add_parser("pictures", help="list the drawings")
     args = parser.parse_args(argv)
     if args.cmd == "books":
         have = set(written())

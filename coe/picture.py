@@ -1,5 +1,6 @@
-"""The 60 drawings of animals, places and people of the Middle East (coe/pictures/), each traced into
-clean outlines from the author's picture sheets by tools/trace_pictures.py. Every story page uses one."""
+"""The drawings (coe/pictures/), each traced into clean outlines from the author's picture sheets by
+tools/trace_pictures.py: a scene for most story pages (scenes/<page number>) and 60 drawings of
+animals, places and people of the Middle East, used on the covers and the pages still waiting for theirs."""
 from __future__ import annotations
 
 import json

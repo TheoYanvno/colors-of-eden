@@ -7,7 +7,7 @@ const serve = process.argv.includes('--serve');
 await mkdir('docs', { recursive: true });
 await cp('web/public', 'docs', { recursive: true });
 // The traced drawings and the storybooks, fetched by the page when a book needs them.
-for (const kind of ['animals', 'places', 'people']) await cp(`coe/pictures/${kind}`, `docs/pictures/${kind}`, { recursive: true });
+for (const kind of ['animals', 'places', 'people', 'scenes']) await cp(`coe/pictures/${kind}`, `docs/pictures/${kind}`, { recursive: true });
 await cp('coe/storybook', 'docs/storybook', { recursive: true });
 const options = {
   entryPoints: ['web/src/main.jsx'], bundle: true, outfile: 'docs/app.js', jsx: 'automatic',

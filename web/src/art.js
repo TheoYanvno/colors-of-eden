@@ -9,6 +9,7 @@ const INK = '#111';
 const INSIDE = 18;                       // space between a drawing and its frame
 const PIC_W = 700, PIC_H = 560;          // the most room a drawing and its frame can take on a story page
 const COVER_H = 520;
+const BOTTOM = H - 50;                   // the lowest a story page's words may reach (the page number is below)
 const TEXT_X = 80;                       // left edge of the paragraph
 const ROW = 42;                          // paragraph line height
 export const TEXT_WRAP = 50;
@@ -52,12 +53,14 @@ const svgPage = (label, parts) =>
 
 /** Where everything on a story page sits (the same plan as coe/art.py's page_layout). */
 export function pageLayout(page) {
-  const box = pictureBox(page.picture, 136, PIC_H);
+  // The drawing gets the room the words leave, up to PIC_H, so a long story still fits above the page number.
   const lines = wrap(page.text, TEXT_WRAP);
-  const top = box[1] + box[3] + 52;
-  const lessonTop = top + (lines.length - 1) * ROW + 34;
   const lesson = wrap(page.lesson, 46);
   const lessonH = 24 + lesson.length * 34;
+  const wordsH = 52 + (lines.length - 1) * ROW + 34 + lessonH;
+  const box = pictureBox(page.picture, 136, Math.min(PIC_H, BOTTOM - 136 - wordsH));
+  const top = box[1] + box[3] + 52;
+  const lessonTop = top + (lines.length - 1) * ROW + 34;
   return { box, lines, top, lesson: [lessonTop, lessonH, lesson], bottom: lessonTop + lessonH };
 }
 

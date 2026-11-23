@@ -53,8 +53,13 @@ class Books(unittest.TestCase):
 
 
 class Pages(unittest.TestCase):
-    def test_sixty_traced_drawings_each_with_its_file(self):
-        self.assertEqual(len(catalog()), 60)
+    def test_every_drawing_has_its_file_and_every_page_its_own_scene(self):
+        scenes = [p["id"] for p in catalog() if p["id"].startswith("scenes/")]
+        self.assertEqual(len(catalog()), 60 + len(scenes))
+        pictures = [page["picture"] for _, _, page in all_pages()]
+        for n, picture in enumerate(pictures, 1):    # a page uses its own scene when there is one
+            self.assertEqual(picture == f"scenes/{n:03d}", f"scenes/{n:03d}" in scenes, n)
+        self.assertTrue(all(p.startswith(("scenes/", "animals/", "places/", "people/")) for p in pictures))
         for p in catalog():
             svg = (FOLDER / f"{p['id']}.svg").read_text(encoding="utf-8")
             self.assertIn(f'viewBox="0 0 {p["width"]} {p["height"]}"', svg, p["id"])

@@ -1,6 +1,7 @@
-# Only needed to re-trace the picture sheets (python tools/trace_pictures.py). The coloring pages
-# themselves need nothing beyond Python.
+# Only needed to cut out or re-trace the drawings (tools/cut_scenes.py and tools/trace_pictures.py). The
+# coloring pages themselves need nothing beyond Python.
 pillow
 numpy
 scipy
 potracer
+opencv-python-headless

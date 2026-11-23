@@ -1,4 +1,5 @@
-"""Cut the 60 drawings out of the three picture sheets and trace each one into clean SVG line art.
+"""Cut the 60 drawings out of the three picture sheets, and trace them and the scene drawings into clean
+SVG line art.
 
 The sheets in coe/pictures/source/ (animals, places and people of the Middle East, 20 each) are small
 screenshots, so each drawing is only about 225 pixels wide. Printed at full page size the pixels would
@@ -6,6 +7,10 @@ show, so every drawing is cut out, its printed name above it is removed, it is e
 with potrace into smooth outlines that stay sharp at any size. The result goes to
 coe/pictures/<sheet>/<name>.svg, and each drawing's size is written into coe/pictures/catalog.json
 (the words that choose a drawing are kept as they are).
+
+The scene drawings, one for each storybook page that has one, are already cut out (by tools/cut_scenes.py)
+as coe/pictures/source/scenes/<page>.png, numbered in Bible order like PICTURES_NEEDED.md; each is
+enlarged and traced the same way into coe/pictures/scenes/<number>.svg, labelled with its page's title.
 
 Run from the repository root (Windows, macOS or Linux):
     pip install -r tools/requirements.txt
@@ -243,6 +248,25 @@ def remove_border_bits(gray: np.ndarray) -> None:
             gray[labels == k] = 255
 
 
+def save(gray: np.ndarray, folder: str, name: str) -> tuple[int, int]:
+    """Enlarge and trace one cleaned drawing into coe/pictures/<folder>/<name>.svg; returns its width and height."""
+    h, w = gray.shape
+    big = np.array(Image.fromarray(gray).resize((w * SCALE, h * SCALE), Image.LANCZOS))
+    d = trace(big < 150, 1 / SCALE)
+    (ROOT / folder).mkdir(exist_ok=True)
+    (ROOT / folder / f"{name}.svg").write_text(
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}">'
+        f'<path d="{d}" fill="#111" fill-rule="evenodd"/></svg>\n', encoding="utf-8")
+    return w, h
+
+
+def scene_titles() -> list[str]:
+    """Every storybook page's title, in Bible order: scene 1 is Genesis page 1."""
+    sys.path.insert(0, str(ROOT.parent.parent))
+    from coe.storybook import storybook, written
+    return [page["title"] for b in written() for page in storybook(b)["pages"]]
+
+
 def main() -> None:
     catalog_file = ROOT / "catalog.json"
     old = {p["id"]: p for p in json.loads(catalog_file.read_text(encoding="utf-8"))} if catalog_file.exists() else {}
@@ -255,15 +279,16 @@ def main() -> None:
             gray = gray_sheet[top + INSET:bottom + 1 - INSET, left + INSET:right + 1 - INSET].copy()
             remove_name(gray, two_lines=name == "egyptian-slave-homes")
             remove_border_bits(gray)
-            h, w = gray.shape
-            big = np.array(Image.fromarray(gray).resize((w * SCALE, h * SCALE), Image.LANCZOS))
-            d = trace(big < 150, 1 / SCALE)
-            (ROOT / sheet / f"{name}.svg").write_text(
-                f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}">'
-                f'<path d="{d}" fill="#111" fill-rule="evenodd"/></svg>\n', encoding="utf-8")
+            w, h = save(gray, sheet, name)
             pid = f"{sheet}/{name}"
             catalog.append({"id": pid, "label": label, "width": w, "height": h,
                             "words": old.get(pid, {}).get("words", [])})
+    titles = scene_titles()
+    for source in sorted((ROOT / "source" / "scenes").glob("*.png")):
+        n, title = int(source.stem), titles[int(source.stem) - 1]
+        gray = np.array(Image.open(source).convert("L"))
+        w, h = save(gray, "scenes", f"{n:03d}")
+        catalog.append({"id": f"scenes/{n:03d}", "label": title, "width": w, "height": h, "words": []})
     catalog_file.write_text(json.dumps(catalog, indent=1) + "\n", encoding="utf-8", newline="\n")
     print(f"traced {len(catalog)} drawings into {ROOT}")
 

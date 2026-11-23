@@ -1,5 +1,5 @@
 """The coloring storybooks: any book of the Bible told for children ages 5 to 8, one page per story, each
-page one of the 60 drawings to color with a short paragraph to read. Each book is coe/storybook/<id>.json,
+page a drawing of its scene to color with a short paragraph to read. Each book is coe/storybook/<id>.json,
 named by the book's id in SuperBook's list (Genesis.json, 1 Samuel.json, sus.json for Susanna)."""
 from __future__ import annotations
 
